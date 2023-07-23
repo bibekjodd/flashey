@@ -15,6 +15,8 @@ import { useUser } from "../../stores/useUser";
 import { authUser } from "@/lib/auth";
 import { imageToDataUri } from "@/lib/imageToDataUri";
 
+const backendURL = import.meta.env.VITE_BACKEND_URL;
+
 const user = useUser();
 const toast = useToast();
 const isLoginMode = ref<boolean>(true);
@@ -62,10 +64,10 @@ const submitForm = async (e: Event) => {
 
 <template>
   <main
-    class="grid place-items-center xs:py-10 h-screen min-h-screen md:p-0 absolute inset-0 z-50 w-full text-neutral-900 bg-black/5"
+    class="grid place-items-center sm:py-10 md:py-10 h-screen min-h-screen md:p-0 absolute inset-0 z-50 w-full text-neutral-900 bg-black/5"
   >
     <div
-      class="w-full h-full sm:h-fit flex flex-col justify-center xs:max-w-md border bg-neutral-50 rounded-lg pb-5 pt-8 px-6 relative"
+      class="w-full h-full md:h-fit flex flex-col justify-center max-w-screen-sm sm:max-w-xl border bg-neutral-50 rounded-lg pb-5 pt-8 px-4 xs:px-8 relative"
     >
       <div class="text-center relative flex items-center flex-col">
         <p class="text-xl font-semibold">Welcome back</p>
@@ -162,9 +164,9 @@ const submitForm = async (e: Event) => {
               id="imageUri"
             />
             <img
+              v-if="imageUri"
               :src="imageUri"
-              alt="user chosen profile picture"
-              class="h-10 w-10 rounded-full object-cover"
+              class="h-8 w-8 rounded-full object-cover"
             />
           </div>
         </div>
@@ -181,6 +183,20 @@ const submitForm = async (e: Event) => {
         </button>
       </form>
 
+      <div class="flex items-center mb-5">
+        <span class="w-full h-0.5 bg-neutral-300/80 rounded-full"></span>
+        <span class="mx-3 text-sm text-neutral-700">OR</span>
+        <span class="w-full h-0.5 bg-neutral-300/80 rounded-full"></span>
+      </div>
+
+      <a
+        :href="`${backendURL}/login/google`"
+        class="font-medium text-white flex items-center justify-center bg-black rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 mb-3"
+      >
+        <img src="/google.png" class="h-5 object-contain" alt="" />
+        <span>Continue With Google</span>
+      </a>
+
       <p class="text-center" v-if="isLoginMode">
         <span class="text-neutral-700 text-sm">Don't have an account yet? </span
         ><button @click="toggleLoginMode" class="font-semibold">
@@ -189,8 +205,8 @@ const submitForm = async (e: Event) => {
       </p>
 
       <p class="text-center" v-else>
-        <span class="text-neutral-700 text-sm">Already have an account? </span
-        ><button @click="toggleLoginMode" class="font-semibold">Sign in</button>
+        <span class="text-neutral-700 text-sm">Already have an account? </span>
+        <button @click="toggleLoginMode" class="font-semibold">Sign in</button>
       </p>
     </div>
   </main>
