@@ -14,9 +14,11 @@ import EyeOffIcon from "vue-material-design-icons/EyeOffOutline.vue";
 import { useUser } from "../../stores/useUser";
 import { authUser } from "@/lib/auth";
 import { imageToDataUri } from "@/lib/imageToDataUri";
+import { useAuthModal } from "@/stores/useAuthModal";
 
 const backendURL = import.meta.env.VITE_BACKEND_URL;
 
+const authModal = useAuthModal();
 const user = useUser();
 const toast = useToast();
 const isLoginMode = ref<boolean>(true);
@@ -55,8 +57,13 @@ const submitForm = async (e: Event) => {
     imageUri: imageUri.value || undefined,
     isLoginMode: isLoginMode.value,
   });
-  if (res.data) user.setUser(res.data);
-  else toast.error(res.error || "");
+  if (res.data) {
+    user.setUser(res.data);
+    name.value = "";
+    email.value = "";
+    password.value = "";
+    imageUri.value = "";
+  } else toast.error(res.error || "");
 
   isFormLoading.value = false;
 };
@@ -64,18 +71,28 @@ const submitForm = async (e: Event) => {
 
 <template>
   <main
-    class="grid place-items-center sm:py-10 md:py-10 h-screen min-h-screen md:p-0 absolute inset-0 z-50 w-full text-neutral-900 bg-black/5"
+    v-show="authModal.isOpen"
+    class="grid place-items-center sm:py-10 md:py-10 h-screen min-h-screen md:p-0 absolute inset-0 z-30 w-full text-neutral-900 bg-neutral-200"
   >
     <div
-      class="w-full h-full md:h-fit flex flex-col justify-center max-w-screen-sm sm:max-w-xl border bg-neutral-50 rounded-lg pb-5 pt-8 px-4 xs:px-8 relative"
+      class="w-full h-full md:h-fit flex flex-col justify-center max-w-screen-sm sm:max-w-lg border bg-neutral-50 rounded-lg pb-5 pt-8 px-4 xs:px-8 relative"
     >
       <div class="text-center relative flex items-center flex-col">
-        <p class="text-xl font-semibold">Welcome back</p>
-        <p class="text-gray-700">Please enter your details to sign in</p>
+        <p v-if="isLoginMode" class="text-xl font-semibold">Welcome back</p>
+
+        <p v-if="isLoginMode" class="text-gray-700">
+          Please enter your details to sign in
+        </p>
+
+        <p v-if="!isLoginMode" class="text-xl font-semibold">
+          Sign Up to Get Started
+        </p>
+
         <div class="absolute inset-0 grid place-items-center">
           <div class="h-5/6 w-9/12 bg-fuchsia-900/70 filter blur-3xl"></div>
         </div>
       </div>
+
       <form
         v-auto-animate
         @submit="submitForm"
@@ -84,6 +101,7 @@ const submitForm = async (e: Event) => {
       >
         <div v-if="!isLoginMode" class="flex flex-col space-y-1">
           <label for="name" class="font-semibold outline-none">Full Name</label>
+
           <div
             class="flex items-center border-2 border-neutral-300 rounded-lg p-2 focus-within:border-neutral-400 space-x-2 relative"
           >
@@ -155,6 +173,7 @@ const submitForm = async (e: Event) => {
 
         <div v-if="!isLoginMode" class="flex flex-col space-y-1">
           <p class="font-semibold">Choose Profile Picture</p>
+
           <div class="flex justify-between">
             <input
               @change="handleImageChange"
@@ -173,27 +192,32 @@ const submitForm = async (e: Event) => {
 
         <button
           :disabled="isFormLoading"
-          class="font-medium text-white flex items-center justify-center bg-black rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10"
+          class="font-medium text-white flex items-center justify-center bg-black rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 text-sm"
         >
           <span v-if="!isFormLoading">
             <span v-if="isLoginMode">Sign in</span>
+
             <span v-else>Register</span>
           </span>
+
           <span v-else class="form-loader h-5 w-5"></span>
         </button>
       </form>
 
       <div class="flex items-center mb-5">
         <span class="w-full h-0.5 bg-neutral-300/80 rounded-full"></span>
+
         <span class="mx-3 text-sm text-neutral-700">OR</span>
+
         <span class="w-full h-0.5 bg-neutral-300/80 rounded-full"></span>
       </div>
 
       <a
-        :href="`${backendURL}/login/google`"
-        class="font-medium text-white flex items-center justify-center bg-black rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 mb-3"
+        :href="`${backendURL}/api/v1/login/google`"
+        class="font-medium text-white flex items-center justify-center bg-black rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 mb-3 text-sm"
       >
-        <img src="/google.png" class="h-5 object-contain" alt="" />
+        <img src="/google.png" class="h-4 object-contain" alt="" />
+
         <span>Continue With Google</span>
       </a>
 
@@ -206,6 +230,7 @@ const submitForm = async (e: Event) => {
 
       <p class="text-center" v-else>
         <span class="text-neutral-700 text-sm">Already have an account? </span>
+
         <button @click="toggleLoginMode" class="font-semibold">Sign in</button>
       </p>
     </div>

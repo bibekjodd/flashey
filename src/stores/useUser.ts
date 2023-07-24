@@ -15,7 +15,7 @@ export const useUser = defineStore("user", {
       this.isLoading = false;
     },
 
-    stopLoading() {
+    clearLoading() {
       this.isLoading = false;
     },
   },

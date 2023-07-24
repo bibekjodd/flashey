@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 export const useAuthModal = defineStore("authmoal", {
   state: () => {
     return {
-      isOpen: false,
+      isOpen: true,
     };
   },
 
