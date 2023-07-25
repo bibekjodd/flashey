@@ -31,17 +31,20 @@ interface Chat {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  latestMessage?: LatestMessage;
+  latestMessage?: Message;
+  messages: Message[];
+  isMessagesFetched: boolean;
 }
 
-interface LatestMessage {
+interface Message {
   _id: string;
-  text: string;
+  text?: string;
   sender: UserShort;
   viewers: string[];
   chat: string;
   reactions: any[];
   createdAt: string;
   updatedAt: string;
+  image?: Picture;
   __v: number;
 }
