@@ -9,8 +9,8 @@ import SendIcon from "vue-material-design-icons/Send.vue";
 // @ts-ignore
 import CloseIcon from "vue-material-design-icons/Close.vue";
 import { useToast } from "vue-toast-notification";
-import { sendMessage } from "@/lib/fetchers";
 import { scrollToBottom } from "../lib/scrollToBottom";
+import { sendMessage } from "@/lib/apiActions";
 
 const toast = useToast();
 const image = ref<string>("");
@@ -68,7 +68,7 @@ const handleMessageSubmit = async (e: Event) => {
       @submit="handleMessageSubmit"
       v-auto-animate
       action=""
-      class="w-full bg-neutral-200/60 pl-3 rounded-lg relative"
+      class="w-full bg-neutral-200/30 pl-3 rounded-lg relative"
       :class="{ 'pt-1': !!image }"
     >
       <div v-if="image" class="rounded-md py-3 relative w-fit">
@@ -104,7 +104,7 @@ const handleMessageSubmit = async (e: Event) => {
           v-if="!isMessageSending"
           :disabled="!input && !image"
           type="submit"
-          class="py-1 px-3 rounded-md text-blue-500 disabled:opacity-50"
+          class="py-1 px-3 rounded-md text-sky-500 disabled:opacity-50"
         >
           <SendIcon />
         </button>

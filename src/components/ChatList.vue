@@ -69,7 +69,7 @@ const messageHighlight = (message?: Message): string => {
         </span>
       </div>
 
-      <div class="flex text-[10px] xs:text-xs items-center space-x-2">
+      <div class="flex text-xs items-center space-x-2">
         <span class="text-gray-500 w-fit whitespace-nowrap">
           {{ moment(chat.updatedAt).format("LT") }}
         </span>

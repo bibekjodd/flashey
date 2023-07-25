@@ -12,9 +12,10 @@ import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue";
 import InformationIcon from "vue-material-design-icons/Information.vue";
 // @ts-ignore
 import TripledotsIcon from "vue-material-design-icons/DotsVertical.vue";
+// @ts-ignore
+import PlusIcon from "vue-material-design-icons/Plus.vue";
 import SendMessage from "@/components/SendMessage.vue";
-import { updateMessageViewed } from "@/lib/fetchers";
-import { getViewersIds, isSentByMe } from "@/lib/messageUtils";
+import { useAddToGroup } from "@/stores/useAddToGroup";
 
 const userStore = useUser();
 const chatStore = useChat();
@@ -28,6 +29,8 @@ watch([route, chatStore], () => {
 onMounted(() => {
   chat.value = chatStore.getChatById(route.params.chatId as string);
 });
+
+const addToGroupModal = useAddToGroup();
 </script>
 
 <template>
@@ -35,26 +38,17 @@ onMounted(() => {
     <div
       class="py-3 px-3.5 xs:px-4 sm:px-5 flex items-center h-20 shadow-sm shadow-neutral-300/80"
     >
-      <RouterLink
-        to="/"
-        class="mdp:hidden"
-        :class="{
-          'pr-3': !chatStore.getChatById(route.params.chatId as string)?.isGroupChat,
-        }"
-      >
+      <RouterLink to="/" class="mdp:hidden mr-3">
         <ArrowLeftIcon class="text-blue-600" />
       </RouterLink>
 
       <div
         class="flex"
         :class="{
-          '-space-x-5': chatStore.getChatById(route.params.chatId as string)?.isGroupChat,
+          '-space-x-5': chat?.isGroupChat,
         }"
       >
-        <div
-          v-for="user of chatStore.getChatById(route.params.chatId as string)?.users.slice(0, 4)"
-          :key="user._id"
-        >
+        <div v-for="user of chat?.users.slice(0, 4)" :key="user._id">
           <img
             v-if="user._id !== userStore.data?._id"
             :src="user.picture?.url || dummyUserImage"
@@ -66,34 +60,29 @@ onMounted(() => {
 
       <div>
         <p class="font-semibold">
-          {{
-            getChatName(
-              chatStore.getChatById(route.params.chatId as string),
-              userStore.data
-            )
-          }}
+          {{ getChatName(chat, userStore.data) }}
         </p>
 
-        <p
-          v-if="chatStore.getChatById(route.params.chatId as string)?.isGroupChat"
-          class="text-sm text-neutral-500"
-        >
-          {{
-            chatStore.getChatById(route.params.chatId as string)?.users.length
-          }}
+        <p v-if="chat?.isGroupChat" class="text-sm text-neutral-500">
+          {{ chat?.users.length }}
           members
         </p>
       </div>
 
-      <div class="ml-auto">
-        <button
-          v-if="chatStore.getChatById(route.params.chatId as string)?.isGroupChat"
-          class="text-blue-600"
-        >
+      <div class="ml-auto space-x-2">
+        <button v-if="chat?.isGroupChat" class="text-sky-600">
           <InformationIcon />
         </button>
 
-        <button v-else class="text-neutral-700">
+        <button
+          @click="addToGroupModal.open({ chat })"
+          v-if="chat?.isGroupChat"
+          class="text-sky-600"
+        >
+          <PlusIcon />
+        </button>
+
+        <button v-if="!chat?.isGroupChat" class="text-neutral-700">
           <TripledotsIcon />
         </button>
       </div>
@@ -113,3 +102,4 @@ onMounted(() => {
     <SendMessage :chat-id="chat?._id || ''" />
   </div>
 </template>
+@/stores/useAddToGroup

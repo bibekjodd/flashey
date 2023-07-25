@@ -54,53 +54,20 @@ export const accessChat = async (
   }
 };
 
-export const sendMessage = async ({
-  chatId,
-  text,
-  image,
-}: {
-  chatId: string;
-  image?: string;
-  text?: string;
-}): Promise<{ message?: string; error?: string }> => {
+export const searchUsers = async (
+  searchTerm: string
+): Promise<{ users?: User[]; error?: string }> => {
   try {
-    await axios.post(
-      `${backendURL}/api/v1/message/${chatId}`,
-      {
-        text,
-        image,
-      },
+    const { data } = await axios.get(
+      `${backendURL}/api/v1/users?search=${searchTerm}`,
       { withCredentials: true }
     );
-    return {};
+    return {
+      users: data.users || [],
+    };
   } catch (error) {
     return {
       error: makeupAxiosError(error),
     };
-  }
-};
-
-export const updateMessageViewed = async ({
-  id,
-  user,
-  viewers,
-}: {
-  id: string;
-  user: User | null;
-  viewers: string;
-}): Promise<{ error?: string; message?: string }> => {
-  console.log('view called')
-  if (!user) return {};
-  const viewersIds = JSON.parse(viewers || "[]") as string[];
-  if (viewersIds.includes(user?._id)) return {};
-  try {
-    const res = await axios.put(
-      `${backendURL}/api/v1/message/viewer?messageId=${id}`,
-      {},
-      { withCredentials: true }
-    );
-    return { message: res.data.message };
-  } catch (error) {
-    return { error: makeupAxiosError(error) };
   }
 };

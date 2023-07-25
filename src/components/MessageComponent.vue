@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { dummyUserImage } from "@/lib/constants";
-import { updateMessageViewed } from "@/lib/fetchers";
+import { updateMessageViewed } from "@/lib/apiActions";
 import { getViewersIds, isSentByMe } from "@/lib/messageUtils";
 import { useChat } from "@/stores/useChat";
 import { useUser } from "@/stores/useUser";
@@ -88,11 +88,11 @@ watch([chat, messageElement], () => {
           v-if="message.text"
           class="px-4 py-2.5 rounded-xl w-fit text-base"
           :class="{
-            'bg-blue-500 text-neutral-100 rounded-tr-none ml-auto': isSentByMe(
+            'bg-sky-500 text-neutral-100 rounded-tr-none ml-auto': isSentByMe(
               message,
               user.data
             ),
-            'bg-neutral-200/80 rounded-tl-none mr-auto': !isSentByMe(
+            'bg-neutral-200/50 rounded-tl-none mr-auto': !isSentByMe(
               message,
               user.data
             ),
