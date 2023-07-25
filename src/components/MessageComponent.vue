@@ -1,25 +1,65 @@
 <script setup lang="ts">
 import { dummyUserImage } from "@/lib/constants";
-import { isSentByMe } from "@/lib/messageUtils";
+import { updateMessageViewed } from "@/lib/fetchers";
+import { getViewersIds, isSentByMe } from "@/lib/messageUtils";
+import { useChat } from "@/stores/useChat";
 import { useUser } from "@/stores/useUser";
 import moment from "moment";
-
+import { ref, watch } from "vue";
 const user = useUser();
 defineProps<{ message: Message }>();
+const chat = useChat();
+
+const messageElement = ref<HTMLDivElement | null>(null);
+let observer: IntersectionObserver | null = null;
+watch([chat, messageElement], () => {
+  observer?.disconnect();
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(async (entry) => {
+        const ratio = entry.intersectionRatio;
+        if (ratio < 0.7) return;
+
+        const target = entry.target as HTMLDivElement;
+        const data = target.dataset as {
+          _id: string;
+          viewers: string;
+        };
+
+        await updateMessageViewed({
+          id: data._id,
+          user: user.data,
+          viewers: data.viewers,
+        });
+      });
+    },
+    {
+      root: document.getElementById("messages"),
+      rootMargin: "0px",
+      threshold: 1.0,
+    }
+  );
+  if (messageElement.value) {
+    observer.observe(messageElement.value);
+  }
+});
 </script>
 
 <template>
   <div
+    ref="messageElement"
     class="flex text-sm px-3.5 xs:px-4 sm:px-5 w-full max-w-[90%] pb-5"
     :class="{
       'self-end  justify-end': isSentByMe(message, user.data),
       'self-start justify-start': !isSentByMe(message, user.data),
     }"
+    :data-_id="message._id"
+    :data-viewers="JSON.stringify(getViewersIds(message))"
   >
     <img
       :src="message.sender.picture?.url || dummyUserImage"
       alt=""
-      class="bg-gradient-to-tr from-fuchsia-700 to-sky-800 w-10 h-10 rounded-full object-cover"
+      class="bg-gradient-to-tr from-fuchsia-700 to-sky-800 h-8 w-8 md:w-10 md:h-10 rounded-full object-cover"
       :class="{
         'order-1 ml-3': isSentByMe(message, user.data),
         'mr-3': !isSentByMe(message, user.data),
@@ -34,11 +74,11 @@ defineProps<{ message: Message }>();
           'mr-auto': !isSentByMe(message, user.data),
         }"
       >
-        <span class="font-medium">
+        <span class="font-medium text-sm text-neutral-700">
           {{ isSentByMe(message, user.data) ? "You" : message.sender.name }}
         </span>
 
-        <span class="text-gray-400 font-extralight">{{
+        <span class="text-gray-400 font-extralight text-xs">{{
           moment(message.createdAt).fromNow()
         }}</span>
       </div>

@@ -8,7 +8,7 @@ const searchInput = ref("");
 </script>
 
 <template>
-  <section class="p-3.5 xs:p-4 sm:px-5">
+  <section class="px-3 xs:px-4 pt-3 xs:pt-4 sm:px-5">
     <div class="flex justify-between">
       <span class="font-semibold text-lg">Inbox</span>
       <RouterLink to="/">
@@ -29,5 +29,8 @@ const searchInput = ref("");
         class="text-sm w-full bg-neutral-100/80 px-4 py-3 rounded-full"
       />
     </div>
+    <p class="text-xs text-neutral-600 px-3.5 xs:px-4 sm:px-5">
+      All Conversations
+    </p>
   </section>
 </template>

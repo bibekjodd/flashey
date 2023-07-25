@@ -12,10 +12,40 @@ export const getChatImage = (chat: Chat | null, user: User | null): string => {
   return otherUser?.picture?.url || dummyUserImage;
 };
 
+export const hasReadMessage = (
+  chat: Chat | null,
+  user: User | null
+): boolean => {
+  if (!chat || !user) return true;
+
+  for (const message of chat.messages) {
+    if (message.sender._id === user._id) continue;
+
+    const hasRead = message.viewers.find((viewer) => viewer._id === user._id);
+    if (!hasRead) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+export const hasOtherUserReadMessage = (chat: Chat): boolean => {
+  const lastIndex = chat.messages.length - 1;
+  if (chat.messages[lastIndex].viewers.length >= 1) return true;
+  return false;
+};
+
+export const lastViewerImage = (chat: Chat): string => {
+  const lastIndex = chat.messages.length - 1;
+  const lastMessage = chat.messages[lastIndex];
+  return lastMessage.viewers[1]?.picture?.url || "";
+};
+
 const sortMessages = (messages: Message[]): Message[] => {
   messages.sort((a, b) => {
-    if (a.updatedAt < b.updatedAt) return -1;
-    else if (a.updatedAt > b.updatedAt) return 1;
+    if (a.updatedAt < b.updatedAt) return 1;
+    else if (a.updatedAt > b.updatedAt) return -1;
     return 0;
   });
 
@@ -31,7 +61,6 @@ const filterMessages = (messages: Message[]): Message[] => {
     includedMessages.push(message._id);
     return true;
   });
-
   return messages;
 };
 

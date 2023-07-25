@@ -40,7 +40,7 @@ interface Message {
   _id: string;
   text?: string;
   sender: UserShort;
-  viewers: string[];
+  viewers: User[];
   chat: string;
   reactions: any[];
   createdAt: string;

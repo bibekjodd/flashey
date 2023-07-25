@@ -68,7 +68,7 @@ const handleMessageSubmit = async (e: Event) => {
       @submit="handleMessageSubmit"
       v-auto-animate
       action=""
-      class="w-full bg-neutral-200/80 pl-3 rounded-lg relative"
+      class="w-full bg-neutral-200/60 pl-3 rounded-lg relative"
       :class="{ 'pt-1': !!image }"
     >
       <div v-if="image" class="rounded-md py-3 relative w-fit">

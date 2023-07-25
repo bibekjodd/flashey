@@ -8,6 +8,9 @@ import { useUser } from "./stores/useUser";
 
 const user = useUser();
 const route = useRoute();
+
+
+
 </script>
 
 <template>

@@ -2,10 +2,9 @@
 import MessageComponent from "@/components/MessageComponent.vue";
 import { getChatName } from "@/lib/chatUtils";
 import { dummyUserImage } from "@/lib/constants";
-import { accessChat } from "@/lib/fetchers";
 import { useChat } from "@/stores/useChat";
 import { useUser } from "@/stores/useUser";
-import { ref, watchEffect } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 // @ts-ignore
 import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue";
@@ -14,36 +13,33 @@ import InformationIcon from "vue-material-design-icons/Information.vue";
 // @ts-ignore
 import TripledotsIcon from "vue-material-design-icons/DotsVertical.vue";
 import SendMessage from "@/components/SendMessage.vue";
+import { updateMessageViewed } from "@/lib/fetchers";
+import { getViewersIds, isSentByMe } from "@/lib/messageUtils";
+
 const userStore = useUser();
 const chatStore = useChat();
 const route = useRoute();
 const chat = ref(chatStore.getChatById(route.params.chatId as string));
 
-watchEffect(async () => {
-  const chat = chatStore.getChatById(route.params.chatId as string);
-  if (chat?.isMessagesFetched) return;
-
-  const res = await accessChat(route.params.chatId as string);
-  if (res.chat) {
-    chatStore.updateMessages(res.chat, res.messages || []);
-  }
+watch([route, chatStore], () => {
+  chat.value = chatStore.getChatById(route.params.chatId as string);
 });
 
-watchEffect(() => {
+onMounted(() => {
   chat.value = chatStore.getChatById(route.params.chatId as string);
 });
 </script>
 
 <template>
-  <div class="h-screen flex flex-col w-full ">
+  <div v-if="chatStore.data" class="h-screen flex flex-col w-full font-inter">
     <div
-      class="py-3  px-3.5 xs:px-4 sm:px-5 mb-5 flex items-center h-20 shadow-sm shadow-neutral-300/80"
+      class="py-3 px-3.5 xs:px-4 sm:px-5 flex items-center h-20 shadow-sm shadow-neutral-300/80"
     >
       <RouterLink
         to="/"
         class="mdp:hidden"
         :class="{
-          'pr-3': !chat?.isGroupChat,
+          'pr-3': !chatStore.getChatById(route.params.chatId as string)?.isGroupChat,
         }"
       >
         <ArrowLeftIcon class="text-blue-600" />
@@ -52,10 +48,13 @@ watchEffect(() => {
       <div
         class="flex"
         :class="{
-          '-space-x-5': chat?.isGroupChat,
+          '-space-x-5': chatStore.getChatById(route.params.chatId as string)?.isGroupChat,
         }"
       >
-        <div v-for="user of chat?.users.slice(0, 4)" :key="user._id">
+        <div
+          v-for="user of chatStore.getChatById(route.params.chatId as string)?.users.slice(0, 4)"
+          :key="user._id"
+        >
           <img
             v-if="user._id !== userStore.data?._id"
             :src="user.picture?.url || dummyUserImage"
@@ -67,17 +66,30 @@ watchEffect(() => {
 
       <div>
         <p class="font-semibold">
-          {{ getChatName(chat, userStore.data) }}
+          {{
+            getChatName(
+              chatStore.getChatById(route.params.chatId as string),
+              userStore.data
+            )
+          }}
         </p>
 
-        <p v-if="chat?.isGroupChat" class="text-sm text-neutral-500">
-          {{ chat?.users.length }}
+        <p
+          v-if="chatStore.getChatById(route.params.chatId as string)?.isGroupChat"
+          class="text-sm text-neutral-500"
+        >
+          {{
+            chatStore.getChatById(route.params.chatId as string)?.users.length
+          }}
           members
         </p>
       </div>
 
       <div class="ml-auto">
-        <button v-if="chat?.isGroupChat" class="text-blue-600">
+        <button
+          v-if="chatStore.getChatById(route.params.chatId as string)?.isGroupChat"
+          class="text-blue-600"
+        >
           <InformationIcon />
         </button>
 
@@ -88,13 +100,13 @@ watchEffect(() => {
     </div>
 
     <div
-      class="flex flex-col-reverse scrollbar-hide w-full h-full  overflow-y-auto "
+      class="flex flex-col-reverse scrollbar-hide w-full h-full overflow-y-auto pt-5"
       id="messages"
     >
       <MessageComponent
-        v-for="message of chat?.messages.reverse()"
-        :key="message._id"
         :message="message"
+        v-for="message of chat?.messages"
+        :key="message._id"
       />
     </div>
 
