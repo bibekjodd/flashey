@@ -27,7 +27,8 @@ export const fetchChats = async (): Promise<{
 };
 
 export const accessChat = async (
-  chatId: string
+  id: string,
+  isChatId?: boolean
 ): Promise<{
   message?: string;
   chat?: Chat;
@@ -36,16 +37,13 @@ export const accessChat = async (
 }> => {
   try {
     const { data } = await axios.get(
-      `${backendURL}/api/v1/chat/group/${chatId}`,
+      `${backendURL}/api/v1/chat/${isChatId ? "group" : "user"}/${id}`,
       { withCredentials: true }
     );
 
+
     return {
-      chat: {
-        ...data.chat,
-        isMessagesFetched: false,
-      },
-      messages: data.messages,
+      chat: data.chat,
     };
   } catch (error) {
     return {

@@ -6,12 +6,7 @@ import { useUser } from "@/stores/useUser";
 import { onMounted } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 import { useToast } from "vue-toast-notification";
-import {
-  getChatImage,
-  hasOtherUserReadMessage,
-  hasReadMessage,
-  lastViewerImage,
-} from "@/lib/chatUtils";
+import { getChatImage } from "@/lib/chatUtils";
 import { getChatName } from "@/lib/chatUtils";
 // @ts-ignore
 import CheckAllIcon from "vue-material-design-icons/CheckAll.vue";
@@ -47,7 +42,7 @@ const messageHighlight = (message?: Message): string => {
 
 <template>
   <section
-    class="flex-grow overflow-y-auto px-2"
+    class="flex-grow overflow-y-auto scrollbar-hide px-2"
     :class="{
       'hidden ': searchUsers.isOpen,
     }"
@@ -84,20 +79,12 @@ const messageHighlight = (message?: Message): string => {
         <div
           class="h-4 w-4 grid place-items-center text-gray-500"
           :class="{
-            'opacity-0': chat.messages.length === 0,
+            'opacity-0': chat.messages?.length === 0,
           }"
         >
-          <span
-            v-if="!hasReadMessage(chat, user.data)"
-            class="h-1 w-1 rounded-full bg-sky-500"
-          ></span>
-          <CheckAllIcon v-else-if="!hasOtherUserReadMessage(chat)" :size="16" />
-          <img
-            v-else-if="hasOtherUserReadMessage(chat)"
-            :src="lastViewerImage(chat)"
-            alt=""
-            class="w-3 h-3 rounded-full object-cover"
-          />
+          <span class="h-1 w-1 rounded-full bg-sky-500"></span>
+          <CheckAllIcon :size="16" />
+          <img alt="" class="w-3 h-3 rounded-full object-cover" />
         </div>
       </div>
     </RouterLink>

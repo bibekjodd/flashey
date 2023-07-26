@@ -1,4 +1,5 @@
 import { prepareChat } from "@/lib/chatUtils";
+import { accessChat } from "@/lib/fetchers";
 import { defineStore } from "pinia";
 
 export const useChat = defineStore("chats", {
@@ -15,23 +16,39 @@ export const useChat = defineStore("chats", {
       this.data = prepareChat(chats);
     },
 
-    updateMessages(chat: Chat, messages: Message[]) {
-      chat = { ...chat, isMessagesFetched: true };
-      this.data = this.data || [];
-      const chatExists = this.data.find((item) => item._id === chat._id);
-      if (chatExists) {
-        this.data = this.data.map((item) => {
-          if (item._id === chat._id) {
-            return {
-              ...chat,
-              messages: [...item.messages, ...messages],
-            };
+    async chatExists(
+      user: User | null,
+      otherUser: User
+    ): Promise<string | undefined> {
+      if (!user) return undefined;
+      const myId = user._id;
+      const friendsId = otherUser._id;
+      const chat = this.data.find((chat) => {
+        if (!chat.isGroupChat) {
+          const firstPerson = chat.users[0]?._id;
+          const secondPerson = chat.users[1]?._id;
+          if (firstPerson === myId && secondPerson === friendsId) {
+            return true;
+          } else if (firstPerson === friendsId && secondPerson === myId) {
+            return true;
           }
-          return item;
-        });
-      }
+        }
+      });
 
+      if (!chat) {
+        const newChat = await this.addNewChat(otherUser._id);
+        return newChat;
+      }
+      return chat._id;
+    },
+
+    async addNewChat(id: string, isChatId?: boolean) {
+      const { chat } = await accessChat(id, isChatId);
+      if (chat) {
+        this.data.push(chat);
+      }
       this.data = prepareChat(this.data);
+      return chat?._id;
     },
   },
 });

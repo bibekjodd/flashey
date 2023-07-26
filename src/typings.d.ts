@@ -30,11 +30,9 @@ interface Chat {
   groupAdmin?: string;
   createdAt: string;
   updatedAt: string;
-  __v: number;
   latestMessage?: Message;
-  messages: Message[];
-  isMessagesFetched: boolean;
-  image?:Picture
+  messages?: Message[];
+  image?: Picture;
 }
 
 interface Message {
@@ -47,5 +45,4 @@ interface Message {
   createdAt: string;
   updatedAt: string;
   image?: Picture;
-  __v: number;
 }

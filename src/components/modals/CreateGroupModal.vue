@@ -29,6 +29,7 @@ const handleImageChange = async (e: Event) => {
 };
 
 const handleCreateGroupClick = async () => {
+  toast.clear();
   const { error, message } = await createGroupModal.createGroupAction(
     groupName.value,
     image.value
@@ -56,7 +57,7 @@ watch(input, () => {
       class="w-full max-w-sm p-4 bg-white/90 filter backdrop-blur-3xl rounded-md space-y-2 h-full max-h-[440px] md:max-h-[500px] flex flex-col text-xs"
     >
       <label for="groupImage" class="space-y-1 flex flex-col items-center">
-        <span  class="font-semibold pl-1">Group Image</span>
+        <span class="font-semibold pl-1">Group Image</span>
         <img
           v-if="image"
           :src="image"

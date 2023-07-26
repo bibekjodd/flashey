@@ -31,11 +31,12 @@ watch(searchInput, () => {
 <template>
   <section class="px-3 xs:px-4 pt-3 xs:pt-4 sm:px-5">
     <div class="flex">
-      <span class="font-semibold text-lg">Inbox</span>
+      <span class="font-semibold text-lg font-poppins">FLASHEY</span>
 
       <button @click="createGroupModal.open" class="ml-auto mr-4 text-sky-700">
         <CreateGroupIcon :size="24" />
       </button>
+
       <RouterLink to="/">
         <img
           :src="user.data?.picture?.url || dummyUserImage"
@@ -45,11 +46,16 @@ watch(searchInput, () => {
     </div>
 
     <div
-      class="my-3 text-sm bg-neutral-100/80 px-4 rounded-full flex items-center space-x-2"
+      class="my-3 group text-sm bg-neutral-100/80 px-4 rounded-full flex items-center space-x-2"
     >
-      <label :hidden="!!searchInput" for="searchbox" class="text-neutral-600">
+      <label
+        :hidden="!!searchInput"
+        for="searchbox"
+        class="text-neutral-600 group-focus-within:hidden"
+      >
         <SearchIcon :size="20" />
       </label>
+
       <input
         type="text"
         v-model="searchInput"
@@ -58,10 +64,17 @@ watch(searchInput, () => {
         placeholder="Search For Conversation"
         class="py-3 bg-transparent w-full"
       />
-      <button :hidden="!searchInput" @click="clearSearchInput" type="button" class="text-neutral-600">
+
+      <button
+        :hidden="!searchInput"
+        @click="clearSearchInput"
+        type="button"
+        class="text-neutral-600"
+      >
         <CloseIcon :size="18" />
       </button>
     </div>
+
     <p class="text-xs text-neutral-600 px-3.5 xs:px-4 sm:px-5 pb-1">
       All Conversations
     </p>
