@@ -15,7 +15,9 @@ import {
 import { getChatName } from "@/lib/chatUtils";
 // @ts-ignore
 import CheckAllIcon from "vue-material-design-icons/CheckAll.vue";
+import { useSearchUsers } from "@/stores/useSearchUsers";
 
+const searchUsers = useSearchUsers();
 const toast = useToast();
 const user = useUser();
 const chatStore = useChat();
@@ -44,7 +46,12 @@ const messageHighlight = (message?: Message): string => {
 </script>
 
 <template>
-  <section class="flex-grow overflow-y-auto px-2">
+  <section
+    class="flex-grow overflow-y-auto px-2"
+    :class="{
+      'hidden ': searchUsers.isOpen,
+    }"
+  >
     <RouterLink
       :to="`/chat/${chat._id}`"
       v-for="chat of chatStore.data"
