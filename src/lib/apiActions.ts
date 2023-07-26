@@ -53,4 +53,22 @@ export const updateMessageViewed = async ({
   }
 };
 
-
+export const createGroup = async (
+  groupName: string,
+  users: string[],
+  image?: string
+): Promise<{ message?: string; error?: string }> => {
+  if (!users) return { error: "Can't create group without sufficient users" };
+  try {
+    const { data } = await axios.post(
+      `${backendURL}/api/v1/group/create`,
+      { users, groupName, image },
+      { withCredentials: true }
+    );
+    return { message: data.message };
+  } catch (error) {
+    return {
+      error: makeupAxiosError(error),
+    };
+  }
+};

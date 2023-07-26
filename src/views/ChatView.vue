@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MessageComponent from "@/components/MessageComponent.vue";
-import { getChatName } from "@/lib/chatUtils";
+import { getChatName, isGroupAdmin } from "@/lib/chatUtils";
 import { dummyUserImage } from "@/lib/constants";
 import { useChat } from "@/stores/useChat";
 import { useUser } from "@/stores/useUser";
@@ -9,13 +9,12 @@ import { useRoute } from "vue-router";
 // @ts-ignore
 import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue";
 // @ts-ignore
-import InformationIcon from "vue-material-design-icons/Information.vue";
+import InformationIcon from "vue-material-design-icons/InformationOutline.vue";
 // @ts-ignore
 import TripledotsIcon from "vue-material-design-icons/DotsVertical.vue";
 // @ts-ignore
-import PlusIcon from "vue-material-design-icons/Plus.vue";
+import EditGroupIcon from "vue-material-design-icons/PencilCircleOutline.vue";
 import SendMessage from "@/components/SendMessage.vue";
-import { useAddToGroup } from "@/stores/useAddToGroup";
 
 const userStore = useUser();
 const chatStore = useChat();
@@ -29,8 +28,6 @@ watch([route, chatStore], () => {
 onMounted(() => {
   chat.value = chatStore.getChatById(route.params.chatId as string);
 });
-
-const addToGroupModal = useAddToGroup();
 </script>
 
 <template>
@@ -48,14 +45,11 @@ const addToGroupModal = useAddToGroup();
           '-space-x-5': chat?.isGroupChat,
         }"
       >
-        <div v-for="user of chat?.users.slice(0, 4)" :key="user._id">
           <img
-            v-if="user._id !== userStore.data?._id"
-            :src="user.picture?.url || dummyUserImage"
+          :src="chat?.image?.url||dummyUserImage"
             alt=""
             class="h-10 w-10 rounded-full object-cover ring-2 ring-white mr-3"
           />
-        </div>
       </div>
 
       <div>
@@ -75,11 +69,10 @@ const addToGroupModal = useAddToGroup();
         </button>
 
         <button
-          @click="addToGroupModal.open({ chat })"
-          v-if="chat?.isGroupChat"
+          v-if="chat?.isGroupChat && isGroupAdmin(chat, userStore.data)"
           class="text-sky-600"
         >
-          <PlusIcon />
+          <EditGroupIcon />
         </button>
 
         <button v-if="!chat?.isGroupChat" class="text-neutral-700">
@@ -102,4 +95,4 @@ const addToGroupModal = useAddToGroup();
     <SendMessage :chat-id="chat?._id || ''" />
   </div>
 </template>
-@/stores/useAddToGroup
+@/stores/useAddToGroup @/stores/useCreateGroup

@@ -34,13 +34,14 @@ interface Chat {
   latestMessage?: Message;
   messages: Message[];
   isMessagesFetched: boolean;
+  image?:Picture
 }
 
 interface Message {
   _id: string;
   text?: string;
   sender: UserShort;
-  viewers: User[];
+  viewers?: User[];
   chat: string;
   reactions: any[];
   createdAt: string;

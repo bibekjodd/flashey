@@ -1,19 +1,18 @@
+import { createGroup } from "@/lib/apiActions";
 import { searchUsers } from "@/lib/fetchers";
 import { defineStore } from "pinia";
 
-export const useAddToGroup = defineStore("addtogroup", {
+export const useCreateGroup = defineStore("addtogroup", {
   state: () => ({
     isOpen: false,
     users: [] as User[],
     selectedUsers: [] as User[],
     chat: undefined as undefined | Chat,
-    createMode: false,
+    isCreating: false,
   }),
 
   actions: {
-    open({ chat, createMode }: { chat?: Chat; createMode?: boolean }) {
-      this.chat = chat;
-      this.createMode = !!createMode;
+    open() {
       this.isOpen = true;
     },
 
@@ -22,7 +21,6 @@ export const useAddToGroup = defineStore("addtogroup", {
       this.users = [];
       this.selectedUsers = [];
       this.chat = undefined;
-      this.createMode = false;
     },
 
     selectUser(user: User) {
@@ -40,9 +38,18 @@ export const useAddToGroup = defineStore("addtogroup", {
       this.selectedUsers = [];
     },
 
-    addUserToGroup() {
-      this.selectedUsers = [];
-      this.users = [];
+    async createGroupAction(groupName: string, image: string) {
+      this.isCreating = true;
+      const users = this.selectedUsers.map((user) => user._id);
+      const { error, message } = await createGroup(groupName, users, image);
+      this.isCreating = false;
+
+      if (!error) {
+        this.deselectAllUsers();
+        this.users = [];
+        this.close();
+      }
+      return { error, message };
     },
 
     async fetchUsers(input: string) {

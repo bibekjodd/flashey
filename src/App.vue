@@ -5,7 +5,7 @@ import InitialOverlay from "./components/InitialOverlay.vue";
 import HomeHeader from "./components/HomeHeader.vue";
 import ChatList from "./components/ChatList.vue";
 import { useUser } from "./stores/useUser";
-import AddToGroup from "./components/modals/AddToGroup.vue";
+import CreateGroupModal from "./components/modals/CreateGroupModal.vue";
 
 const user = useUser();
 const route = useRoute();
@@ -13,7 +13,7 @@ const route = useRoute();
 
 <template>
   <InitialOverlay v-if="user.isLoading" />
-  <AddToGroup />
+  <CreateGroupModal />
 
   <div v-if="user.data" class="w-full flex">
     <!-- Chat Section -->

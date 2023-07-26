@@ -7,6 +7,12 @@ export const getChatName = (chat: Chat | null, user: User | null): string => {
   return otherUser?.name || "";
 };
 
+export const isGroupAdmin = (chat: Chat | null, user: User | null): boolean => {
+  if (!chat || !user) return false;
+
+  return chat.groupAdmin === user._id;
+};
+
 export const getChatImage = (chat: Chat | null, user: User | null): string => {
   const otherUser = chat?.users.find((chatUser) => chatUser._id !== user?._id);
   return otherUser?.picture?.url || dummyUserImage;
@@ -21,7 +27,7 @@ export const hasReadMessage = (
   for (const message of chat.messages) {
     if (message.sender._id === user._id) continue;
 
-    const hasRead = message.viewers.find((viewer) => viewer._id === user._id);
+    const hasRead = message.viewers?.find((viewer) => viewer._id === user._id);
     if (!hasRead) {
       return false;
     }
@@ -32,14 +38,15 @@ export const hasReadMessage = (
 
 export const hasOtherUserReadMessage = (chat: Chat): boolean => {
   const lastIndex = chat.messages.length - 1;
-  if (chat.messages[lastIndex].viewers.length >= 1) return true;
+  if (!chat.messages[lastIndex]?.viewers) return false;
   return false;
 };
 
 export const lastViewerImage = (chat: Chat): string => {
   const lastIndex = chat.messages.length - 1;
   const lastMessage = chat.messages[lastIndex];
-  return lastMessage.viewers[1]?.picture?.url || "";
+  if (!lastMessage || !lastMessage.viewers) return "";
+  return lastMessage.viewers[0].picture?.url || dummyUserImage;
 };
 
 const sortMessages = (messages: Message[]): Message[] => {

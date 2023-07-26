@@ -3,7 +3,7 @@ const props = defineProps<{ chatId: string }>();
 import { imageToDataUri } from "@/lib/imageToDataUri";
 import { ref } from "vue";
 // @ts-ignore
-import ImageIcon from "vue-material-design-icons/Image.vue";
+import ImageIcon from "vue-material-design-icons/ImageOutline.vue";
 // @ts-ignore
 import SendIcon from "vue-material-design-icons/Send.vue";
 // @ts-ignore
@@ -121,10 +121,10 @@ const handleMessageSubmit = async (e: Event) => {
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+  animation: messageLoading 1s linear infinite;
 }
 
-@keyframes rotation {
+@keyframes messageLoading {
   0% {
     transform: rotate(0deg);
   }

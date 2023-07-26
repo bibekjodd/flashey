@@ -61,7 +61,7 @@ const messageHighlight = (message?: Message): string => {
         class="w-8 h-8 xs:w-10 xs:h-10 rounded-full object-cover bg-gradient-to-tr from-fuchsia-700 to-sky-600"
       />
       <div class="flex flex-col flex-grow">
-        <span class="font-semibold text-sm">{{
+        <span class="font-semibold text-sm text-neutral-800">{{
           getChatName(chat, user.data)
         }}</span>
         <span class="text-xs text-gray-500 line-clamp-1">
