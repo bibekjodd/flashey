@@ -14,6 +14,7 @@ export const isGroupAdmin = (chat: Chat | null, user: User | null): boolean => {
 };
 
 export const getChatImage = (chat: Chat | null, user: User | null): string => {
+  if (chat?.image?.url) return chat.image.url;
   const otherUser = chat?.users.find((chatUser) => chatUser._id !== user?._id);
   return otherUser?.picture?.url || dummyUserImage;
 };

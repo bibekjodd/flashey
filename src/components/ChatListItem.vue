@@ -40,10 +40,12 @@ watch(props, () => {
       loading="lazy"
       class="w-8 h-8 xs:w-10 xs:h-10 rounded-full object-cover bg-gradient-to-tr from-fuchsia-700 to-sky-600"
     />
+
     <div class="flex flex-col flex-grow">
       <span class="font-semibold text-sm text-neutral-800">{{
         getChatName(chat, user.data)
       }}</span>
+
       <span class="text-xs text-gray-500 line-clamp-1">
         {{ messageHighlight(user.data, latestMessage) }}
       </span>
@@ -59,23 +61,34 @@ watch(props, () => {
           :size="16"
           v-if="
             isSentByMe(user.data, latestMessage) &&
-            !hasOtherUsersReadMessage(user.data, latestMessage)
+            !hasOtherUsersReadMessage(user.data, chat)
           "
         />
+
         <span
           v-if="
             !isSentByMe(user.data, latestMessage) &&
-            !haveIReadMessage(user.data, latestMessage)
+            !haveIReadMessage(user.data, chat)
           "
           class="h-1 w-1 rounded-full bg-sky-500"
         >
         </span>
+
         <img
           v-if="
             isSentByMe(user.data, latestMessage) &&
-            hasOtherUsersReadMessage(user.data, latestMessage)
+            hasOtherUsersReadMessage(user.data, chat)
           "
-          :src="lastViewersImage(user.data, latestMessage)"
+          :src="lastViewersImage(user.data, chat)"
+          class="w-3 h-3 rounded-full object-cover"
+        />
+
+        <img
+          v-if="
+            !isSentByMe(user.data, latestMessage) &&
+            haveIReadMessage(user.data, chat)
+          "
+          :src="lastViewersImage(user.data, chat)"
           class="w-3 h-3 rounded-full object-cover"
         />
       </div>

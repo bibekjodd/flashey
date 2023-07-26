@@ -31,10 +31,9 @@ export const messageHighlight = (
   return "";
 };
 
-export const haveIReadMessage = (
-  user: User | null,
-  message?: Message
-): boolean => {
+export const haveIReadMessage = (user: User | null, chat: Chat): boolean => {
+  if (!chat.messages) return true;
+  const message = chat.messages[0];
   if (!user || !message) return true;
   const viewers = message.viewers?.map((viewer) => viewer._id);
   if (viewers?.includes(user._id)) return true;
@@ -43,8 +42,10 @@ export const haveIReadMessage = (
 
 export const hasOtherUsersReadMessage = (
   user: User | null,
-  message?: Message
+  chat: Chat
 ): boolean => {
+  if (!chat.messages) return false;
+  const message = chat.messages[0];
   if (!user || !message) return true;
 
   const viewers = getViewersIds(message);
@@ -52,10 +53,9 @@ export const hasOtherUsersReadMessage = (
   return !!otherViewer;
 };
 
-export const lastViewersImage = (
-  user: User | null,
-  message?: Message
-): string => {
+export const lastViewersImage = (user: User | null, chat: Chat): string => {
+  if (!chat.messages) return dummyUserImage;
+  const message = chat.messages[0];
   if (!user || !message) return dummyUserImage;
 
   const otherViewer = message.viewers?.find(

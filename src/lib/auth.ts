@@ -36,6 +36,12 @@ export const authUser = async (data: {
       data,
       { withCredentials: true }
     );
+    if (!data.isLoginMode) {
+      await axios.post(`${backendURL}/api/v1/login`, data, {
+        withCredentials: true,
+      });
+    }
+
     return { data: res.data?.user };
   } catch (error) {
     return {

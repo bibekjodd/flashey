@@ -14,7 +14,5 @@ export const useGroupInfo = defineStore("groupinformodal", {
     close() {
       this.isOpen = false;
     },
-
-    
   },
 });
