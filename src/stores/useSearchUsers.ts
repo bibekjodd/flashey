@@ -5,6 +5,7 @@ export const useSearchUsers = defineStore("searchusers", {
   state: () => ({
     isOpen: false,
     users: [] as User[],
+    isLoading: false,
   }),
 
   actions: {
@@ -15,8 +16,10 @@ export const useSearchUsers = defineStore("searchusers", {
       }
 
       this.isOpen = true;
+      this.isLoading = true;
       const { users } = await searchUsers(input);
       if (users) this.users = users;
+      this.isLoading = false;
     },
   },
 });

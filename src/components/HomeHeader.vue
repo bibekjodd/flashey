@@ -75,7 +75,7 @@ watch(searchInput, () => {
       </button>
     </div>
 
-    <p class="text-xs text-neutral-600 px-3.5 xs:px-4 sm:px-5 pb-1">
+    <p v-if="!searchUsers.isOpen" class="text-xs text-neutral-600 px-3.5 xs:px-4 sm:px-5 pb-1">
       All Conversations
     </p>
   </section>

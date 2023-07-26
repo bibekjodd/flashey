@@ -50,8 +50,8 @@ watch([chat, messageElement], () => {
     ref="messageElement"
     class="flex text-sm px-3.5 xs:px-4 sm:px-5 w-full max-w-[90%] pb-5"
     :class="{
-      'self-end  justify-end': isSentByMe(message, user.data),
-      'self-start justify-start': !isSentByMe(message, user.data),
+      'self-end  justify-end': isSentByMe(user.data, message),
+      'self-start justify-start': !isSentByMe(user.data, message),
     }"
     :data-_id="message._id"
     :data-viewers="JSON.stringify(getViewersIds(message))"
@@ -61,8 +61,8 @@ watch([chat, messageElement], () => {
       alt=""
       class="bg-gradient-to-tr from-fuchsia-700 to-sky-800 h-8 w-8 md:w-10 md:h-10 rounded-full object-cover"
       :class="{
-        'order-1 ml-3': isSentByMe(message, user.data),
-        'mr-3': !isSentByMe(message, user.data),
+        'order-1 ml-3': isSentByMe(user.data, message),
+        'mr-3': !isSentByMe(user.data, message),
       }"
     />
 
@@ -70,12 +70,12 @@ watch([chat, messageElement], () => {
       <div
         class="space-x-2 w-fit"
         :class="{
-          'ml-auto': isSentByMe(message, user.data),
-          'mr-auto': !isSentByMe(message, user.data),
+          'ml-auto': isSentByMe(user.data, message),
+          'mr-auto': !isSentByMe(user.data, message),
         }"
       >
         <span class="font-medium text-sm text-neutral-700">
-          {{ isSentByMe(message, user.data) ? "You" : message.sender.name }}
+          {{ isSentByMe(user.data, message) ? "You" : message.sender.name }}
         </span>
 
         <span class="text-gray-400 font-extralight text-xs">{{
@@ -89,12 +89,12 @@ watch([chat, messageElement], () => {
           class="px-4 py-2.5 rounded-xl w-fit text-base"
           :class="{
             'bg-sky-500 text-neutral-100 rounded-tr-none ml-auto': isSentByMe(
-              message,
-              user.data
+              user.data,
+              message
             ),
             'bg-neutral-200/50 rounded-tl-none mr-auto': !isSentByMe(
-              message,
-              user.data
+              user.data,
+              message
             ),
           }"
         >

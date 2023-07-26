@@ -18,7 +18,6 @@ export const getChatImage = (chat: Chat | null, user: User | null): string => {
   return otherUser?.picture?.url || dummyUserImage;
 };
 
-
 const sortMessages = (messages: Message[]): Message[] => {
   messages.sort((a, b) => {
     if (a.updatedAt < b.updatedAt) return 1;

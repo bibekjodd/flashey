@@ -28,11 +28,23 @@ const handleProfileClicked = async (otherUser: User) => {
   <section v-show="searchUsers.isOpen" class="px-3.5 sm:px-4">
     <div class="flex flex-col" v-auto-animate>
       <p
-        v-if="searchUsers.users.length === 0"
-        class="text-sm px-2 mt-3 text-rose-600"
+        v-if="!searchUsers.isLoading && searchUsers.users.length === 0"
+        class="text-sm px-2 text-rose-600"
       >
         No results found
       </p>
+
+      <p v-else class="text-sm px-2 text-neutral-800 ">Results</p>
+
+      <div
+        v-if="searchUsers.isLoading"
+        class="flex items-center justify-between text-sm mb-2 px-2 text-neutral-700"
+      >
+        <p>Searching users...</p>
+        <span class="animatedLoader h-4 w-4 border-2 border-sky-600"></span>
+      </div>
+
+
 
       <button
         v-for="user of searchUsers.users"
