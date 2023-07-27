@@ -69,5 +69,60 @@ const filterChat = (chats: Chat[]): Chat[] => {
 };
 
 export const prepareChat = (chats: Chat[]): Chat[] => {
-  return sortChat(filterChat(chats));
+  chats = formatMessages(chats);
+  chats = filterChat(chats);
+  chats = sortChat(chats);
+  return chats;
+};
+
+function populateUser(chat: Chat, userId: string | User): User | undefined {
+  if (typeof userId === "string") {
+    const foundUser = chat.users.find((user) => user._id === userId);
+    return foundUser;
+  }
+  return undefined;
+}
+
+function formatMessages(chats: Chat[]): Chat[] {
+  chats = chats.map((chat) => {
+    chat.messages = chat.messages?.map((message) => {
+      // populate viewers
+      message.viewers = message.viewers?.map((viewer) => {
+        viewer = populateUser(chat, viewer) || viewer;
+        return viewer;
+      });
+
+      // populate sender
+      message.sender = populateUser(chat, message.sender) || message.sender;
+
+      // populate reaction
+      message.reactions = message.reactions?.map((reaction) => {
+        reaction = {
+          ...reaction,
+          user: populateUser(chat, reaction.user) || reaction.user,
+        };
+        return reaction;
+      });
+
+      return message;
+    });
+
+    return chat;
+  });
+  return chats;
+}
+
+export const updateChatOnMessageArrived = (
+  chats: Chat[],
+  chatId: string,
+  message: Message
+): Chat[] => {
+  chats = chats.map((chat) => {
+    if (chat._id !== chatId) return chat;
+
+    chat.messages = chat.messages || [];
+    chat.messages.push(message);
+    return chat;
+  });
+  return chats;
 };

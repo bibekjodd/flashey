@@ -1,10 +1,3 @@
-interface UserShort {
-  _id: string;
-  name: string;
-  picture: Picture;
-  email: string;
-}
-
 interface User {
   _id: string;
   name: string;
@@ -38,10 +31,10 @@ interface Chat {
 interface Message {
   _id: string;
   text?: string;
-  sender: UserShort;
+  sender: User;
   viewers?: User[];
   chat: string;
-  reactions: any[];
+  reactions?: { user: User; value: string }[];
   createdAt: string;
   updatedAt: string;
   image?: Picture;

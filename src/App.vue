@@ -7,6 +7,7 @@ import ChatList from "./components/ChatList.vue";
 import { useUser } from "./stores/useUser";
 import CreateGroupModal from "./components/modals/CreateGroupModal.vue";
 import SearchUsers from "./components/SearchUsers.vue";
+import SubscribeChat from "./components/SubscribeChat.vue";
 
 const user = useUser();
 const route = useRoute();
@@ -41,4 +42,5 @@ const route = useRoute();
   </div>
 
   <LoginModal v-else />
+  <SubscribeChat />
 </template>

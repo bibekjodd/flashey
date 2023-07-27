@@ -7,7 +7,7 @@ import { useUser } from "@/stores/useUser";
 import moment from "moment";
 import { ref, watch } from "vue";
 const user = useUser();
-defineProps<{ message: Message }>();
+const props = defineProps<{ message: Message; chatId: string }>();
 const chat = useChat();
 
 const messageElement = ref<HTMLDivElement | null>(null);
@@ -27,7 +27,8 @@ watch([chat, messageElement], () => {
         };
 
         await updateMessageViewed({
-          id: data._id,
+          messageId: data._id,
+          chatId: props.chatId,
           user: user.data,
           viewers: data.viewers,
         });
@@ -83,7 +84,14 @@ watch([chat, messageElement], () => {
         }}</span>
       </div>
 
-      <div class="">
+      <div class="space-y-2">
+        <img
+          v-if="message.image?.url"
+          :src="message.image?.url"
+          alt=""
+          class="rounded-md w-full max-w-sm max-h-96"
+        />
+
         <p
           v-if="message.text"
           class="px-4 py-2.5 rounded-xl w-fit text-base"
@@ -100,13 +108,6 @@ watch([chat, messageElement], () => {
         >
           {{ message.text }}
         </p>
-
-        <img
-          v-if="message.image?.url"
-          :src="message.image?.url"
-          alt=""
-          class="rounded-md w-full max-w-sm max-h-96"
-        />
       </div>
     </div>
   </div>

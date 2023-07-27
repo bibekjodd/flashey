@@ -1,10 +1,12 @@
-import { prepareChat } from "@/lib/chatUtils";
-import { accessChat } from "@/lib/fetchers";
+import { prepareChat, updateChatOnMessageArrived } from "@/lib/chatUtils";
+import { accessChat, fetchChats } from "@/lib/fetchers";
 import { defineStore } from "pinia";
 
 export const useChat = defineStore("chats", {
   state: () => ({
     data: [] as Chat[],
+    isLoading: true,
+    error: "",
   }),
 
   actions: {
@@ -12,8 +14,12 @@ export const useChat = defineStore("chats", {
       return this.data.find((chat) => chat._id === id) || null;
     },
 
-    setChat(chats: Chat[]) {
-      this.data = prepareChat(chats);
+    async fetchChatInitially(): Promise<{ error?: string }> {
+      const { chats, error } = await fetchChats();
+      this.isLoading = false;
+      if (chats) this.data = prepareChat(chats);
+      if (error) this.error = error;
+      return { error };
     },
 
     async chatExists(
@@ -49,6 +55,11 @@ export const useChat = defineStore("chats", {
       }
       this.data = prepareChat(this.data);
       return chat?._id;
+    },
+
+    messageArrived(chatId: string, message: Message) {
+      this.data = updateChatOnMessageArrived(this.data, chatId, message);
+      this.data = prepareChat(this.data);
     },
   },
 });

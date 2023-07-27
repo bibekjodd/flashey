@@ -81,17 +81,18 @@ onMounted(() => {
     </div>
 
     <div
-      class="flex flex-col-reverse scrollbar-hide w-full h-full overflow-y-auto pt-5"
+      v-if="chat?.messages"
+      class="flex flex-col-reverse scrollbar-hide w-full h-full overflow-y-auto pt-5 pb-20"
       id="messages"
     >
       <MessageComponent
         :message="message"
-        v-for="message of chat?.messages"
+        v-for="message of chat.messages"
         :key="message._id"
+        :chat-id="chat?._id || ''"
       />
     </div>
 
     <SendMessage :chat-id="chat?._id || ''" />
   </div>
 </template>
-@/stores/useAddToGroup @/stores/useCreateGroup

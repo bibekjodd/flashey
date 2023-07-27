@@ -30,11 +30,13 @@ export const sendMessage = async ({
 };
 
 export const updateMessageViewed = async ({
-  id,
+  messageId,
+  chatId,
   user,
   viewers,
 }: {
-  id: string;
+  chatId: string;
+  messageId: string;
   user: User | null;
   viewers: string;
 }): Promise<{ error?: string; message?: string }> => {
@@ -43,7 +45,7 @@ export const updateMessageViewed = async ({
   if (viewersIds.includes(user?._id)) return {};
   try {
     const res = await axios.put(
-      `${backendURL}/api/v1/message/viewer?messageId=${id}`,
+      `${backendURL}/api/v1/message/viewer?messageId=${messageId}&chatId=${chatId}`,
       {},
       { withCredentials: true }
     );
