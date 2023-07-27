@@ -12,6 +12,7 @@ import { useUser } from "@/stores/useUser";
 import { useCreateGroup } from "@/stores/useCreateGroup";
 import { onMounted, ref } from "vue";
 import LogoutButton from "./LogoutButton.vue";
+import { dummyGroupImage } from "@/lib/constants";
 
 const user = useUser();
 const createGroupModal = useCreateGroup();
@@ -40,7 +41,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="px-3 sm:px-4 py-2 flex flex-col text-sm font-inter text-neutral-800 mt-auto"
+    class="px-3 sm:px-4 py-2 flex justify-around items-center fixed bottom-0 w-full z-40 bg-white dark:bg-neutral-900 mdp:flex-col text-sm font-inter text-neutral-800 mt-auto mdp:static mdp:items-stretch"
   >
     <button
       @click="switchTheme"
@@ -48,7 +49,7 @@ onMounted(() => {
     >
       <MoonIcon v-if="!isDarkTheme" :size="20" />
       <SunIcon v-else :size="20" />
-      <span>Switch Theme</span>
+      <span class="hidden mdp:inline">Switch Theme</span>
     </button>
 
     <button
@@ -57,14 +58,20 @@ onMounted(() => {
       class="flex items-center hover:bg-neutral-200/50 dark:hover:bg-neutral-800/80 dark:text-neutral-300 z-40 py-3 px-2 rounded-lg space-x-2 font-medium transition active:scale-95"
     >
       <CreateGroupIcon :size="20" />
-      <span>Create Group</span>
+      <span class="hidden mdp:inline">Create Group</span>
     </button>
+
+    <img
+      :src="user.data?.picture?.url || dummyGroupImage"
+      class="rounded-full mdp:hidden object-cover w-6 h-6"
+      alt=""
+    />
 
     <LogoutButton
       class="flex items-center hover:bg-neutral-200/50 dark:hover:bg-neutral-800/80 dark:text-neutral-300 z-40 py-3 px-2 rounded-lg space-x-2 font-medium transition active:scale-95"
     >
       <LogoutIcon :size="20" />
-      <span>Logout</span>
+      <span class="hidden mdp:inline">Logout</span>
     </LogoutButton>
   </div>
 </template>

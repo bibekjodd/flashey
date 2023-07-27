@@ -64,7 +64,7 @@ watch(input, () => {
           v-if="image"
           :src="image"
           alt=""
-          class="h-7 w-7 rounded-full object-cover"
+          class="h-12 w-12 rounded-full object-cover"
           loading="lazy"
         />
         <label
@@ -148,7 +148,7 @@ watch(input, () => {
           v-for="user of createGroupModal.users"
           :key="user._id"
           @click="createGroupModal.selectUser(user)"
-          class="flex items-center space-x-2 w-full hover:bg-neutral-200/50 dark:hover:bg-neutral-700/40 p-2 rounded-lg "
+          class="flex items-center space-x-2 w-full hover:bg-neutral-200/50 dark:hover:bg-neutral-700/40 p-2 rounded-lg"
         >
           <img
             :src="user.picture?.url || dummyUserImage"
@@ -158,7 +158,9 @@ watch(input, () => {
           />
           <div class="flex flex-col items-start text-sm">
             <p class="font-semibold text-sm">{{ user.name }}</p>
-            <p class="text-gray-500 text-xs dark:text-gray-400">{{ user.email }}</p>
+            <p class="text-gray-500 text-xs dark:text-gray-400">
+              {{ user.email }}
+            </p>
           </div>
         </button>
       </div>
@@ -167,7 +169,7 @@ watch(input, () => {
         <button
           :disabled="createGroupModal.isCreating"
           @click="handleCreateGroupClick"
-          class="px-4 relative py-2 rounded-lg bg-sky-600  text-white active:scale-95 transition disabled:opacity-70"
+          class="px-4 relative py-2 rounded-lg bg-sky-600 text-white active:scale-95 transition disabled:opacity-70"
         >
           <span
             :class="{

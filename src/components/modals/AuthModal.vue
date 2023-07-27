@@ -19,6 +19,7 @@ import { imageToDataUri } from "@/lib/imageToDataUri";
 import { useAuthModal } from "@/stores/useAuthModal";
 
 const backendURL = import.meta.env.VITE_BACKEND_URL;
+const GOOGLE_AUTH = import.meta.env.VITE_GOOGLE_AUTH === "true";
 
 const authModal = useAuthModal();
 const user = useUser();
@@ -207,7 +208,7 @@ const submitForm = async (e: Event) => {
 
         <button
           :disabled="isFormLoading"
-          class="font-medium text-white flex items-center justify-center bg-black dark:bg-neutral-700/30  rounded-lg p-2 transition active:scale-95 relative space-x-0 disabled:opacity-80 h-10 text-sm"
+          class="font-medium text-white flex items-center justify-center bg-black dark:bg-neutral-700/30 rounded-lg p-2 transition active:scale-95 relative space-x-0 disabled:opacity-80 h-10 text-sm"
         >
           <span v-if="!isFormLoading">
             <span v-if="isLoginMode">Sign in</span>
@@ -220,33 +221,35 @@ const submitForm = async (e: Event) => {
         </button>
       </form>
 
-      <div class="flex items-center mb-5">
-        <span
-          class="w-full h-0.5 bg-neutral-300/80 dark:bg-neutral-600/40 rounded-full"
-        ></span>
+      <div v-if="GOOGLE_AUTH">
+        <div class="flex items-center mb-5">
+          <span
+            class="w-full h-0.5 bg-neutral-300/80 dark:bg-neutral-600/40 rounded-full"
+          ></span>
 
-        <span class="mx-3 text-xs text-neutral-700 dark:text-neutral-400"
-          >OR</span
+          <span class="mx-3 text-xs text-neutral-700 dark:text-neutral-400"
+            >OR</span
+          >
+
+          <span
+            class="w-full h-0.5 bg-neutral-300/80 dark:bg-neutral-600/40 rounded-full"
+          ></span>
+        </div>
+
+        <a
+          :href="`${backendURL}/api/v1/login/google`"
+          class="font-medium text-white flex items-center justify-center bg-black dark:bg-neutral-700/30 rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 mb-3 text-sm"
         >
+          <img
+            src="/google.png"
+            class="h-4 object-contain"
+            alt=""
+            loading="lazy"
+          />
 
-        <span
-          class="w-full h-0.5 bg-neutral-300/80 dark:bg-neutral-600/40 rounded-full"
-        ></span>
+          <span>Continue With Google</span>
+        </a>
       </div>
-
-      <a
-        :href="`${backendURL}/api/v1/login/google`"
-        class="font-medium text-white flex items-center justify-center bg-black dark:bg-neutral-700/30  rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 mb-3 text-sm"
-      >
-        <img
-          src="/google.png"
-          class="h-4 object-contain"
-          alt=""
-          loading="lazy"
-        />
-
-        <span>Continue With Google</span>
-      </a>
 
       <p class="text-center" v-if="isLoginMode">
         <span class="text-neutral-700 text-sm dark:text-neutral-400"

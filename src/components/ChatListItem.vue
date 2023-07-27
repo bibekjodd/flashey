@@ -31,7 +31,7 @@ watch(props, () => {
     :to="`/chat/${chat._id}`"
     class="flex rounded-lg items-center space-x-2.5 px-3 xs:px-4 py-2.5 sm:px-5 hover:bg-neutral-50 dark:hover:bg-neutral-800/60 relative"
     :class="{
-      'bg-neutral-200/50 dark:bg-neutral-800/80':
+      'bg-neutral-200/50 dark:bg-neutral-700/30':
         route.path === `/chat/${chat._id}`,
     }"
   >
