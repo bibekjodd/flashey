@@ -59,7 +59,7 @@ export const createGroup = async (
   groupName: string,
   users: string[],
   image?: string
-): Promise<{ message?: string; error?: string }> => {
+): Promise<{ chat?: Chat; error?: string }> => {
   if (!users) return { error: "Can't create group without sufficient users" };
   try {
     const { data } = await axios.post(
@@ -67,10 +67,33 @@ export const createGroup = async (
       { users, groupName, image },
       { withCredentials: true }
     );
-    return { message: data.message };
+    return { chat: data.chat };
   } catch (error) {
     return {
       error: makeupAxiosError(error),
     };
+  }
+};
+
+export const addReactionToMessage = async ({
+  reaction,
+  messageId,
+  chatId,
+}: {
+  reaction: string;
+  messageId: string;
+  chatId: string;
+}): Promise<{ error?: string }> => {
+  try {
+    await axios.put(
+      `${backendURL}/api/v1/reaction/${messageId}?chatId=${chatId}`,
+      {
+        reaction,
+      },
+      { withCredentials: true }
+    );
+    return {};
+  } catch (error) {
+    return { error: makeupAxiosError(error) };
   }
 };

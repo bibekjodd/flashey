@@ -34,7 +34,7 @@ const handleProfileClicked = async (otherUser: User) => {
         No results found
       </p>
 
-      <p v-else class="text-sm px-2 text-neutral-800 ">Results</p>
+      <p v-else class="text-sm px-2 text-neutral-800">Results</p>
 
       <div
         v-if="searchUsers.isLoading"
@@ -44,8 +44,6 @@ const handleProfileClicked = async (otherUser: User) => {
         <span class="animatedLoader h-4 w-4 border-2 border-sky-600"></span>
       </div>
 
-
-
       <button
         v-for="user of searchUsers.users"
         :key="user._id"
@@ -53,6 +51,7 @@ const handleProfileClicked = async (otherUser: User) => {
         class="flex items-center space-x-2 py-2 hover:bg-neutral-200/50 cursor-pointer rounded-lg px-2"
       >
         <img
+          loading="lazy"
           :src="user.picture?.url || dummyUserImage"
           alt=""
           class="h-8 w-8 rounded-full object-cover"

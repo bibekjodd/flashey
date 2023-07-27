@@ -48,6 +48,7 @@ onMounted(() => {
           :src="getChatImage(chat, userStore.data)"
           alt=""
           class="h-10 w-10 rounded-full object-cover ring-2 ring-white mr-3"
+          loading="lazy"
         />
       </div>
 

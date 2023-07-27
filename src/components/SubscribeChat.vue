@@ -8,18 +8,28 @@ import { watch } from "vue";
 const chatStore = useChat();
 const user = useUser();
 
-watch([user, chatStore], () => {
-  for (const chat of chatStore.data) {
+watch([user, chatStore], (newValue, oldValue) => {
+  const oldChatStore = oldValue[1];
+  const newChatStore = newValue[1];
+
+  for (const chat of oldChatStore.data) {
     pusher.unsubscribe(chat._id);
     pusher.unbind_all();
   }
 
-  for (const chat of chatStore.data) {
+  for (const chat of newChatStore.data) {
     const channel = pusher.subscribe(chat._id);
 
     channel.bind(EVENTS.MESSAGE_SENT, (message: Message) => {
       chatStore.messageArrived(chat._id, message);
     });
+
+    channel.bind(
+      EVENTS.REACTION_ADDED,
+      (data: { chatId: string; messageId: string; reaction: {userId:string,value:string} }) => {
+        chatStore.reactionAdded(data);
+      }
+    );
   }
 });
 </script>

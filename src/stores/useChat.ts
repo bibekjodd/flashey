@@ -1,4 +1,8 @@
-import { prepareChat, updateChatOnMessageArrived } from "@/lib/chatUtils";
+import {
+  prepareChat,
+  updateChatOnMessageArrived,
+  updateChatOnReactionAdded,
+} from "@/lib/chatUtils";
 import { accessChat, fetchChats } from "@/lib/fetchers";
 import { defineStore } from "pinia";
 
@@ -60,6 +64,19 @@ export const useChat = defineStore("chats", {
     messageArrived(chatId: string, message: Message) {
       this.data = updateChatOnMessageArrived(this.data, chatId, message);
       this.data = prepareChat(this.data);
+    },
+
+    newGroupCreated(chat: Chat) {
+      this.data.push(chat);
+      this.data = prepareChat(this.data);
+    },
+
+    reactionAdded(data: {
+      chatId: string;
+      messageId: string;
+      reaction: {userId:string,value:string};
+    }) {
+      this.data = updateChatOnReactionAdded({ chats: this.data, ...data });
     },
   },
 });

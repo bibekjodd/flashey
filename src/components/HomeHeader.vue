@@ -10,6 +10,7 @@ import CreateGroupIcon from "vue-material-design-icons/AccountGroupOutline.vue";
 import SearchIcon from "vue-material-design-icons/Magnify.vue";
 // @ts-ignore
 import CloseIcon from "vue-material-design-icons/Close.vue";
+import SuggestedUsers from "./SuggestedUsers.vue";
 let timeout: number | null = null;
 const user = useUser();
 const searchInput = ref("");
@@ -40,6 +41,7 @@ watch(searchInput, () => {
       </button>
       <RouterLink to="/">
         <img
+        loading="lazy"
           :src="user.data?.picture?.url || dummyUserImage"
           class="h-7 w-7 rounded-full object-contain bg-gradient-to-tr from-fuchsia-700 to-sky-600"
         />
@@ -76,10 +78,9 @@ watch(searchInput, () => {
       </button>
     </div>
 
-    <p
-      v-if="!searchUsers.isOpen"
-      class="text-xs text-neutral-600 px-3.5 xs:px-4 sm:px-5 pb-1"
-    >
+    <SuggestedUsers v-if="!searchUsers.isOpen" />
+
+    <p v-if="!searchUsers.isOpen" class="text-sm text-gray-600 px-2 pb-0.5">
       All Conversations
     </p>
   </section>

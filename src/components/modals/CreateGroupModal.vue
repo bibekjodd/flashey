@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { dummyUserImage } from "@/lib/constants";
 import { imageToDataUri } from "@/lib/imageToDataUri";
+import { useChat } from "@/stores/useChat";
 import { useCreateGroup } from "@/stores/useCreateGroup";
 import { ref, watch } from "vue";
 // @ts-ignore
@@ -13,6 +14,7 @@ let timeout: number | null = null;
 const toast = useToast();
 
 const createGroupModal = useCreateGroup();
+const chatStore = useChat();
 const input = ref("");
 const groupName = ref("");
 const image = ref("");
@@ -30,12 +32,12 @@ const handleImageChange = async (e: Event) => {
 
 const handleCreateGroupClick = async () => {
   toast.clear();
-  const { error, message } = await createGroupModal.createGroupAction(
+  const { error, chat } = await createGroupModal.createGroupAction(
     groupName.value,
     image.value
   );
   if (error) toast.error(error);
-  else if (message) toast.success(message);
+  if (chat) chatStore.newGroupCreated(chat);
 };
 
 watch(input, () => {
@@ -63,6 +65,7 @@ watch(input, () => {
           :src="image"
           alt=""
           class="h-7 w-7 rounded-full object-cover"
+          loading="lazy"
         />
         <label v-else for="groupImage" class="text-gray-800">
           <ImageIcon :size="28" />
@@ -113,6 +116,7 @@ watch(input, () => {
             :src="user.picture?.url || dummyUserImage"
             alt=""
             class="w-full h-full rounded-full object-cover"
+            loading="lazy"
           />
           <button class="absolute text-white top-0 right-0">
             <CloseIcon :size="16" />
@@ -135,6 +139,7 @@ watch(input, () => {
             :src="user.picture?.url || dummyUserImage"
             class="h-8 w-8 rounded-full object-cover"
             alt=""
+            loading="lazy"
           />
           <div class="flex flex-col items-start text-sm">
             <p class="font-semibold text-sm">{{ user.name }}</p>

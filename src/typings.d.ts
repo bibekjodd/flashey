@@ -34,8 +34,13 @@ interface Message {
   sender: User;
   viewers?: User[];
   chat: string;
-  reactions?: { user: User; value: string }[];
+  reactions?: Reaction[];
   createdAt: string;
   updatedAt: string;
   image?: Picture;
 }
+
+interface Reaction {
+  user: User;
+  value: string;
+}[]

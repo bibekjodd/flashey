@@ -18,10 +18,10 @@ const input = ref<string>("");
 const isMessageSending = ref<boolean>(false);
 
 const handleImageChange = async (e: Event) => {
-  const imageInputElement = e.target as HTMLInputElement;
-  if (!imageInputElement.files) return;
+  const imagePickerElement = e.target as HTMLInputElement;
+  if (!imagePickerElement.files) return;
 
-  const imageFile = imageInputElement.files[0];
+  const imageFile = imagePickerElement.files[0];
   image.value = await imageToDataUri(imageFile);
 };
 
@@ -54,9 +54,9 @@ const handleMessageSubmit = async (e: Event) => {
 </script>
 
 <template>
-  <div class="p-3 fixed bottom-0 left-0 w-full flex z-40">
+  <div class="fixed bottom-0 left-0 w-full flex z-20 px-3">
     <div class="w-0 mdp:w-full mdp:max-w-[40%] lg:max-w-md"></div>
-    <div class="w-full bg-white pl-2 lg:pl-0">
+    <div class="w-full bg-white/80 filter backdrop-blur-3xl pl-2 lg:pl-0 py-3 ">
       <form
         @submit="handleMessageSubmit"
         v-auto-animate
@@ -65,12 +65,12 @@ const handleMessageSubmit = async (e: Event) => {
         :class="{ 'pt-1': !!image }"
       >
         <div v-if="image" class="rounded-md py-3 relative w-fit">
-          <img :src="image" alt="" class="h-16 max-w-[120px]" />
+          <img loading="lazy" :src="image" alt="" class="h-16 max-w-[120px]" />
           <div
             @click="unpickImage"
             class="absolute cursor-pointer top-1 right-0 bg-white rounded-full"
           >
-            <CloseIcon size="14" />
+            <CloseIcon :size="14" />
           </div>
         </div>
 

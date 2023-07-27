@@ -41,7 +41,6 @@ export const accessChat = async (
       { withCredentials: true }
     );
 
-
     return {
       chat: data.chat,
     };
@@ -60,6 +59,25 @@ export const searchUsers = async (
       `${backendURL}/api/v1/users?search=${searchTerm}`,
       { withCredentials: true }
     );
+    return {
+      users: data.users || [],
+    };
+  } catch (error) {
+    return {
+      error: makeupAxiosError(error),
+    };
+  }
+};
+
+export const suggestedUsers = async (): Promise<{
+  users?: User[];
+  error?: string;
+}> => {
+  try {
+    const { data } = await axios.get(`${backendURL}/api/v1/suggestedusers`, {
+      withCredentials: true,
+    });
+
     return {
       users: data.users || [],
     };

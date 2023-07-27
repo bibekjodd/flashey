@@ -1,4 +1,4 @@
-import { dummyUserImage } from "./constants";
+import { dummyGroupImage, dummyUserImage } from "./constants";
 
 export const getChatName = (chat: Chat | null, user: User | null): string => {
   if (chat?.name) return chat?.name;
@@ -14,9 +14,12 @@ export const isGroupAdmin = (chat: Chat | null, user: User | null): boolean => {
 };
 
 export const getChatImage = (chat: Chat | null, user: User | null): string => {
+  if (chat?.isGroupChat) {
+    return chat?.image?.url || dummyGroupImage;
+  }
   if (chat?.image?.url) return chat.image.url;
   const otherUser = chat?.users.find((chatUser) => chatUser._id !== user?._id);
-  return otherUser?.picture?.url || dummyUserImage;
+  return otherUser?.picture?.url || dummyGroupImage;
 };
 
 const sortMessages = (messages: Message[]): Message[] => {
@@ -124,5 +127,40 @@ export const updateChatOnMessageArrived = (
     chat.messages.push(message);
     return chat;
   });
+  return chats;
+};
+
+export const updateChatOnReactionAdded = ({
+  chatId,
+  chats,
+  messageId,
+  reaction,
+}: {
+  chats: Chat[];
+  messageId: string;
+  chatId: string;
+  reaction: { userId: string; value: string };
+}): Chat[] => {
+  chats = chats.map((chat) => {
+    if (chat._id === chatId) {
+      chat.messages = chat.messages?.map((message) => {
+        if (message._id === messageId) {
+          message.reactions = message.reactions?.filter((currentReaction) => {
+            return currentReaction.user._id !== reaction.userId;
+          });
+
+          const user = populateUser(chat, reaction.userId);
+          if (user) {
+            message.reactions?.push({ user, value: reaction.value });
+          }
+        }
+
+        return message;
+      });
+    }
+
+    return chat;
+  });
+
   return chats;
 };

@@ -186,6 +186,7 @@ const submitForm = async (e: Event) => {
               v-if="imageUri"
               :src="imageUri"
               class="h-8 w-8 rounded-full object-cover"
+              loading="lazy"
             />
           </div>
         </div>
@@ -216,7 +217,12 @@ const submitForm = async (e: Event) => {
         :href="`${backendURL}/api/v1/login/google`"
         class="font-medium text-white flex items-center justify-center bg-black rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 mb-3 text-sm"
       >
-        <img src="/google.png" class="h-4 object-contain" alt="" />
+        <img
+          src="/google.png"
+          class="h-4 object-contain"
+          alt=""
+          loading="lazy"
+        />
 
         <span>Continue With Google</span>
       </a>

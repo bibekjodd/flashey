@@ -41,7 +41,7 @@ export const useCreateGroup = defineStore("addtogroup", {
     async createGroupAction(groupName: string, image: string) {
       this.isCreating = true;
       const users = this.selectedUsers.map((user) => user._id);
-      const { error, message } = await createGroup(groupName, users, image);
+      const { error, chat } = await createGroup(groupName, users, image);
       this.isCreating = false;
 
       if (!error) {
@@ -49,7 +49,7 @@ export const useCreateGroup = defineStore("addtogroup", {
         this.users = [];
         this.close();
       }
-      return { error, message };
+      return { error, chat };
     },
 
     async fetchUsers(input: string) {

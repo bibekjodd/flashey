@@ -47,7 +47,12 @@ watch(props, () => {
       }}</span>
 
       <span class="text-xs text-gray-500 line-clamp-1">
-        {{ messageHighlight(user.data, latestMessage) }}
+        {{
+          messageHighlight(
+            user.data,
+            chat.messages ? chat.messages[0] : undefined
+          )
+        }}
       </span>
     </div>
 
@@ -57,40 +62,29 @@ watch(props, () => {
       </span>
 
       <div class="h-4 w-4 grid place-items-center text-gray-500">
-        <CheckAllIcon
-          :size="16"
-          v-if="
-            isSentByMe(user.data, latestMessage) &&
-            !hasOtherUsersReadMessage(user.data, chat)
-          "
-        />
-
         <span
           v-if="
-            !isSentByMe(user.data, latestMessage) &&
+            chat.messages &&
+            !isSentByMe(user.data, chat.messages[0]) &&
             !haveIReadMessage(user.data, chat)
           "
           class="h-1 w-1 rounded-full bg-sky-500"
         >
         </span>
 
-        <img
-          v-if="
-            isSentByMe(user.data, latestMessage) &&
-            hasOtherUsersReadMessage(user.data, chat)
-          "
-          :src="lastViewersImage(user.data, chat)"
-          class="w-3 h-3 rounded-full object-cover"
-        />
+        <div v-if="chat.messages && isSentByMe(user.data, chat.messages[0])">
+          <CheckAllIcon
+            :size="16"
+            v-if="!hasOtherUsersReadMessage(user.data, chat)"
+          />
 
-        <img
-          v-if="
-            !isSentByMe(user.data, latestMessage) &&
-            haveIReadMessage(user.data, chat)
-          "
-          :src="lastViewersImage(user.data, chat)"
-          class="w-3 h-3 rounded-full object-cover"
-        />
+          <img
+            loading="lazy"
+            v-else
+            :src="lastViewersImage(user.data, chat)"
+            class="w-3 h-3 rounded-full object-cover"
+          />
+        </div>
       </div>
     </div>
   </RouterLink>

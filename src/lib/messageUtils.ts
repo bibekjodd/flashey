@@ -18,16 +18,15 @@ export const messageHighlight = (
   message?: Message
 ): string => {
   if (!message) return "";
-  if (message.text && message.text !== "") {
-    return message.text;
+
+  if (message.sender?._id === user?._id) {
+    if (message.image) return "You sent a photo";
+    if (message.text) return `You: ${message.text}`;
+  } else {
+    if (message.image) return `${message.sender.name} sent a photo`;
+    if (message.text) return `${message.sender.name}: ${message.text}`;
   }
 
-  if (message.image) {
-    if (message.sender._id === user?._id) return "You sent a photo";
-    const indexOfSpace = message.sender.name.indexOf(" ");
-    const senderName = message.sender.name.slice(0, indexOfSpace);
-    return `${senderName} sent a photo`;
-  }
   return "";
 };
 
@@ -63,4 +62,41 @@ export const lastViewersImage = (user: User | null, chat: Chat): string => {
   );
   if (otherViewer) return otherViewer.picture?.url || dummyUserImage;
   return dummyUserImage;
+};
+
+export const haveIReactedToMessage = (
+  message: Message,
+  user: User | null
+): boolean => {
+  if (!user) return false;
+
+  return !!message.reactions?.find(
+    (reaction) => reaction.user._id === user._id
+  );
+};
+
+export const prepareReactions = (reactions: Reaction[]): string[][] => {
+  const currentReactions = {
+    haha: 0,
+    wow: 0,
+    angry: 0,
+    sad: 0,
+    love: 0,
+  };
+
+  for (const reaction of reactions) {
+    if (reaction.value === "haha") currentReactions.haha++;
+    if (reaction.value === "wow") currentReactions.wow++;
+    if (reaction.value === "angry") currentReactions.angry++;
+    if (reaction.value === "sad") currentReactions.sad++;
+    if (reaction.value === "love") currentReactions.love++;
+  }
+
+  const preparedReactions: string[][] = [];
+
+  for (const [key, value] of Object.entries(currentReactions)) {
+    if (value !== 0) preparedReactions.push([key, value.toString()]);
+  }
+
+  return preparedReactions;
 };
