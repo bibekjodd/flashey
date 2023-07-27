@@ -74,7 +74,7 @@ export const useChat = defineStore("chats", {
     reactionAdded(data: {
       chatId: string;
       messageId: string;
-      reaction: {userId:string,value:string};
+      reaction: { userId: string; value: string };
     }) {
       this.data = updateChatOnReactionAdded({ chats: this.data, ...data });
     },

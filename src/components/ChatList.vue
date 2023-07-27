@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { useChat } from "@/stores/useChat";
-import { onMounted } from "vue";
+import { watch } from "vue";
 import { useToast } from "vue-toast-notification";
 import { useSearchUsers } from "@/stores/useSearchUsers";
 import ChatListItem from "./ChatListItem.vue";
 import ChatListSkeleton from "./skeletons/ChatListSkeleton.vue";
+import { useUser } from "@/stores/useUser";
 
 const searchUsers = useSearchUsers();
+const user = useUser();
 const toast = useToast();
 const chatStore = useChat();
 
-onMounted(async () => {
+watch(user, async () => {
+  if (!user.data) return;
   const { error } = await chatStore.fetchChatInitially();
   if (error) {
     toast.clear();

@@ -54,9 +54,9 @@ const handleMessageSubmit = async (e: Event) => {
 </script>
 
 <template>
-  <div class="fixed bottom-0 left-0 w-full flex z-20 px-3">
+  <div class="fixed bottom-0 left-0 w-full flex z-20 sm:px-3">
     <div class="w-0 mdp:w-full mdp:max-w-[40%] lg:max-w-md"></div>
-    <div class="w-full bg-white/80 filter backdrop-blur-3xl pl-2 lg:pl-0 py-3 ">
+    <div class="w-full bg-white/80 filter backdrop-blur-3xl sm:pl-2 lg:pl-0 py-3 ">
       <form
         @submit="handleMessageSubmit"
         v-auto-animate

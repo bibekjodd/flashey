@@ -45,6 +45,8 @@ watch([chat, messageElement], () => {
     observer.observe(messageElement.value);
   }
 });
+
+const sentbyMe = isSentByMe(user.data, props.message);
 </script>
 
 <template>
@@ -52,8 +54,8 @@ watch([chat, messageElement], () => {
     ref="messageElement"
     class="flex text-sm px-3.5 xs:px-4 sm:px-5 w-full max-w-[90%] relative mb-10"
     :class="{
-      'self-end  justify-end': isSentByMe(user.data, message),
-      'self-start justify-start': !isSentByMe(user.data, message),
+      'self-end  justify-end': sentbyMe,
+      'self-start justify-start': !sentbyMe,
     }"
     :data-_id="message._id"
     :data-viewers="JSON.stringify(getViewersIds(message))"
@@ -64,8 +66,8 @@ watch([chat, messageElement], () => {
       alt=""
       class="bg-gradient-to-tr from-fuchsia-700 to-sky-800 h-8 w-8 md:w-10 md:h-10 rounded-full object-cover"
       :class="{
-        'order-1 ml-3': isSentByMe(user.data, message),
-        'mr-3': !isSentByMe(user.data, message),
+        'order-1 ml-3': sentbyMe,
+        'mr-3': !sentbyMe,
       }"
     />
 
@@ -73,12 +75,12 @@ watch([chat, messageElement], () => {
       <div
         class="space-x-2 w-fit"
         :class="{
-          'ml-auto': isSentByMe(user.data, message),
-          'mr-auto': !isSentByMe(user.data, message),
+          'ml-auto': sentbyMe,
+          'mr-auto': !sentbyMe,
         }"
       >
         <span class="font-medium text-sm text-neutral-700">
-          {{ isSentByMe(user.data, message) ? "You" : message.sender.name }}
+          {{ sentbyMe ? "You" : message.sender.name }}
         </span>
 
         <span class="text-gray-400 font-extralight text-xs">{{
@@ -90,14 +92,14 @@ watch([chat, messageElement], () => {
         class="relative w-fit group"
         tabindex="0"
         :class="{
-          'ml-auto': isSentByMe(user.data, message),
-          'mr-auto': !isSentByMe(user.data, message),
+          'ml-auto': sentbyMe,
+          'mr-auto': !sentbyMe,
         }"
       >
         <div
           class="space-y-2 w-fit"
           :class="{
-            'ml-auto': isSentByMe(user.data, message),
+            'ml-auto': sentbyMe,
           }"
         >
           <img
@@ -112,21 +114,15 @@ watch([chat, messageElement], () => {
             v-if="message.text"
             class="px-4 py-2.5 rounded-xl w-fit text-base"
             :class="{
-              'bg-sky-500 text-white rounded-tr-none ml-auto': isSentByMe(
-                user.data,
-                message
-              ),
-              'bg-neutral-200/50 rounded-tl-none mr-auto': !isSentByMe(
-                user.data,
-                message
-              ),
+              'bg-sky-500 text-white rounded-tr-none ml-auto': sentbyMe,
+              'bg-neutral-200/50 rounded-tl-none mr-auto': !sentbyMe,
             }"
           >
             {{ message.text }}
           </p>
           <AddReaction
             :message-id="message._id"
-            :is-sent-by-me="isSentByMe(user.data, message)"
+            :is-sent-by-me="sentbyMe"
             :chat-id="chatId"
             :user-reactions="message.reactions"
           />
