@@ -86,8 +86,20 @@ watch([chat, messageElement], () => {
         }}</span>
       </div>
 
-      <div class="relative w-fit group " tabindex="0">
-        <div class="space-y-2 w-fit">
+      <div
+        class="relative w-fit group"
+        tabindex="0"
+        :class="{
+          'ml-auto': isSentByMe(user.data, message),
+          'mr-auto': !isSentByMe(user.data, message),
+        }"
+      >
+        <div
+          class="space-y-2 w-fit"
+          :class="{
+            'ml-auto': isSentByMe(user.data, message),
+          }"
+        >
           <img
             loading="lazy"
             v-if="message.image?.url"
@@ -98,7 +110,7 @@ watch([chat, messageElement], () => {
 
           <p
             v-if="message.text"
-            class="px-4 py-2.5 rounded-xl w-fit  text-base"
+            class="px-4 py-2.5 rounded-xl w-fit text-base"
             :class="{
               'bg-sky-500 text-white rounded-tr-none ml-auto': isSentByMe(
                 user.data,
@@ -112,7 +124,12 @@ watch([chat, messageElement], () => {
           >
             {{ message.text }}
           </p>
-          <AddReaction :message-id="message._id" :is-sent-by-me="isSentByMe(user.data, message)" :chat-id="chatId" :user-reactions="message.reactions" />
+          <AddReaction
+            :message-id="message._id"
+            :is-sent-by-me="isSentByMe(user.data, message)"
+            :chat-id="chatId"
+            :user-reactions="message.reactions"
+          />
         </div>
       </div>
     </div>
