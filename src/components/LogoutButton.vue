@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { logout } from "@/lib/auth";
+import { useAuthModal } from "@/stores/useAuthModal";
 import { useUser } from "@/stores/useUser";
 
 const user = useUser();
-
+const authModal = useAuthModal();
 const logoutUser = async () => {
-  await logout();
-  user.clearUser();
+  await user.logOut();
+  authModal.open();
 };
 </script>
 

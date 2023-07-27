@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { dummyUserImage } from "@/lib/constants";
-import { useCreateGroup } from "@/stores/useCreateGroup";
 import { useSearchUsers } from "@/stores/useSearchUsers";
 import { useUser } from "@/stores/useUser";
 import { ref, watch } from "vue";
-// @ts-ignore
-import CreateGroupIcon from "vue-material-design-icons/AccountGroupOutline.vue";
 // @ts-ignore
 import SearchIcon from "vue-material-design-icons/Magnify.vue";
 // @ts-ignore
@@ -14,7 +11,6 @@ import SuggestedUsers from "./SuggestedUsers.vue";
 let timeout: number | null = null;
 const user = useUser();
 const searchInput = ref("");
-const createGroupModal = useCreateGroup();
 const searchUsers = useSearchUsers();
 
 const clearSearchInput = () => {
@@ -36,12 +32,9 @@ watch(searchInput, () => {
         >FLASHEY</RouterLink
       >
 
-      <button @click="createGroupModal.open" class="mr-4 text-sky-700">
-        <CreateGroupIcon :size="24" />
-      </button>
       <RouterLink to="/">
         <img
-        loading="lazy"
+          loading="lazy"
           :src="user.data?.picture?.url || dummyUserImage"
           class="h-7 w-7 rounded-full object-contain bg-gradient-to-tr from-fuchsia-700 to-sky-600"
         />

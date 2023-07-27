@@ -7,13 +7,15 @@ import { useUser } from "@/stores/useUser";
 import moment from "moment";
 import { ref, watch } from "vue";
 import AddReaction from "./AddReaction.vue";
+import { useRoute } from "vue-router";
 const user = useUser();
 const props = defineProps<{ message: Message; chatId: string }>();
 const chat = useChat();
+const route = useRoute();
 
 const messageElement = ref<HTMLDivElement | null>(null);
 let observer: IntersectionObserver | null = null;
-watch([chat, messageElement], () => {
+watch([chat, messageElement, route], () => {
   observer?.disconnect();
   observer = new IntersectionObserver(
     (entries) => {

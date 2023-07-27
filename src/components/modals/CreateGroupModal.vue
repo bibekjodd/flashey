@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { dummyUserImage } from "@/lib/constants";
+import { dummyGroupImage, dummyUserImage } from "@/lib/constants";
 import { imageToDataUri } from "@/lib/imageToDataUri";
 import { useChat } from "@/stores/useChat";
 import { useCreateGroup } from "@/stores/useCreateGroup";
@@ -7,7 +7,7 @@ import { ref, watch } from "vue";
 // @ts-ignore
 import CloseIcon from "vue-material-design-icons/CloseCircle.vue";
 // @ts-ignore
-import ImageIcon from "vue-material-design-icons/ImageOutline.vue";
+import CameraOutlineIcon from "vue-material-design-icons/CameraOutline.vue";
 import { useToast } from "vue-toast-notification";
 
 let timeout: number | null = null;
@@ -52,14 +52,14 @@ watch(input, () => {
   <section
     @click="createGroupModal.close"
     v-show="createGroupModal.isOpen"
-    class="absolute inset-0 bg-black/30 z-40 grid place-items-center font-poppins filter backdrop-blur-md"
+    class="absolute inset-0 bg-black/30 z-50 grid place-items-center font-poppins filter backdrop-blur-md"
   >
     <div
       @click="preventCloseModal"
-      class="w-full max-w-sm p-4 bg-white/90 filter backdrop-blur-3xl rounded-md space-y-2 h-full max-h-[440px] md:max-h-[500px] flex flex-col text-xs"
+      class="w-full max-w-sm p-4 bg-white/90 filter backdrop-blur-3xl rounded-md space-y-2 h-full sm:h-[90vh] md:h-[80vh] max-h-[650px] flex flex-col text-xs"
     >
       <label for="groupImage" class="space-y-1 flex flex-col items-center">
-        <span class="font-semibold pl-1">Group Image</span>
+        <span class="font-semibold pl-1">Group Avatar</span>
         <img
           v-if="image"
           :src="image"
@@ -67,9 +67,23 @@ watch(input, () => {
           class="h-7 w-7 rounded-full object-cover"
           loading="lazy"
         />
-        <label v-else for="groupImage" class="text-gray-800">
-          <ImageIcon :size="28" />
+        <label
+          v-else
+          for="groupImage"
+          class="text-gray-800 relative w-fit overflow-hidden rounded-full"
+        >
+          <img
+            :src="dummyGroupImage"
+            class="h-12 w-12 rounded-full object-cover bg-black"
+            alt=""
+          />
+          <span
+            class="absolute left-1/2 -translate-x-1/2 bottom-0 text-neutral-200 bg-black/50 w-full grid place-items-center"
+          >
+            <CameraOutlineIcon :size="20" />
+          </span>
         </label>
+
         <input
           type="file"
           @change="handleImageChange"
@@ -77,15 +91,16 @@ watch(input, () => {
           id="groupImage"
           class="hidden"
         />
-        <input
-          v-model="groupName"
-          type="text"
-          name="groupName"
-          id="groupName"
-          placeholder="Group Name"
-          class="w-full p-2 rounded-lg border-2 border-neutral-200 bg-transparent"
-        />
       </label>
+
+      <input
+        v-model="groupName"
+        type="text"
+        name="groupName"
+        id="groupName"
+        placeholder="Group Name"
+        class="w-full p-2 rounded-lg border-2 border-neutral-200 bg-transparent"
+      />
 
       <input
         v-model="input"

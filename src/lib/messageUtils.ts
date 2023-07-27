@@ -34,9 +34,8 @@ export const haveIReadMessage = (user: User | null, chat: Chat): boolean => {
   if (!chat.messages) return true;
   const message = chat.messages[0];
   if (!user || !message) return true;
-  const viewers = message.viewers?.map((viewer) => viewer._id);
-  if (viewers?.includes(user._id)) return true;
-  return false;
+
+  return !!message.viewers?.find((viewer) => viewer._id === user._id);
 };
 
 export const hasOtherUsersReadMessage = (

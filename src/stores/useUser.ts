@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { suggestedUsers } from "@/lib/fetchers";
+import { logout } from "@/lib/auth";
 export const useUser = defineStore("user", {
   state: () => ({
     data: null as null | User,
@@ -25,6 +26,11 @@ export const useUser = defineStore("user", {
       if (!this.data) return;
       const { users } = await suggestedUsers();
       this.suggestedUsers = users || [];
+    },
+
+    async logOut() {
+      await logout();
+      this.data = null;
     },
   },
 });
