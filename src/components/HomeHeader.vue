@@ -26,10 +26,12 @@ watch(searchInput, () => {
 </script>
 
 <template>
-  <section class="px-3 xs:px-4 pt-3 xs:pt-4 sm:px-5">
+  <section class="px-3 xs:px-4 pt-3 xs:pt-4 sm:px-5 dark:text-white">
     <div class="flex">
-      <RouterLink to="/" class="font-semibold text-lg font-poppins mr-auto"
-        >FLASHEY</RouterLink
+      <RouterLink
+        to="/"
+        class="font-semibold text-2xl font-poppins mr-auto text-transparent bg-gradient-to-r from-sky-500 to-fuchsia-600 bg-clip-text"
+        >flashey</RouterLink
       >
 
       <RouterLink to="/">
@@ -42,12 +44,12 @@ watch(searchInput, () => {
     </div>
 
     <div
-      class="my-3 group text-sm bg-neutral-100/80 px-4 rounded-full flex items-center space-x-2"
+      class="my-3 group text-sm bg-neutral-100/80 dark:bg-neutral-800 px-4 rounded-full flex items-center space-x-2"
     >
       <label
         :hidden="!!searchInput"
         for="searchbox"
-        class="text-neutral-600 group-focus-within:hidden"
+        class="text-neutral-600 group-focus-within:hidden dark:text-neutral-400"
       >
         <SearchIcon :size="20" />
       </label>
@@ -58,7 +60,7 @@ watch(searchInput, () => {
         name="searchbox"
         id="searchbox"
         placeholder="Search For Conversation"
-        class="py-3 bg-transparent w-full"
+        class="py-3 bg-transparent w-full dark:text-neutral-400 dark:placeholder:text-neutral-400"
       />
 
       <button
@@ -73,7 +75,10 @@ watch(searchInput, () => {
 
     <SuggestedUsers v-if="!searchUsers.isOpen" />
 
-    <p v-if="!searchUsers.isOpen" class="text-sm text-gray-600 px-2 pb-0.5">
+    <p
+      v-if="!searchUsers.isOpen"
+      class="text-sm text-gray-600 dark:text-gray-500 px-2 pb-0.5"
+    >
       All Conversations
     </p>
   </section>

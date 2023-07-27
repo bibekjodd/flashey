@@ -29,9 +29,10 @@ watch(props, () => {
 <template>
   <RouterLink
     :to="`/chat/${chat._id}`"
-    class="flex rounded-lg items-center space-x-2.5 px-3 xs:px-4 py-2.5 sm:px-5 hover:bg-neutral-50 relative"
+    class="flex rounded-lg items-center space-x-2.5 px-3 xs:px-4 py-2.5 sm:px-5 hover:bg-neutral-50 dark:hover:bg-neutral-800/60 relative"
     :class="{
-      'bg-neutral-200/50': route.path === `/chat/${chat._id}`,
+      'bg-neutral-200/50 dark:bg-neutral-800/80':
+        route.path === `/chat/${chat._id}`,
     }"
   >
     <img
@@ -42,9 +43,10 @@ watch(props, () => {
     />
 
     <div class="flex flex-col flex-grow">
-      <span class="font-semibold text-sm text-neutral-800">{{
-        getChatName(chat, user.data)
-      }}</span>
+      <span
+        class="font-semibold text-sm text-neutral-800 dark:text-neutral-100"
+        >{{ getChatName(chat, user.data) }}</span
+      >
 
       <span class="text-xs text-gray-500 line-clamp-1">
         {{

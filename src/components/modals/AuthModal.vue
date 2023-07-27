@@ -11,6 +11,8 @@ import LockIcon from "vue-material-design-icons/LockOutline.vue";
 import EyeIcon from "vue-material-design-icons/EyeOutline.vue";
 // @ts-ignore
 import EyeOffIcon from "vue-material-design-icons/EyeOffOutline.vue";
+// @ts-ignore
+import ChevronIcon from "vue-material-design-icons/ChevronRight.vue";
 import { useUser } from "../../stores/useUser";
 import { authUser } from "@/lib/auth";
 import { imageToDataUri } from "@/lib/imageToDataUri";
@@ -72,15 +74,15 @@ const submitForm = async (e: Event) => {
 <template>
   <main
     v-show="authModal.isOpen"
-    class="grid place-items-center sm:py-10 md:py-10 h-screen min-h-screen md:p-0 absolute inset-0 z-30 w-full text-neutral-900 bg-neutral-200"
+    class="grid place-items-center sm:py-10 md:py-10 h-screen min-h-screen md:p-0 absolute inset-0 z-30 w-full text-neutral-900 bg-neutral-200 dark:bg-neutral-900 dark:text-neutral-200"
   >
     <div
-      class="w-full h-full md:h-fit flex flex-col justify-center max-w-screen-sm sm:max-w-lg border bg-neutral-50 rounded-lg pb-5 pt-8 px-4 xs:px-8 relative"
+      class="w-full h-full md:h-fit flex flex-col justify-center max-w-screen-sm sm:max-w-lg border dark:border-neutral-800 bg-neutral-50 rounded-lg pb-5 pt-8 px-4 xs:px-8 relative dark:bg-neutral-800/80"
     >
       <div class="text-center relative flex items-center flex-col">
         <p v-if="isLoginMode" class="text-xl font-semibold">Welcome back</p>
 
-        <p v-if="isLoginMode" class="text-gray-700">
+        <p v-if="isLoginMode" class="text-gray-700 dark:text-gray-500">
           Please enter your details to sign in
         </p>
 
@@ -89,7 +91,9 @@ const submitForm = async (e: Event) => {
         </p>
 
         <div class="absolute inset-0 grid place-items-center">
-          <div class="h-5/6 w-9/12 bg-fuchsia-900/70 filter blur-3xl"></div>
+          <div
+            class="h-5/6 w-9/12 bg-fuchsia-900/70 filter blur-3xl dark:bg-sky-900/50"
+          ></div>
         </div>
       </div>
 
@@ -100,10 +104,14 @@ const submitForm = async (e: Event) => {
         class="flex flex-col mt-9 mb-5 space-y-5"
       >
         <div v-if="!isLoginMode" class="flex flex-col space-y-1">
-          <label for="name" class="font-semibold outline-none">Full Name</label>
+          <label
+            for="name"
+            class="font-semibold outline-none dark:text-neutral-300"
+            >Full Name</label
+          >
 
           <div
-            class="flex items-center border-2 border-neutral-300 rounded-lg p-2 focus-within:border-neutral-400 space-x-2 relative"
+            class="flex items-center border-2 border-neutral-300 rounded-lg p-2 focus-within:border-neutral-400 space-x-2 relative dark:border-neutral-700 dark:focus-within:border-neutral-400/70"
           >
             <AccountIcon :size="20" class="text-neutral-500" />
 
@@ -119,11 +127,13 @@ const submitForm = async (e: Event) => {
         </div>
 
         <div class="flex flex-col space-y-1">
-          <label for="email" class="font-semibold outline-none"
+          <label
+            for="email"
+            class="font-semibold outline-none dark:text-neutral-300"
             >E-Mail Address</label
           >
           <div
-            class="flex items-center border-2 border-neutral-300 rounded-lg p-2 focus-within:border-neutral-400 space-x-2"
+            class="flex items-center border-2 border-neutral-300 rounded-lg p-2 focus-within:border-neutral-400 space-x-2 dark:border-neutral-700 dark:focus-within:border-neutral-400/70"
           >
             <EmailIcon :size="20" class="text-neutral-500" />
 
@@ -139,11 +149,13 @@ const submitForm = async (e: Event) => {
         </div>
 
         <div class="flex flex-col space-y-1">
-          <label for="password" class="font-semibold outline-none"
+          <label
+            for="password"
+            class="font-semibold outline-none dark:text-neutral-300"
             >Password</label
           >
           <div
-            class="flex items-center border-2 border-neutral-300 rounded-lg p-2 focus-within:border-neutral-400 space-x-2 relative"
+            class="flex items-center border-2 border-neutral-300 rounded-lg p-2 focus-within:border-neutral-400 space-x-2 relative dark:border-neutral-700 dark:focus-within:border-neutral-400/70"
           >
             <LockIcon :size="20" class="text-neutral-500" />
 
@@ -172,7 +184,9 @@ const submitForm = async (e: Event) => {
         </div>
 
         <div v-if="!isLoginMode" class="flex flex-col space-y-1">
-          <p class="font-semibold">Choose Profile Picture</p>
+          <p class="font-semibold dark:text-neutral-300">
+            Choose Profile Picture
+          </p>
 
           <div class="flex justify-between">
             <input
@@ -193,7 +207,7 @@ const submitForm = async (e: Event) => {
 
         <button
           :disabled="isFormLoading"
-          class="font-medium text-white flex items-center justify-center bg-black rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 text-sm"
+          class="font-medium text-white flex items-center justify-center bg-black dark:bg-neutral-700/30  rounded-lg p-2 transition active:scale-95 relative space-x-0 disabled:opacity-80 h-10 text-sm"
         >
           <span v-if="!isFormLoading">
             <span v-if="isLoginMode">Sign in</span>
@@ -202,20 +216,27 @@ const submitForm = async (e: Event) => {
           </span>
 
           <span v-else class="form-loader h-5 w-5"></span>
+          <span v-if="!isFormLoading"><ChevronIcon /></span>
         </button>
       </form>
 
       <div class="flex items-center mb-5">
-        <span class="w-full h-0.5 bg-neutral-300/80 rounded-full"></span>
+        <span
+          class="w-full h-0.5 bg-neutral-300/80 dark:bg-neutral-600/40 rounded-full"
+        ></span>
 
-        <span class="mx-3 text-sm text-neutral-700">OR</span>
+        <span class="mx-3 text-xs text-neutral-700 dark:text-neutral-400"
+          >OR</span
+        >
 
-        <span class="w-full h-0.5 bg-neutral-300/80 rounded-full"></span>
+        <span
+          class="w-full h-0.5 bg-neutral-300/80 dark:bg-neutral-600/40 rounded-full"
+        ></span>
       </div>
 
       <a
         :href="`${backendURL}/api/v1/login/google`"
-        class="font-medium text-white flex items-center justify-center bg-black rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 mb-3 text-sm"
+        class="font-medium text-white flex items-center justify-center bg-black dark:bg-neutral-700/30  rounded-lg p-2 transition active:scale-95 relative space-x-2 disabled:opacity-80 h-10 mb-3 text-sm"
       >
         <img
           src="/google.png"
@@ -228,14 +249,17 @@ const submitForm = async (e: Event) => {
       </a>
 
       <p class="text-center" v-if="isLoginMode">
-        <span class="text-neutral-700 text-sm">Don't have an account yet? </span
+        <span class="text-neutral-700 text-sm dark:text-neutral-400"
+          >Don't have an account yet? </span
         ><button @click="toggleLoginMode" class="font-semibold">
           Register
         </button>
       </p>
 
       <p class="text-center" v-else>
-        <span class="text-neutral-700 text-sm">Already have an account? </span>
+        <span class="text-neutral-700 dark:text-neutral-400 text-sm"
+          >Already have an account?
+        </span>
 
         <button @click="toggleLoginMode" class="font-semibold">Sign in</button>
       </p>

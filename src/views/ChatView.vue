@@ -32,10 +32,10 @@ onMounted(() => {
 <template>
   <div v-if="chatStore.data" class="h-screen flex flex-col w-full font-inter">
     <div
-      class="py-3 px-3.5 xs:px-4 sm:px-5 flex items-center h-24 shadow-sm shadow-neutral-300/80"
+      class="py-3 px-3.5 xs:px-4 sm:px-5 flex items-center h-24 shadow-sm shadow-neutral-300/80 dark:shadow-neutral-800"
     >
       <RouterLink to="/" class="mdp:hidden mr-3">
-        <ArrowLeftIcon class="text-blue-600" />
+        <ArrowLeftIcon class="text-sky-600 dark:text-sky-700" />
       </RouterLink>
 
       <div
@@ -47,13 +47,13 @@ onMounted(() => {
         <img
           :src="getChatImage(chat, userStore.data)"
           alt=""
-          class="h-10 w-10 rounded-full object-cover ring-2 ring-white mr-3"
+          class="h-10 w-10 rounded-full object-cover ring-2 ring-white dark:ring-neutral-300 mr-3"
           loading="lazy"
         />
       </div>
 
       <div>
-        <p class="font-semibold">
+        <p class="font-semibold dark:text-neutral-300">
           {{ getChatName(chat, userStore.data) }}
         </p>
 
@@ -63,7 +63,7 @@ onMounted(() => {
         </p>
       </div>
 
-      <div class="ml-auto space-x-2">
+      <div class="ml-auto space-x-4">
         <button v-if="chat?.isGroupChat" class="text-sky-600">
           <InformationIcon />
         </button>
@@ -75,7 +75,10 @@ onMounted(() => {
           <EditGroupIcon />
         </button>
 
-        <button v-if="!chat?.isGroupChat" class="text-neutral-700">
+        <button
+          v-if="!chat?.isGroupChat"
+          class="text-neutral-700 dark:text-neutral-300"
+        >
           <TripledotsIcon />
         </button>
       </div>

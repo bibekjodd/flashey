@@ -56,26 +56,26 @@ const handleMessageSubmit = async (e: Event) => {
 <template>
   <div class="fixed bottom-0 left-0 w-full flex z-20 sm:px-3">
     <div class="w-0 mdp:w-full mdp:max-w-[40%] lg:max-w-md"></div>
-    <div class="w-full bg-white sm:pl-2 lg:pl-0 py-3">
+    <div class="w-full bg-white dark:bg-neutral-900 sm:pl-2 lg:pl-0 py-3 ">
       <form
         @submit="handleMessageSubmit"
         v-auto-animate
         action=""
-        class="w-full bg-neutral-200/30 pl-3 rounded-lg relative flex-grow"
+        class="w-full bg-neutral-200/30 dark:bg-neutral-800/50 pl-3 rounded-lg relative flex-grow"
         :class="{ 'pt-1': !!image }"
       >
         <div v-if="image" class="rounded-md py-3 relative w-fit">
           <img loading="lazy" :src="image" alt="" class="h-16 max-w-[120px]" />
           <div
             @click="unpickImage"
-            class="absolute cursor-pointer top-1 right-0 bg-white rounded-full"
+            class="absolute cursor-pointer top-1 right-0 bg-white  rounded-full"
           >
             <CloseIcon :size="14" />
           </div>
         </div>
 
         <div class="w-full flex items-center">
-          <label for="image" class="text-sky-500">
+          <label for="image" class="text-sky-500 dark:text-sky-600">
             <ImageIcon />
           </label>
           <input
@@ -91,13 +91,13 @@ const handleMessageSubmit = async (e: Event) => {
             v-model="input"
             type="text"
             placeholder="Type Message"
-            class="w-full bg-transparent p-2.5"
+            class="w-full bg-transparent p-2.5 dark:text-neutral-200 dark:placeholder:text-neutral-500"
           />
           <button
             v-if="!isMessageSending"
             :disabled="!input && !image.valueOf()"
             type="submit"
-            class="py-1 px-3 rounded-md text-sky-500 disabled:opacity-50"
+            class="py-1 px-3 rounded-md text-sky-500 dark:disabled:opacity-25 dark:text-sky-600 disabled:opacity-50"
           >
             <SendIcon />
           </button>

@@ -24,7 +24,7 @@ const addReaction = async (reaction: string) => {
 
 <template>
   <div
-    class="absolute -bottom-6 py-1 px-2 rounded-lg"
+    class="absolute -bottom-7 py-1 px-2 rounded-lg text-base"
     :class="{
       'right-0': isSentByMe,
       'left-0': !isSentByMe,
@@ -50,14 +50,15 @@ const addReaction = async (reaction: string) => {
       <span
         v-for="reaction of prepareReactions(userReactions)"
         :key="reaction[0]"
-        class="flex space-x-1 items-center"
+        class="flex space-x-0.5 items-center"
       >
         <span>
           {{ mapReactions[reaction[0]] }}
         </span>
-        <span class="text-xs font-semibold text-neutral-700">{{
-          reaction[1]
-        }}</span>
+        <span
+          class="text-xs font-semibold text-neutral-700 dark:text-neutral-400"
+          >{{ reaction[1] }}</span
+        >
       </span>
     </div>
   </div>

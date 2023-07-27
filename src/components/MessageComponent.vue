@@ -81,13 +81,16 @@ const sentbyMe = isSentByMe(user.data, props.message);
           'mr-auto': !sentbyMe,
         }"
       >
-        <span class="font-medium text-sm text-neutral-700">
+        <span
+          class="font-medium text-sm text-neutral-700 dark:text-neutral-300"
+        >
           {{ sentbyMe ? "You" : message.sender.name }}
         </span>
 
-        <span class="text-gray-400 font-extralight text-xs">{{
-          moment(message.createdAt).fromNow()
-        }}</span>
+        <span
+          class="text-gray-400 font-extralight text-xs dark:text-neutral-500"
+          >{{ moment(message.createdAt).fromNow() }}</span
+        >
       </div>
 
       <div
@@ -116,8 +119,10 @@ const sentbyMe = isSentByMe(user.data, props.message);
             v-if="message.text"
             class="px-4 py-2.5 rounded-xl w-fit text-base"
             :class="{
-              'bg-sky-500 text-white rounded-tr-none ml-auto': sentbyMe,
-              'bg-neutral-200/50 rounded-tl-none mr-auto': !sentbyMe,
+              'bg-sky-500 text-white rounded-tr-none ml-auto dark:bg-sky-600':
+                sentbyMe,
+              'bg-neutral-200/50 rounded-tl-none mr-auto dark:bg-neutral-100/70':
+                !sentbyMe,
             }"
           >
             {{ message.text }}

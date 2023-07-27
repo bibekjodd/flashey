@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from "vue-router";
-import LoginModal from "./components/modals/LoginModal.vue";
+import AuthModal from "./components/modals/AuthModal.vue";
 import InitialOverlay from "./components/InitialOverlay.vue";
 import HomeHeader from "./components/HomeHeader.vue";
 import ChatList from "./components/ChatList.vue";
@@ -9,9 +9,21 @@ import CreateGroupModal from "./components/modals/CreateGroupModal.vue";
 import SearchUsers from "./components/SearchUsers.vue";
 import SubscribeChat from "./components/SubscribeChat.vue";
 import UtilityNav from "./components/UtilityNav.vue";
+import { onMounted } from "vue";
 
 const user = useUser();
 const route = useRoute();
+
+onMounted(() => {
+  const colorScheme = window.matchMedia("(prefers-color-scheme: dark)");
+  const htmlElement = document.querySelector("html");
+  if (colorScheme.matches) {
+    if (!htmlElement?.classList.contains("dark"))
+      htmlElement?.classList.add("dark");
+  } else {
+    htmlElement?.classList.remove("dark");
+  }
+});
 </script>
 
 <template>
@@ -22,7 +34,7 @@ const route = useRoute();
     <div v-if="user.data" class="w-full flex">
       <!-- Chat Section -->
       <section
-        class="font-poppins w-full mdp:max-w-[40%] lg:max-w-md mdp:border-r text-neutral-900 border-neutral-200 h-screen flex flex-col"
+        class="font-poppins w-full mdp:max-w-[40%] lg:max-w-md mdp:border-r dark:border-gray-700 text-neutral-900 border-neutral-200 h-screen flex flex-col"
         :class="{
           'hidden mdp:flex': route.path !== '/',
         }"
@@ -44,7 +56,7 @@ const route = useRoute();
       </section>
     </div>
 
-    <LoginModal v-else />
+    <AuthModal v-else />
     <SubscribeChat />
   </div>
 </template>

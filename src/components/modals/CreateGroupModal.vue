@@ -52,14 +52,14 @@ watch(input, () => {
   <section
     @click="createGroupModal.close"
     v-show="createGroupModal.isOpen"
-    class="absolute inset-0 bg-black/30 z-50 grid place-items-center font-poppins filter backdrop-blur-md"
+    class="absolute inset-0 bg-black/30 dark:text-neutral-300 z-50 grid place-items-center font-poppins filter backdrop-blur-md"
   >
     <div
       @click="preventCloseModal"
-      class="w-full max-w-sm p-4 bg-white/90 filter backdrop-blur-3xl rounded-md space-y-2 h-full sm:h-[90vh] md:h-[80vh] max-h-[650px] flex flex-col text-xs"
+      class="w-full max-w-sm p-4 bg-white/90 dark:bg-neutral-800/80 filter backdrop-blur-3xl rounded-md space-y-2 h-full sm:h-[90vh] md:h-[80vh] max-h-[650px] flex flex-col text-xs"
     >
       <label for="groupImage" class="space-y-1 flex flex-col items-center">
-        <span class="font-semibold pl-1">Group Avatar</span>
+        <span class="font-semibold pl-1 text-sm">Group Avatar</span>
         <img
           v-if="image"
           :src="image"
@@ -99,14 +99,14 @@ watch(input, () => {
         name="groupName"
         id="groupName"
         placeholder="Group Name"
-        class="w-full p-2 rounded-lg border-2 border-neutral-200 bg-transparent"
+        class="w-full p-2 rounded-lg border-2 dark:placeholder:text-neutral-400 border-neutral-200 dark:border-neutral-700/30 bg-transparent dark:focus:border-neutral-700"
       />
 
       <input
         v-model="input"
         type="text"
         placeholder="Search users..."
-        class="w-full p-2 rounded-lg border-2 border-neutral-200 bg-transparent"
+        class="w-full p-2 rounded-lg border-2 dark:placeholder:text-neutral-400 border-neutral-200 dark:border-neutral-700/30 bg-transparent dark:focus:border-neutral-700"
       />
 
       <div class="text-xs px-2 pt-2 flex justify-between">
@@ -148,7 +148,7 @@ watch(input, () => {
           v-for="user of createGroupModal.users"
           :key="user._id"
           @click="createGroupModal.selectUser(user)"
-          class="flex items-center space-x-2 w-full hover:bg-neutral-200/50 p-2 rounded-lg"
+          class="flex items-center space-x-2 w-full hover:bg-neutral-200/50 dark:hover:bg-neutral-700/40 p-2 rounded-lg "
         >
           <img
             :src="user.picture?.url || dummyUserImage"
@@ -158,7 +158,7 @@ watch(input, () => {
           />
           <div class="flex flex-col items-start text-sm">
             <p class="font-semibold text-sm">{{ user.name }}</p>
-            <p class="text-gray-500 text-xs">{{ user.email }}</p>
+            <p class="text-gray-500 text-xs dark:text-gray-400">{{ user.email }}</p>
           </div>
         </button>
       </div>
@@ -167,7 +167,7 @@ watch(input, () => {
         <button
           :disabled="createGroupModal.isCreating"
           @click="handleCreateGroupClick"
-          class="px-4 relative py-2 rounded-lg bg-sky-600 text-white active:scale-95 transition disabled:opacity-70"
+          class="px-4 relative py-2 rounded-lg bg-sky-600  text-white active:scale-95 transition disabled:opacity-70"
         >
           <span
             :class="{

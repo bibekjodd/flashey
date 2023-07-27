@@ -29,7 +29,7 @@ watch(user, async () => {
       'hidden ': searchUsers.isOpen,
     }"
   >
-    <div v-if="!chatStore.isLoading">
+    <div v-if="!chatStore.isLoading" class="space-y-2">
       <ChatListItem
         v-for="chat of chatStore.data"
         :key="chat._id"

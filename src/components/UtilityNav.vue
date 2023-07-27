@@ -15,6 +15,7 @@ import LogoutButton from "./LogoutButton.vue";
 
 const user = useUser();
 const createGroupModal = useCreateGroup();
+
 const isDarkTheme = ref(false);
 
 const switchTheme = () => {
@@ -43,7 +44,7 @@ onMounted(() => {
   >
     <button
       @click="switchTheme"
-      class="flex items-center hover:bg-neutral-200/50 z-40 py-3 px-2 rounded-lg space-x-2 font-medium transition active:scale-95"
+      class="flex items-center hover:bg-neutral-200/50 dark:hover:bg-neutral-800/80 dark:text-neutral-300 z-40 py-3 px-2 rounded-lg space-x-2 font-medium transition active:scale-95"
     >
       <MoonIcon v-if="!isDarkTheme" :size="20" />
       <SunIcon v-else :size="20" />
@@ -53,14 +54,14 @@ onMounted(() => {
     <button
       @click="createGroupModal.open"
       v-if="user.data"
-      class="flex items-center hover:bg-neutral-200/50 z-40 py-3 px-2 rounded-lg space-x-2 font-medium transition active:scale-95"
+      class="flex items-center hover:bg-neutral-200/50 dark:hover:bg-neutral-800/80 dark:text-neutral-300 z-40 py-3 px-2 rounded-lg space-x-2 font-medium transition active:scale-95"
     >
       <CreateGroupIcon :size="20" />
       <span>Create Group</span>
     </button>
 
     <LogoutButton
-      class="flex items-center hover:bg-neutral-200/50 z-40 py-3 px-2 rounded-lg space-x-2 font-medium transition active:scale-95"
+      class="flex items-center hover:bg-neutral-200/50 dark:hover:bg-neutral-800/80 dark:text-neutral-300 z-40 py-3 px-2 rounded-lg space-x-2 font-medium transition active:scale-95"
     >
       <LogoutIcon :size="20" />
       <span>Logout</span>
