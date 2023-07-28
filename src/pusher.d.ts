@@ -4,3 +4,10 @@ type ReactionAdded = {
   messageId: string;
   reaction: { userId: string; value: string };
 };
+
+type Typing = {
+  userId: string;
+  chatId: string;
+  isTyping: boolean;
+  lastupdate?: number;
+};

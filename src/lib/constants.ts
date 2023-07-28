@@ -15,6 +15,8 @@ export const EVENTS = {
   ADDED_TO_GROUP: "added-to-group",
   REMOVED_FROM_GROUP: "removed-from-group",
   GROUP_RENAMED: "renamed-group",
+
+  TYPING: "typing",
 };
 
 export const reactions = [

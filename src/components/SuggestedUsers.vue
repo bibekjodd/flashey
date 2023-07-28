@@ -30,7 +30,7 @@ const handleProfileClicked = async (otherUser: User) => {
 <template>
   <section
     v-if="userStore.suggestedUsers?.length !== 0"
-    class="px-2 my-3 space-y-2 pb-3 pt-1"
+    class="px-2 my-5 space-y-2 pb-3 pt-1"
   >
     <p class="font-inter text-sm text-gray-600 dark:text-gray-500">Suggested Users</p>
     <div class="flex items-center w-full overflow-x-auto space-x-2">

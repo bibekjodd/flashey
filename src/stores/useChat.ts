@@ -3,6 +3,7 @@ import {
   updateChatOnMessageArrived,
   updateChatOnMessageViewed,
   updateChatOnReactionAdded,
+  updateTyping,
 } from "@/lib/chatUtils";
 import { accessChat, fetchChats } from "@/lib/fetchers";
 import { defineStore } from "pinia";
@@ -78,6 +79,10 @@ export const useChat = defineStore("chats", {
 
     reactionAdded(data: ReactionAdded) {
       this.data = updateChatOnReactionAdded({ chats: [...this.data], ...data });
+    },
+
+    updateUserTyping(data: Typing) {
+      updateTyping([...this.data], data);
     },
   },
 });

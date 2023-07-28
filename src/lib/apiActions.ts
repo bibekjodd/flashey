@@ -97,3 +97,18 @@ export const addReactionToMessage = async ({
     return { error: makeupAxiosError(error) };
   }
 };
+
+export const sendTypingUpdate = async (
+  data: Typing
+): Promise<{ error?: string }> => {
+  try {
+    await axios.post(`${backendURL}/api/v1/typing`, data, {
+      withCredentials: true,
+    });
+    return {};
+  } catch (error) {
+    return {
+      error: makeupAxiosError(error),
+    };
+  }
+};

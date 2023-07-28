@@ -54,7 +54,7 @@ const sentbyMe = isSentByMe(user.data, props.message);
 <template>
   <div
     ref="messageElement"
-    class="flex text-sm px-3.5 xs:px-4 sm:px-5 w-full max-w-[90%] relative mb-10"
+    class="flex text-sm px-3.5 xs:px-4 sm:px-5 w-full max-w-[90%] relative pb-10"
     :class="{
       'self-end  justify-end': sentbyMe,
       'self-start justify-start': !sentbyMe,

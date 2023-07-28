@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import MessageComponent from "@/components/MessageComponent.vue";
-import { getChatImage, getChatName, isGroupAdmin } from "@/lib/chatUtils";
+import {
+  getChatImage,
+  getChatName,
+  isGroupAdmin,
+} from "@/lib/chatUtils";
 import { useChat } from "@/stores/useChat";
 import { useUser } from "@/stores/useUser";
 import { ref, watch, onMounted } from "vue";
@@ -14,6 +18,7 @@ import TripledotsIcon from "vue-material-design-icons/DotsVertical.vue";
 // @ts-ignore
 import EditGroupIcon from "vue-material-design-icons/PencilCircleOutline.vue";
 import SendMessage from "@/components/SendMessage.vue";
+import TypingAnimation from "@/components/TypingAnimation.vue";
 
 const userStore = useUser();
 const chatStore = useChat();
@@ -85,8 +90,9 @@ onMounted(() => {
     </div>
 
     <div
+      v-auto-animate
       v-if="chat?.messages"
-      class="flex flex-col-reverse scrollbar-hide w-full h-full overflow-y-auto pt-5 pb-20"
+      class="flex flex-col-reverse scrollbar-hide w-full h-full overflow-y-auto pt-5 pb-14"
       id="messages"
     >
       <MessageComponent
@@ -97,6 +103,7 @@ onMounted(() => {
       />
     </div>
 
+    <TypingAnimation :chat="chat" />
     <SendMessage :chat-id="chat?._id || ''" />
   </div>
 </template>

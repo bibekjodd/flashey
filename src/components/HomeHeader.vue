@@ -27,7 +27,7 @@ watch(searchInput, () => {
 
 <template>
   <section class="px-3 xs:px-4 pt-3 xs:pt-4 sm:px-5 dark:text-white">
-    <div class="flex">
+    <div class="flex py-3">
       <RouterLink
         to="/"
         class="font-semibold text-2xl font-poppins mr-auto text-transparent bg-gradient-to-r from-sky-500 to-fuchsia-600 bg-clip-text"

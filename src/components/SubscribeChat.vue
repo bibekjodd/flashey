@@ -31,6 +31,10 @@ watch([user, chatStore], (newValue, oldValue) => {
     channel.bind(EVENTS.MESSAGE_VIEWED, (data: MessageViewed) => {
       chatStore.messageViewed(data);
     });
+
+    channel.bind(EVENTS.TYPING, (data: Typing) => {
+      chatStore.updateUserTyping(data);
+    });
   }
 });
 </script>

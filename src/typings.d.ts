@@ -26,6 +26,7 @@ interface Chat {
   latestMessage?: Message;
   messages?: Message[];
   image?: Picture;
+  isTyping?: Typing;
 }
 
 interface Message {
@@ -43,4 +44,5 @@ interface Message {
 interface Reaction {
   user: User;
   value: string;
-}[]
+}
+[];

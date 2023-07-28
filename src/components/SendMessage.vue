@@ -10,8 +10,10 @@ import SendIcon from "vue-material-design-icons/Send.vue";
 import CloseIcon from "vue-material-design-icons/Close.vue";
 import { useToast } from "vue-toast-notification";
 import { scrollToBottom } from "../lib/scrollToBottom";
-import { sendMessage } from "@/lib/apiActions";
+import { sendMessage, sendTypingUpdate } from "@/lib/apiActions";
+import { useUser } from "@/stores/useUser";
 
+const user = useUser();
 const toast = useToast();
 const image = ref<string>("");
 const input = ref<string>("");
@@ -51,12 +53,22 @@ const handleMessageSubmit = async (e: Event) => {
 
   isMessageSending.value = false;
 };
+
+const handleInputFocus = async (isTyping: boolean) => {
+  if (user.data) {
+    await sendTypingUpdate({
+      chatId: props.chatId,
+      isTyping,
+      userId: user.data._id,
+    });
+  }
+};
 </script>
 
 <template>
   <div class="fixed bottom-0 left-0 w-full flex z-20 sm:px-3">
     <div class="w-0 mdp:w-full mdp:max-w-[40%] lg:max-w-md"></div>
-    <div class="w-full bg-white dark:bg-neutral-900 sm:pl-2 lg:pl-0 py-3 ">
+    <div class="w-full bg-white dark:bg-neutral-900 sm:pl-2 lg:pl-0 py-3">
       <form
         @submit="handleMessageSubmit"
         v-auto-animate
@@ -68,7 +80,7 @@ const handleMessageSubmit = async (e: Event) => {
           <img loading="lazy" :src="image" alt="" class="h-16 max-w-[120px]" />
           <div
             @click="unpickImage"
-            class="absolute cursor-pointer top-1 right-0 bg-white  rounded-full"
+            class="absolute cursor-pointer top-1 right-0 bg-white rounded-full"
           >
             <CloseIcon :size="14" />
           </div>
@@ -89,6 +101,8 @@ const handleMessageSubmit = async (e: Event) => {
 
           <input
             v-model="input"
+            @focusin="handleInputFocus(true)"
+            @focusout="handleInputFocus(false)"
             type="text"
             placeholder="Type Message"
             class="w-full bg-transparent p-2.5 dark:text-neutral-200 dark:placeholder:text-neutral-500"

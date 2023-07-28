@@ -22,6 +22,23 @@ export const getChatImage = (chat: Chat | null, user: User | null): string => {
   return otherUser?.picture?.url || dummyUserImage;
 };
 
+export const shouldShowTyping = (
+  user: User | null,
+  typing?: Typing
+): boolean => {
+  if (
+    !typing ||
+    !typing.lastupdate ||
+    !typing.isTyping ||
+    typing.userId === user?._id
+  )
+    return false;
+
+  const timeDifference = (Date.now() - typing.lastupdate) / 1000;
+  if (timeDifference >= 12) return false;
+  return true;
+};
+
 const sortMessages = (messages: Message[]): Message[] => {
   messages.sort((a, b) => {
     if (a.createdAt < b.createdAt) return 1;
@@ -184,5 +201,20 @@ export function updateChatOnMessageViewed({
     return chat;
   });
 
+  return chats;
+}
+
+export function updateTyping(chats: Chat[], data: Typing): Chat[] {
+  chats = chats.map((chat) => {
+    if (!data.isTyping) chat.isTyping = undefined;
+    else {
+      chat.isTyping = {
+        ...data,
+        lastupdate: Date.now(),
+      };
+    }
+
+    return chat;
+  });
   return chats;
 }
