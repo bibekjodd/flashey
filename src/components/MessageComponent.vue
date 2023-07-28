@@ -121,7 +121,7 @@ const sentbyMe = isSentByMe(user.data, props.message);
             :class="{
               'bg-sky-500 text-white rounded-tr-none ml-auto dark:bg-sky-600':
                 sentbyMe,
-              'bg-neutral-200/50 rounded-tl-none mr-auto dark:bg-neutral-100/70':
+              'bg-neutral-200/50 rounded-tl-none mr-auto dark:bg-neutral-100':
                 !sentbyMe,
             }"
           >

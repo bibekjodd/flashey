@@ -9,9 +9,23 @@ import { addReactionToMessage } from "@/lib/apiActions";
 import { mapReactions, reactions } from "@/lib/constants";
 import { useToast } from "vue-toast-notification";
 import { prepareReactions } from "../lib/messageUtils";
+import { useChat } from "@/stores/useChat";
+import { useUser } from "@/stores/useUser";
 
+const user = useUser();
+const chatStore = useChat();
 const toast = useToast();
 const addReaction = async (reaction: string) => {
+  if (user.data) {
+    chatStore.reactionAdded({
+      chatId: props.chatId,
+      messageId: props.messageId,
+      reaction: {
+        userId: user.data._id,
+        value: reaction,
+      },
+    });
+  }
   const { error } = await addReactionToMessage({
     reaction,
     messageId: props.messageId,
@@ -56,6 +70,7 @@ const addReaction = async (reaction: string) => {
           {{ mapReactions[reaction[0]] }}
         </span>
         <span
+          v-if="Number(reaction[1]) > 1"
           class="text-xs font-semibold text-neutral-700 dark:text-neutral-400"
           >{{ reaction[1] }}</span
         >

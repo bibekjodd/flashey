@@ -60,7 +60,7 @@ watch(props, () => {
 
     <div class="flex text-xs items-center space-x-2">
       <span class="text-gray-500 w-fit whitespace-nowrap">
-        {{ moment(chat.updatedAt).format("LT") }}
+        {{ moment(chat.createdAt).format("LT") }}
       </span>
 
       <div class="h-4 w-4 grid place-items-center text-gray-500">

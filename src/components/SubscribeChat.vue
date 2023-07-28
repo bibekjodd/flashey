@@ -24,12 +24,13 @@ watch([user, chatStore], (newValue, oldValue) => {
       chatStore.messageArrived(chat._id, message);
     });
 
-    channel.bind(
-      EVENTS.REACTION_ADDED,
-      (data: { chatId: string; messageId: string; reaction: {userId:string,value:string} }) => {
-        chatStore.reactionAdded(data);
-      }
-    );
+    channel.bind(EVENTS.REACTION_ADDED, (data: ReactionAdded) => {
+      chatStore.reactionAdded(data);
+    });
+
+    channel.bind(EVENTS.MESSAGE_VIEWED, (data: MessageViewed) => {
+      chatStore.messageViewed(data);
+    });
   }
 });
 </script>

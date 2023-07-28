@@ -19,13 +19,13 @@ export const getChatImage = (chat: Chat | null, user: User | null): string => {
   }
   if (chat?.image?.url) return chat.image.url;
   const otherUser = chat?.users.find((chatUser) => chatUser._id !== user?._id);
-  return otherUser?.picture?.url || dummyGroupImage;
+  return otherUser?.picture?.url || dummyUserImage;
 };
 
 const sortMessages = (messages: Message[]): Message[] => {
   messages.sort((a, b) => {
-    if (a.updatedAt < b.updatedAt) return 1;
-    else if (a.updatedAt > b.updatedAt) return -1;
+    if (a.createdAt < b.createdAt) return 1;
+    else if (a.createdAt > b.createdAt) return -1;
     return 0;
   });
 
@@ -124,7 +124,7 @@ export const updateChatOnMessageArrived = (
     if (chat._id !== chatId) return chat;
 
     chat.messages = chat.messages || [];
-    chat.messages.push(message);
+    chat.messages.unshift(message);
     return chat;
   });
   return chats;
@@ -135,12 +135,7 @@ export const updateChatOnReactionAdded = ({
   chats,
   messageId,
   reaction,
-}: {
-  chats: Chat[];
-  messageId: string;
-  chatId: string;
-  reaction: { userId: string; value: string };
-}): Chat[] => {
+}: ReactionAdded & { chats: Chat[] }): Chat[] => {
   chats = chats.map((chat) => {
     if (chat._id === chatId) {
       chat.messages = chat.messages?.map((message) => {
@@ -164,3 +159,30 @@ export const updateChatOnReactionAdded = ({
 
   return chats;
 };
+
+export function updateChatOnMessageViewed({
+  chatId,
+  chats,
+  messageId,
+  viewerId,
+}: MessageViewed & { chats: Chat[] }): Chat[] {
+  chats = chats.map((chat) => {
+    if (chat._id === chatId) {
+      chat.messages = chat.messages?.map((message) => {
+        if (message._id === messageId) {
+          message.viewers = message.viewers?.filter(
+            (viewer) => viewer._id !== viewerId
+          );
+
+          const newViewer = populateUser(chat, viewerId);
+          if (newViewer) message.viewers?.push(newViewer);
+        }
+        return message;
+      });
+    }
+
+    return chat;
+  });
+
+  return chats;
+}

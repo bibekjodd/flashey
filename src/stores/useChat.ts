@@ -1,6 +1,7 @@
 import {
   prepareChat,
   updateChatOnMessageArrived,
+  updateChatOnMessageViewed,
   updateChatOnReactionAdded,
 } from "@/lib/chatUtils";
 import { accessChat, fetchChats } from "@/lib/fetchers";
@@ -62,21 +63,21 @@ export const useChat = defineStore("chats", {
     },
 
     messageArrived(chatId: string, message: Message) {
-      this.data = updateChatOnMessageArrived(this.data, chatId, message);
-      this.data = prepareChat(this.data);
+      this.data = updateChatOnMessageArrived([...this.data], chatId, message);
+      this.data = prepareChat([...this.data]);
+    },
+
+    messageViewed(data: MessageViewed) {
+      this.data = updateChatOnMessageViewed({ chats: [...this.data], ...data });
     },
 
     newGroupCreated(chat: Chat) {
-      this.data.push(chat);
-      this.data = prepareChat(this.data);
+      this.data.unshift(chat);
+      this.data = prepareChat([...this.data]);
     },
 
-    reactionAdded(data: {
-      chatId: string;
-      messageId: string;
-      reaction: { userId: string; value: string };
-    }) {
-      this.data = updateChatOnReactionAdded({ chats: this.data, ...data });
+    reactionAdded(data: ReactionAdded) {
+      this.data = updateChatOnReactionAdded({ chats: [...this.data], ...data });
     },
   },
 });
