@@ -1,43 +1,35 @@
 {
   "name": "flashey",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "run-p type-check build-only",
-    "preview": "vite preview",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write ."
   },
   "dependencies": {
-    "@formkit/auto-animate": "^0.7.0",
-    "axios": "^1.4.0",
-    "moment": "^2.29.4",
-    "pinia": "^2.1.3",
-    "pusher-js": "^8.3.0",
-    "tailwind-scrollbar-hide": "^1.1.7",
-    "vue": "^3.3.4",
-    "vue-material-design-icons": "^5.2.0",
-    "vue-router": "^4.2.2",
-    "vue-toast-notification": "^3.1.1"
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.325.0",
+    "next": "14.1.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.2.0",
-    "@tsconfig/node18": "^2.0.1",
-    "@types/node": "^18.16.17",
-    "@types/vue-router": "^2.0.0",
-    "@vitejs/plugin-vue": "^4.2.3",
-    "@vue/eslint-config-typescript": "^11.0.3",
-    "@vue/tsconfig": "^0.4.0",
-    "autoprefixer": "^10.4.14",
-    "eslint": "^8.39.0",
-    "eslint-plugin-vue": "^9.11.0",
-    "npm-run-all": "^4.1.5",
-    "postcss": "^8.4.27",
-    "tailwindcss": "^3.3.3",
-    "typescript": "~5.0.4",
-    "vite": "^4.3.9",
-    "vue-tsc": "^1.6.5"
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
+    "postcss": "^8",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
   }
 }
