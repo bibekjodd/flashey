@@ -1,5 +1,8 @@
+import AuthProvider from '@/providers/auth-provider';
+import QueryProvider from '@/providers/query-provider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Toaster } from 'sonner';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -16,7 +19,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <QueryProvider>
+          <Toaster
+            toastOptions={{ duration: 3000 }}
+            theme="dark"
+            richColors
+            closeButton
+          />
+          <AuthProvider>{children}</AuthProvider>
+        </QueryProvider>
+      </body>
     </html>
   );
 }

@@ -74,3 +74,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+input,
+textarea,
+button {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
