@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { dummyGroupImage, dummyUserImage } from './constants';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -21,4 +22,26 @@ export const wait = (timeout?: number) => {
       res('ok');
     }, timeout || 1000);
   });
+};
+
+export const getChatTitle = (
+  chat: Chat,
+  userId: string | undefined | null
+): string => {
+  if (chat.isGroupChat) return chat.title || 'Group Chat';
+  const otherUser = chat.participants.find(
+    (participant) => participant.id !== userId
+  );
+  return otherUser?.name || 'Chat';
+};
+
+export const getChatImage = (
+  chat: Chat,
+  userId: string | undefined | null
+): string => {
+  if (chat.isGroupChat) return chat.image || dummyGroupImage;
+  const otherUser = chat.participants.find(
+    (participant) => participant.id !== userId
+  );
+  return otherUser?.image || dummyUserImage;
 };

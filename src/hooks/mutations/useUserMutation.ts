@@ -9,8 +9,21 @@ export const useUserMutation = () => {
   return useMutation({
     mutationKey: ['mutate-user'],
     mutationFn: mutateUser,
-    onSuccess(data) {
-      queryClient.setQueryData(['profile'], data);
+    onSuccess(user, { type, data }) {
+      queryClient.setQueryData(['profile'], user);
+      if (type === 'update-profile' && !user) {
+        queryClient.setQueryData(
+          ['profile'],
+          (oldData: User | null): User | null => {
+            if (!oldData) return oldData;
+            return {
+              ...oldData,
+              name: data.name || oldData.name,
+              image: data.image || oldData.image
+            };
+          }
+        );
+      }
     }
   });
 };

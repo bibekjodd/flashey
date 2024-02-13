@@ -1,9 +1,7 @@
-import Sidebar from '@/components/sidebar';
-
 export default function page() {
   return (
     <div>
-      <Sidebar />
+      <h1>Flashey</h1>
     </div>
   );
 }

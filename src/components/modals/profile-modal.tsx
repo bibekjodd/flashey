@@ -1,8 +1,8 @@
 import { useProfile } from '@/hooks/queries/userProfile';
-import { dummyUserImage } from '@/lib/constants';
 import React from 'react';
 import { DeleteAccountDialog } from '../dialogs/delete-account-dialog';
 import { LogoutDialog } from '../dialogs/logout-dialog';
+import Avatar from '../ui/avatar';
 import {
   Dialog,
   DialogContent,
@@ -24,11 +24,7 @@ export default function ProfileModal({ children }: Props) {
           children
         ) : (
           <button>
-            <img
-              src={profile?.image || dummyUserImage}
-              alt="profile image"
-              className="h-10 w-10 rounded-full object-cover"
-            />
+            <Avatar src={profile?.image} />
           </button>
         )}
       </DialogTrigger>
@@ -40,11 +36,7 @@ export default function ProfileModal({ children }: Props) {
 
         <div className="flex flex-col">
           <div className="flex items-center space-x-3">
-            <img
-              src={profile?.image || dummyUserImage}
-              alt="user profile"
-              className="h-16 w-16 rounded-full object-cover"
-            />
+            <Avatar src={profile?.image} variant="2xl" />
             <div className="flex flex-col">
               <span className="text-lg font-semibold">{profile?.name}</span>
               <span className="text-gray-500">{profile?.email}</span>

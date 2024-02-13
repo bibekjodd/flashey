@@ -1,8 +1,8 @@
 import { useUserMutation } from '@/hooks/mutations/useUserMutation';
 import { useProfile } from '@/hooks/queries/userProfile';
-import { dummyUserImage } from '@/lib/constants';
 import React, { useState } from 'react';
 import { BiLoader } from 'react-icons/bi';
+import Avatar from '../ui/avatar';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -45,11 +45,7 @@ export default function UpdateProfileModal({ children }: Props) {
           children
         ) : (
           <button>
-            <img
-              src={profile?.image || dummyUserImage}
-              alt="profile image"
-              className="h-10 w-10 rounded-full object-cover"
-            />
+            <Avatar src={profile?.image} />
           </button>
         )}
       </DialogTrigger>

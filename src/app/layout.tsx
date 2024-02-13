@@ -1,3 +1,4 @@
+import Sidebar from '@/components/sidebar';
 import AuthProvider from '@/providers/auth-provider';
 import QueryProvider from '@/providers/query-provider';
 import type { Metadata } from 'next';
@@ -27,7 +28,14 @@ export default function RootLayout({
             richColors
             closeButton
           />
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <div className="flex">
+              <div>
+                <Sidebar />
+              </div>
+              {children}
+            </div>
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>
