@@ -44,7 +44,7 @@ export const Message = memo(function Component({
           <div className="relative flex-grow">
             {message.text && (
               <p
-                className={`whitespace-pre-wrap rounded-full px-4 py-2 text-sm ${isSent ? ' bg-rose-500 text-white ' : 'bg-gray-200/60 text-black'}`}
+                className={`whitespace-pre-wrap rounded-full px-4 py-2 text-sm ${isSent ? ' rounded-tr-none bg-rose-500 text-white' : 'rounded-tl-none bg-gray-200/60 text-black'}`}
               >
                 {message.text}
               </p>

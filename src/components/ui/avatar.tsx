@@ -1,7 +1,7 @@
 import { dummyUserImage } from '@/lib/constants';
 
 type Props = {
-  variant?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  variant?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   src: string | undefined | null;
   isOnline?: boolean;
 };
