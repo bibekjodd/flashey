@@ -22,3 +22,20 @@ type Chat = {
     senderId: string;
   } | null;
 };
+
+type Message = {
+  id: string;
+  text: string | null;
+  image: string | null;
+  chatId: string;
+  senderId: string;
+  isEdited: boolean;
+  sentAt: string;
+  totalViews: number;
+  totalReactions: number;
+  viewers: string[];
+  reactions: ({
+    userId: string | null;
+    reaction: string | null;
+  } | null)[];
+};

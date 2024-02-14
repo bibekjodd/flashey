@@ -48,10 +48,10 @@ const Chat = memo(function Component({ chat }: ChatItemProps) {
   return (
     <Link
       href={chatLink}
-      className={`group flex w-full items-center space-x-3 rounded-lg p-2 text-left hover:bg-gray-200/40 focus:bg-gray-200/40 focus:outline-none ${pathname === chatLink ? 'bg-gray-200/40' : ''}`}
+      className={`group flex w-full items-center space-x-3 rounded-lg p-2 text-left transition hover:bg-gray-200/40 focus:bg-gray-200/40 focus:outline-none active:bg-gray-200/20 ${pathname === chatLink ? 'bg-gray-200/40' : ''}`}
     >
       <Avatar src={getChatImage(chat, profile?.id)} />
-      <section className="relative flex flex-col">
+      <section className="relative flex flex-grow flex-col">
         <span className="line-clamp-1 font-semibold">
           {getChatTitle(chat, profile?.id)}
         </span>

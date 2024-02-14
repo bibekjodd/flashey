@@ -34,7 +34,10 @@ export function DeleteAccountDialog({ children }: Props) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => mutate({ type: 'delete-profile' })}>
+          <AlertDialogAction
+            className="bg-destructive hover:bg-destructive"
+            onClick={() => mutate({ type: 'delete-profile' })}
+          >
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>

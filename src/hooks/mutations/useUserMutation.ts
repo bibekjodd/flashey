@@ -2,13 +2,18 @@ import { backend_url } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 export const useUserMutation = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationKey: ['mutate-user'],
     mutationFn: mutateUser,
+    onMutate() {
+      router.replace('/');
+    },
     onSuccess(user, { type, data }) {
       queryClient.setQueryData(['profile'], user);
       if (type === 'update-profile' && !user) {

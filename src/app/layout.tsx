@@ -20,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={`${inter.className} h-screen min-h-screen overflow-y-auto`}
+      >
         <QueryProvider>
           <Toaster
             toastOptions={{ duration: 3000 }}
@@ -29,11 +31,9 @@ export default function RootLayout({
             closeButton
           />
           <AuthProvider>
-            <div className="flex">
-              <div>
-                <Sidebar />
-              </div>
-              {children}
+            <div className="flex h-full">
+              <Sidebar />
+              <div className="flex-grow">{children}</div>
             </div>
           </AuthProvider>
         </QueryProvider>

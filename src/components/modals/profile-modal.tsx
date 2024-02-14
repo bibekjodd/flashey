@@ -6,11 +6,13 @@ import Avatar from '../ui/avatar';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '../ui/dialog';
 import UpdateProfileModal from './update-profile-modal';
+import { Button } from '../ui/button';
 
 type Props = {
   children?: React.ReactNode;
@@ -44,23 +46,23 @@ export default function ProfileModal({ children }: Props) {
           </div>
         </div>
 
-        <div className="flex space-x-2 text-sm font-medium">
+        {/* <div className="flex space-x-2 text-sm font-medium"> */}
+        <DialogFooter className="flex">
           <UpdateProfileModal>
-            <button className="rounded-md bg-green-100 px-4 py-2 text-green-700">
+            <Button className="bg-green-100 text-green-700 hover:bg-green-100">
               Update Profile
-            </button>
+            </Button>
           </UpdateProfileModal>
           <LogoutDialog>
-            <button className="rounded-md bg-red-100 px-4 py-2 text-red-700">
+            <Button className="bg-rose-100 text-rose-700 hover:bg-rose-100">
               Logout
-            </button>
+            </Button>
           </LogoutDialog>
           <DeleteAccountDialog>
-            <button className="rounded-md bg-red-100 px-4 py-2 text-red-700">
-              Delete Account
-            </button>
+            <Button variant="destructive">Delete Account</Button>
           </DeleteAccountDialog>
-        </div>
+        </DialogFooter>
+        {/* </div> */}
       </DialogContent>
     </Dialog>
   );

@@ -29,7 +29,10 @@ export function LogoutDialog({ children }: Props) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => mutate({ type: 'logout' })}>
+          <AlertDialogAction
+            onClick={() => mutate({ type: 'logout' })}
+            className="bg-destructive"
+          >
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>
