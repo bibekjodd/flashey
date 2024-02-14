@@ -46,7 +46,6 @@ export default function ProfileModal({ children }: Props) {
           </div>
         </div>
 
-        {/* <div className="flex space-x-2 text-sm font-medium"> */}
         <DialogFooter className="flex">
           <UpdateProfileModal>
             <Button className="bg-green-100 text-green-700 hover:bg-green-100">
@@ -62,7 +61,6 @@ export default function ProfileModal({ children }: Props) {
             <Button variant="destructive">Delete Account</Button>
           </DeleteAccountDialog>
         </DialogFooter>
-        {/* </div> */}
       </DialogContent>
     </Dialog>
   );

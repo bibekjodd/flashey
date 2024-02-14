@@ -36,6 +36,16 @@ type Message = {
   viewers: string[];
   reactions: ({
     userId: string | null;
-    reaction: string | null;
+    reaction: Reaction;
   } | null)[];
 };
+
+type Reaction =
+  | 'wow'
+  | 'like'
+  | 'love'
+  | 'haha'
+  | 'angry'
+  | 'wow'
+  | 'sad'
+  | null;
