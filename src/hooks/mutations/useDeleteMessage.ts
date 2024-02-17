@@ -36,7 +36,14 @@ export const useDeleteMessage = ({
         ...oldMessagesData,
         pages: updatedMessages
       });
+
       return oldMessagesData;
+    },
+    onSuccess() {
+      queryClient.setQueryData(
+        ['chat', chatId],
+        (data: Chat): Chat => ({ ...data, lastMessage: null })
+      );
     },
     onError(err, variables, oldMessagesData) {
       queryClient.setQueryData(['messages', chatId], oldMessagesData);

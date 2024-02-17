@@ -19,50 +19,51 @@ import {
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 
-export default function CreateGroup() {
+type Props = {
+  children?: React.ReactNode;
+};
+export default function CreateGroup({ children }: Props) {
   const [query, setQuery] = useState('');
-  const [title, setTitle] = useState('');
-  const [participants, setParticipants] = useState<User[]>([]);
+  const [name, setTitle] = useState('');
+  const [members, setMembers] = useState<User[]>([]);
   const isSearchEnabled = useDebounce(query, 250);
   const { data } = useSearch(query, isSearchEnabled);
   const { mutate, isPending } = useCreateGroup();
   const searchResults = data?.pages.flat(1);
 
-  const addParticipant = (user: User) => {
-    setParticipants([...participants, user]);
+  const addMember = (user: User) => {
+    setMembers([...members, user]);
   };
 
-  const remmoveParticipant = (user: User) => {
-    const otherParticipants = participants.filter(
-      (participant) => participant.id !== user.id
-    );
-    setParticipants([...otherParticipants]);
+  const remmoveMember = (user: User) => {
+    const otherMembers = members.filter((member) => member.id !== user.id);
+    setMembers([...otherMembers]);
   };
 
   const createGroup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isPending) return;
-    if (!title) {
+    if (!name) {
       toast.dismiss();
-      toast.error('Add a group title to create group');
+      toast.error('Add a group name to create group');
       return;
     }
 
-    if (!participants.length) {
+    if (!members.length) {
       toast.dismiss();
-      toast.error('Groupt must have at least 2 participants');
+      toast.error('Groupt must have at least 2 members');
       return;
     }
 
-    const participantsId = participants.map((participant) => participant.id);
+    const membersId = members.map((member) => member.id);
     mutate(
-      { title, participants: participantsId },
+      { name, members: membersId },
       {
         onSuccess() {
           document.getElementById('close-create-group')?.click();
           setQuery('');
           setTitle('');
-          setParticipants([]);
+          setMembers([]);
         }
       }
     );
@@ -71,9 +72,13 @@ export default function CreateGroup() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="p-2 text-gray-800">
-          <UserGroupIcon className="h-5 w-5" />
-        </button>
+        {children ? (
+          children
+        ) : (
+          <button className="p-2 text-gray-800">
+            <UserGroupIcon className="h-5 w-5" />
+          </button>
+        )}
       </DialogTrigger>
 
       <DialogContent>
@@ -83,26 +88,26 @@ export default function CreateGroup() {
 
         <form onSubmit={createGroup} className="flex flex-col space-y-3">
           <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
+            <Label htmlFor="name">Title</Label>
             <Input
-              placeholder="Enter group title..."
-              value={title}
+              placeholder="Enter group name..."
+              value={name}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
-          {/* participants */}
-          {participants.length > 0 && (
+          {/* members */}
+          {members.length > 0 && (
             <section className="space-y-1">
               <Label>Added members:</Label>
               <div className="flex w-full flex-wrap">
-                {participants.map((participant) => (
+                {members.map((member) => (
                   <div
-                    key={participant.id}
-                    onClick={() => remmoveParticipant(participant)}
+                    key={member.id}
+                    onClick={() => remmoveMember(member)}
                     className="p-2"
                   >
-                    <Avatar src={participant.image} variant="sm" />
+                    <Avatar src={member.image} variant="sm" />
                   </div>
                 ))}
               </div>
@@ -110,7 +115,7 @@ export default function CreateGroup() {
           )}
 
           <section className="space-y-2">
-            <Label htmlFor="title">Add Members</Label>
+            <Label htmlFor="name">Add Members</Label>
             <Input
               placeholder="Search users..."
               value={query}
@@ -123,14 +128,12 @@ export default function CreateGroup() {
             <section className="flex h-fit max-h-[200px] flex-col overflow-y-auto py-3">
               <Label className="mb-2">Search results</Label>
               {searchResults?.map((user) => {
-                const isUserAdded = participants.find(
-                  ({ id }) => id === user.id
-                );
+                const isUserAdded = members.find(({ id }) => id === user.id);
                 if (isUserAdded) return null;
                 return (
                   <div
                     key={user.id}
-                    onClick={() => addParticipant(user)}
+                    onClick={() => addMember(user)}
                     className="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-gray-200/50"
                   >
                     <Avatar src={user.image} variant="sm" />

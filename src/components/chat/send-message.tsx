@@ -30,7 +30,7 @@ export default function SendMessage({ chatId }: Props) {
     <section className="sticky bottom-0 left-0 bg-white/90 backdrop-blur-3xl">
       <form
         onSubmit={sendMessage}
-        className="flex h-16 items-center space-x-3 border-t-2 px-4 py-2 md:h-20"
+        className="flex h-16 items-center space-x-3 border-t-2 border-neutral-200/50 px-4 py-2 md:h-20"
       >
         <input
           type="file"

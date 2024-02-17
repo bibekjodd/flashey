@@ -28,10 +28,8 @@ export const getChatTitle = (
   chat: Chat,
   userId: string | undefined | null
 ): string => {
-  if (chat.isGroupChat) return chat.title || 'Group Chat';
-  const otherUser = chat.participants.find(
-    (participant) => participant.id !== userId
-  );
+  if (chat.isGroupChat) return chat.name || 'Group Chat';
+  const otherUser = chat.members.find((member) => member.id !== userId);
   return otherUser?.name || 'Chat';
 };
 
@@ -40,8 +38,6 @@ export const getChatImage = (
   userId: string | undefined | null
 ): string => {
   if (chat.isGroupChat) return chat.image || dummyGroupImage;
-  const otherUser = chat.participants.find(
-    (participant) => participant.id !== userId
-  );
+  const otherUser = chat.members.find((member) => member.id !== userId);
   return otherUser?.image || dummyUserImage;
 };

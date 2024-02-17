@@ -10,7 +10,7 @@ export default function Messages({ chat }: Props) {
   const messages = data?.pages.flat(1) || [];
 
   return (
-    <ul className="flex h-full flex-col-reverse overflow-y-auto bg-neutral-50/30 p-4">
+    <ul className="flex h-full w-full flex-col-reverse overflow-y-auto overflow-x-hidden bg-neutral-50/30 p-4">
       <AnimatePresence initial={false} mode="popLayout">
         {messages?.map((message) => (
           <motion.li
@@ -24,6 +24,7 @@ export default function Messages({ chat }: Props) {
             }}
             transition={{
               type: 'spring',
+              stiffness: 90,
               opacity: { duration: 0.2 }
             }}
           >

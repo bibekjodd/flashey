@@ -1,31 +1,26 @@
 import { backend_url } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { InfiniteData, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-export const useChat = (chatId: string, isGroupChat: boolean) => {
+export const useChat = (chatId: string, isGroupChat: boolean | undefined) => {
   const queryClient = useQueryClient();
   return useQuery({
     queryKey: ['chat', chatId],
-    queryFn: () => fetchChat(chatId, isGroupChat),
-    initialData() {
-      const allChats = queryClient.getQueryData(['chats']) as
-        | { pages: Chat[][] }
+    queryFn: () => fetchChat(chatId, isGroupChat || false),
+    initialData(): Chat | undefined {
+      const chatsData = queryClient.getQueryData(['chats']) as
+        | InfiniteData<Chat[]>
         | undefined;
-
-      if (allChats) {
-        for (const page of allChats.pages) {
-          const chat = page.find((chat) => chat.id === chatId);
-          if (chat) return chat;
-        }
-      }
-
-      return undefined;
+      if (!chatsData) return undefined;
+      const allChats = chatsData.pages.flat(1);
+      const chat = allChats.find((chat) => chat.id === chatId);
+      return chat || undefined;
     }
   });
 };
 
-const fetchChat = async (
+export const fetchChat = async (
   chatId: string,
   isGroupChat: boolean
 ): Promise<Chat> => {

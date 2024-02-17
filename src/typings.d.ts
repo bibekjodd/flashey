@@ -5,12 +5,13 @@ type User = {
   image: string | null;
   role: 'user' | 'admin';
   createdAt: string | null;
+  lastOnline: string;
 };
 
 type Chat = {
-  participants: User[];
+  members: User[];
   id: string;
-  title: string | null;
+  name: string | null;
   image: string | null;
   admin: string;
   isGroupChat: boolean;
@@ -34,10 +35,10 @@ type Message = {
   totalViews: number;
   totalReactions: number;
   viewers: string[];
-  reactions: ({
+  reactions: {
     userId: string | null;
     reaction: Reaction;
-  } | null)[];
+  }[];
 };
 
 type Reaction =

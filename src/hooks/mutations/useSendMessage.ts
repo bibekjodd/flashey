@@ -2,9 +2,11 @@ import { backend_url } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { useProfile } from '../queries/userProfile';
 
 export const useSendMessage = (chatId: string) => {
   const queryClient = useQueryClient();
+  const { data: profile } = useProfile();
 
   return useMutation({
     mutationKey: ['send-message', chatId],
@@ -24,10 +26,21 @@ export const useSendMessage = (chatId: string) => {
           const [firstPage, ...restPages] = data.pages;
           return {
             ...data,
-            pages: [[message, ...firstPage], ...restPages]
+            pages: [[message, ...(firstPage || [])], ...restPages]
           };
         }
       );
+
+      queryClient.setQueryData(['chat', chatId], (data: Chat): Chat => {
+        return {
+          ...data,
+          lastMessage: {
+            sender: profile?.name!,
+            message: message.text || 'sent an image',
+            senderId: profile?.id!
+          }
+        };
+      });
     }
   });
 };

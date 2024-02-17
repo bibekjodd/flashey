@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Toaster } from 'sonner';
 import './globals.css';
+import RealtimeListener from '@/components/realtime-listener';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
             richColors
             closeButton
           />
+          <RealtimeListener />
           <AuthProvider>
             <div className="flex h-full">
               <Sidebar />

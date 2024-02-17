@@ -20,7 +20,7 @@ export const useCreateGroup = () => {
           const [firstPage, ...restPages] = data.pages;
           return {
             ...data,
-            pages: [[chat, ...firstPage], ...restPages]
+            pages: [[chat, ...(firstPage || [])], ...restPages]
           };
         }
       );
@@ -29,8 +29,8 @@ export const useCreateGroup = () => {
 };
 
 type Options = {
-  title: string;
-  participants: string[];
+  name: string;
+  members: string[];
 };
 const createGroup = async (options: Options): Promise<Chat> => {
   try {

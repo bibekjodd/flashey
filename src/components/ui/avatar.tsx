@@ -7,9 +7,9 @@ type Props = {
 };
 export default function Avatar({ src, variant, isOnline }: Props) {
   return (
-    <div className="relative inline h-fit w-fit">
+    <div className="inline h-fit w-fit">
       <div
-        className={`
+        className={`relative
         ${variant === 'sm' ? 'h-8 w-8' : ''}
         ${variant === 'md' || !variant ? 'h-10 w-10' : ''}
         ${variant === 'lg' ? 'h-12 w-12' : ''}
@@ -23,7 +23,11 @@ export default function Avatar({ src, variant, isOnline }: Props) {
           className={`h-full w-full rounded-full object-cover`}
         />
         {isOnline && (
-          <div className="absolute right-0.5 top-0.5 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white" />
+          <div
+            className={`absolute right-0.5 top-0.5 rounded-full bg-green-500 ring-2 ring-white
+          ${variant === 'sm' ? 'h-2 w-2' : 'h-2.5 w-2.5'}
+          `}
+          />
         )}
       </div>
     </div>

@@ -1,10 +1,8 @@
 import { useProfile } from '@/hooks/queries/userProfile';
 import { getChatImage, getChatTitle } from '@/lib/utils';
-import {
-  ArrowLeftIcon,
-  EllipsisVerticalIcon
-} from '@heroicons/react/24/outline';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import ChatModal from '../modals/chat-modal';
 import Avatar from '../ui/avatar';
 
 type Props = { chat: Chat };
@@ -22,14 +20,12 @@ export default function ChatHeader({ chat }: Props) {
         </span>
         {chat.isGroupChat && (
           <span className="line-clamp-1 text-sm text-gray-600">
-            {chat.participants.length} members
+            {chat.members.length} members
           </span>
         )}
       </div>
-
-      <button className="ml-auto h-full px-3">
-        <EllipsisVerticalIcon className="h-5 w-5" />
-      </button>
+      {/* {chat.isGroupChat && <ChatModal chat={chat} />} */}
+      <ChatModal chat={chat} />
     </header>
   );
 }

@@ -1,6 +1,6 @@
 export default function page() {
   return (
-    <div>
+    <div className="hidden lg:block">
       <h1>Flashey</h1>
     </div>
   );
