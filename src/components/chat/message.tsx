@@ -30,7 +30,7 @@ export const Message = memo(function Component({
         className={`flex flex-grow flex-col space-y-2 ${isSent ? 'items-end' : 'items-start'}`}
       >
         <div className={`flex items-center space-x-2`}>
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {sender?.name}
           </span>
           <span className="text-xs text-gray-400">
@@ -44,7 +44,7 @@ export const Message = memo(function Component({
           <div className="relative flex-grow">
             {message.text && (
               <p
-                className={`whitespace-pre-wrap rounded-full px-4 py-2 text-sm ${isSent ? ' rounded-tr-none bg-rose-500 text-white' : 'rounded-tl-none bg-gray-200/60 text-black'}`}
+                className={`whitespace-pre-wrap rounded-full px-4 py-2 text-sm ${isSent ? ' rounded-tr-none bg-rose-500 text-white dark:bg-rose-600' : 'rounded-tl-none bg-gray-200/60 text-black dark:bg-gray-200'}`}
               >
                 {message.text}
               </p>
@@ -52,7 +52,7 @@ export const Message = memo(function Component({
             {message.image && <img src={message.image} alt="image" />}
             {message.reactions.length > 0 && (
               <div
-                className={`absolute right-3 top-full -m-2 w-fit rounded-full bg-white p-0 text-sm`}
+                className={`absolute right-3 top-full -m-2 w-fit rounded-full bg-white p-0 text-sm dark:bg-gray-200`}
               >
                 {message.reactions.slice(0, 3).map((reaction) => (
                   <span key={reaction?.userId}>

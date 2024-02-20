@@ -2,7 +2,6 @@ import {
   EVENTS,
   MessageDeletedResponse,
   MessageSeenResponse,
-  MessageSentResponse,
   ReactionAddedResponse
 } from '@/lib/events';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
@@ -23,25 +22,6 @@ export const useRealtimeMessages = ({
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    /* on send message */
-    channel.bind(EVENTS.MESSAGE_SENT, (message: MessageSentResponse) => {
-      const oldMessagesData = queryClient.getQueryData<
-        InfiniteData<Message[]> | undefined
-      >(['messages', chatId]) || { pages: [], pageParams: [] };
-
-      const firstPage = (oldMessagesData.pages[0] || []).filter(
-        ({ id }) => id !== message.id
-      );
-      queryClient.setQueryData<InfiniteData<Message[]>>(['messages', chatId], {
-        ...oldMessagesData,
-        pages: [
-          [message, ...(firstPage || [])],
-          ...oldMessagesData.pages.slice(1)
-        ]
-      });
-      //
-    });
-
     /* on message seen */
     channel.bind(
       EVENTS.MESSAGE_SEEN,

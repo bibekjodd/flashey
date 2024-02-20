@@ -22,10 +22,10 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`flex h-full w-full flex-col overflow-y-auto border-neutral-200/50 pb-0 scrollbar-thin lg:w-[360px] lg:border-r-2
+      className={`flex h-full w-full flex-col overflow-y-auto border-neutral-200/50 pb-0 scrollbar-thin dark:border-neutral-600/50 dark:bg-neutral-900 lg:w-[360px] lg:border-r-2
          ${pathname === '/' ? '' : 'hidden w-0 lg:flex'}`}
     >
-      <section className="sticky left-0 top-0 z-10 space-y-3 bg-white/90 px-4 pt-4 filter backdrop-blur-3xl">
+      <section className="sticky left-0 top-0 z-10 space-y-3 bg-white/90 px-4 pt-4 filter backdrop-blur-3xl dark:bg-neutral-900">
         <div className="flex items-center justify-between">
           <Link href="/" className="pt-1 text-2xl font-bold">
             Flashey
@@ -48,31 +48,31 @@ export default function Sidebar() {
         </div>
       </section>
 
-      <section className="sticky bottom-0 left-0 border-neutral-200/50 bg-white/90 text-xs font-medium text-gray-900 filter backdrop-blur-3xl">
-        <div className="my-auto flex h-20 items-center space-x-0.5 px-4">
+      <section className="sticky bottom-0 left-0 border-neutral-200/50 bg-white/90 text-xs font-medium text-gray-900 filter backdrop-blur-3xl dark:bg-neutral-900/50 dark:text-white">
+        <div className="my-auto flex h-20 items-center space-x-0.5 py-2">
           <button
             onClick={() => setActiveTab('friends')}
-            className={`flex h-full flex-1 flex-col items-center justify-center space-y-2 rounded-lg py-2 transition hover:bg-gray-200/40 active:scale-95
-          ${activeTab === 'friends' ? 'bg-gray-200/40' : ''}
+            className={`flex h-full flex-1 flex-col items-center justify-center space-y-2 rounded-lg py-2 transition hover:bg-gray-200/40  active:scale-95 dark:hover:bg-neutral-700/50
+          ${activeTab === 'friends' ? 'bg-gray-200/40 dark:bg-neutral-700/50' : ''}
           `}
           >
-            <UsersIcon className="h-5 w-5 text-gray-700" />
+            <UsersIcon className="h-5 w-5 text-gray-700 dark:text-neutral-200" />
             <span>Friends</span>
           </button>
 
           <button
             onClick={() => setActiveTab('chat')}
-            className={`flex h-full flex-1 flex-col items-center justify-center space-y-2 rounded-lg py-2 transition hover:bg-gray-200/40 active:scale-95
-          ${activeTab === 'chat' ? 'bg-gray-200/40' : ''}
+            className={`flex h-full flex-1 flex-col items-center justify-center space-y-2 rounded-lg py-2 transition hover:bg-gray-200/40  active:scale-95 dark:hover:bg-neutral-700/50
+          ${activeTab === 'chat' ? 'bg-gray-200/40 dark:bg-neutral-700/50' : ''}
           `}
           >
-            <ChatBubbleOvalLeftIcon className="h-5 w-5 text-gray-700" />
+            <ChatBubbleOvalLeftIcon className="h-5 w-5 text-gray-700 dark:text-neutral-200" />
             <span>Chat</span>
           </button>
 
           <CreateGroup>
-            <button className="flex h-full flex-1 flex-col items-center justify-center space-y-2 rounded-lg py-2 transition hover:bg-gray-200/40 active:scale-95">
-              <UserGroupIcon className="h-5 w-5 text-gray-700" />
+            <button className="flex h-full flex-1 flex-col items-center justify-center space-y-2 rounded-lg py-2 transition hover:bg-gray-200/40  active:scale-95 dark:hover:bg-neutral-700/50">
+              <UserGroupIcon className="h-5 w-5 text-gray-700 dark:text-neutral-200" />
               <span>Create Group</span>
             </button>
           </CreateGroup>

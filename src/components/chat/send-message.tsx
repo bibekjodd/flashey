@@ -27,10 +27,10 @@ export default function SendMessage({ chatId }: Props) {
   };
 
   return (
-    <section className="sticky bottom-0 left-0 bg-white/90 backdrop-blur-3xl">
+    <section className="sticky bottom-0 left-0 bg-white/90 backdrop-blur-3xl dark:bg-neutral-900/50">
       <form
         onSubmit={sendMessage}
-        className="flex h-16 items-center space-x-3 border-t-2 border-neutral-200/50 px-4 py-2 md:h-20"
+        className="flex h-16 items-center space-x-3 border-t-2 border-neutral-200/50 px-4 py-2 dark:border-neutral-700/50 md:h-20"
       >
         <input
           type="file"
@@ -47,7 +47,7 @@ export default function SendMessage({ chatId }: Props) {
           placeholder="Write a text..."
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="h-10 w-full rounded-full bg-neutral-100 px-5 disabled:opacity-50"
+          className="h-10 w-full rounded-full bg-neutral-100 px-5 disabled:opacity-50 dark:bg-neutral-700/30"
         />
         <button
           disabled={!text || isPending}

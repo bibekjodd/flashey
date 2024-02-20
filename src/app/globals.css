@@ -76,12 +76,6 @@
 }
 
 input,
-textarea,
-button {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-input,
 textarea {
   width: 100%;
   background: transparent;

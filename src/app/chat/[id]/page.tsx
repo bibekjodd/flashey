@@ -4,23 +4,18 @@ import Messages from '@/components/chat/messages';
 import SendMessage from '@/components/chat/send-message';
 import { useChat } from '@/hooks/queries/useChat';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 type Props = {
   params: {
-    'chat-type': string;
     id: string;
   };
 };
 export default function Page({ params }: Props) {
-  const isGroupChat = params['chat-type'] === 'group';
   const chatId = params.id;
-  if (!['messages', 'group'].includes(params['chat-type'])) {
-    redirect('/');
-  }
-  const { data: chat, error } = useChat(chatId, isGroupChat);
+  const { data: chat, error, isFetching } = useChat(chatId);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,7 +24,10 @@ export default function Page({ params }: Props) {
       toast.dismiss();
       toast.error(error.message);
     }
-  }, [chat, error, router]);
+    if (!isFetching && !chat) {
+      router.replace('/');
+    }
+  }, [chat, error, router, isFetching]);
 
   if (!chat) return null;
   return <Main chat={chat} />;
@@ -56,7 +54,7 @@ function Main({ chat }: { chat: Chat }) {
   }, [queryClient, chat]);
 
   return (
-    <main className="flex h-full w-full flex-col">
+    <main className="flex h-full w-full flex-col dark:bg-neutral-900">
       <ChatHeader chat={chat} />
       <div className="flex-grow overflow-y-auto">
         <Messages chat={chat} />

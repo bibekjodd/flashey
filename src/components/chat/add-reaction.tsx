@@ -31,7 +31,7 @@ export default function AddReaction({
     <Popover onOpenChange={(isOpen) => setIsPopoverOpen(isOpen)}>
       <PopoverTrigger id={`reaction-button-${message.id}`} asChild>
         <button>
-          <FaceSmileIcon className="h-5 w-5" />
+          <FaceSmileIcon className="h-5 w-5 dark:text-gray-200" />
         </button>
       </PopoverTrigger>
 
@@ -53,7 +53,9 @@ export default function AddReaction({
             onClick={() => addOrRemoveReaction(null)}
             className="inline-flex items-center"
           >
-            <span className="text-sm text-gray-800">Remove</span>{' '}
+            <span className="mr-0.5 text-sm text-gray-800 dark:text-gray-100">
+              Remove
+            </span>
             {emojis[myReaction.reaction]}
           </button>
         )}

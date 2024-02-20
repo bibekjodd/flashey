@@ -93,6 +93,7 @@ export default function CreateGroup({ children }: Props) {
               placeholder="Enter group name..."
               value={name}
               onChange={(e) => setTitle(e.target.value)}
+              className="dark:border-white/30"
             />
           </div>
 
@@ -120,6 +121,7 @@ export default function CreateGroup({ children }: Props) {
               placeholder="Search users..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              className="dark:border-white/30"
             />
           </section>
 
@@ -134,7 +136,7 @@ export default function CreateGroup({ children }: Props) {
                   <div
                     key={user.id}
                     onClick={() => addMember(user)}
-                    className="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-gray-200/50"
+                    className="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-gray-200/50 active:scale-95 dark:hover:bg-neutral-700/50"
                   >
                     <Avatar src={user.image} variant="sm" />
                     <p className="line-clamp-1 text-sm font-medium">

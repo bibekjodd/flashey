@@ -24,7 +24,7 @@ export default function DeleteMessage({
     <Popover onOpenChange={(isOpen) => setIsPopoverOpen(isOpen)}>
       <PopoverTrigger asChild>
         <button>
-          <EllipsisVerticalIcon className="h-5 w-5" />
+          <EllipsisVerticalIcon className="h-5 w-5 dark:text-gray-200" />
         </button>
       </PopoverTrigger>
       <PopoverContent

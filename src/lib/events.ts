@@ -1,10 +1,9 @@
 export const EVENTS = {
-  GROUP_CREATED: 'group-created',
-  ADDED_TO_GROUP: 'added-to-group',
-  GROUP_UPDATED: 'group-updated',
-  REMOVED_FROM_GROUP: 'removed-from-group',
-  GROUP_DELETED: 'group-deleted',
+  ADDED_TO_CHAT: 'added-to-chat',
+  CHAT_UPDATED: 'chat-updated',
+  CHAT_DELETED: 'chat-deleted',
 
+  MESSAGE_TYPING: 'message-typing',
   MESSAGE_SENT: 'message-sent',
   MESSAGE_SEEN: 'message-seen',
   REACTION_ADDED: 'reaction-added',
@@ -13,22 +12,16 @@ export const EVENTS = {
   USER_ONLINE: 'user-online'
 };
 
-export type GroupCreatedResponse = {
+export type AddedToChatResponse = {
   chatId: string;
 };
-export type AddedToGroupResponse = {
-  chatId: string;
-};
-export type GroupUpdatedResponse = {
+export type ChatUpdatedResponse = {
   name?: string;
   image?: string | null;
   removedMembersId?: string[];
   addedMembersId?: string[];
 };
-export type RemovedFromGroupResponse = {
-  removedMembersId: string[];
-};
-export type GroupDeletedResponse = unknown;
+export type ChatDeletedResponse = unknown;
 export type MessageSentResponse = Message;
 export type MessageSeenResponse = {
   messageId: string;
