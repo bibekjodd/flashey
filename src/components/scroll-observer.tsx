@@ -27,6 +27,6 @@ function ScrollObserver({ fetchNextPage, isFetching, hasNextPage }: Props) {
     };
   }, [observerRef, fetchNextPage, hasNextPage, isFetching]);
 
-  return <div ref={observerRef} />;
+  return <span ref={observerRef} />;
 }
 export default memo(ScrollObserver);

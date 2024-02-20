@@ -8,10 +8,12 @@ import { formatRelative } from 'date-fns';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { memo } from 'react';
+import ScrollObserver from '../scroll-observer';
 import Avatar from '../ui/avatar';
 
 export default function ChatsList() {
-  const { data, isLoading } = useChats();
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
+    useChats();
   const chats = data?.pages.flat(1) || [];
 
   return (
@@ -34,6 +36,11 @@ export default function ChatsList() {
         {chats.map((chat) => (
           <Chat key={chat.id} chatId={chat.id} />
         ))}
+        <ScrollObserver
+          fetchNextPage={fetchNextPage}
+          isFetching={isFetching}
+          hasNextPage={hasNextPage}
+        />
       </div>
     </section>
   );
