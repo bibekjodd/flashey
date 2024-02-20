@@ -17,9 +17,8 @@ export const useDeleteChat = (chatId: string) => {
     mutationFn: () => deleteChat(chatId),
     onSuccess() {
       router.replace('/');
-
-      queryClient.setQueryData(['chat', chatId], null);
-      queryClient.setQueryData(['messages', chatId], null);
+      queryClient.removeQueries({ queryKey: ['chat', chatId] });
+      queryClient.removeQueries({ queryKey: ['messages', chatId] });
       const oldChatsData = queryClient.getQueryData<
         InfiniteData<Chat[]> | undefined
       >(['chats']) || { pages: [], pageParams: [] };

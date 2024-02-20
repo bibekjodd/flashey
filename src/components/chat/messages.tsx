@@ -1,12 +1,13 @@
 import { useMessages } from '@/hooks/queries/useMessages';
 import { useProfile } from '@/hooks/queries/userProfile';
 import { AnimatePresence, motion } from 'framer-motion';
+import ScrollObserver from '../scroll-observer';
 import { Message } from './message';
 
 type Props = { chat: Chat };
 export default function Messages({ chat }: Props) {
   const { data: profile } = useProfile();
-  const { data } = useMessages(chat.id);
+  const { data, fetchNextPage, isFetching, hasNextPage } = useMessages(chat.id);
   const messages = data?.pages.flat(1) || [];
 
   return (
@@ -32,6 +33,11 @@ export default function Messages({ chat }: Props) {
           </motion.li>
         ))}
       </AnimatePresence>
+      <ScrollObserver
+        fetchNextPage={fetchNextPage}
+        isFetching={isFetching}
+        hasNextPage={hasNextPage}
+      />
     </ul>
   );
 }

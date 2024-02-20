@@ -1,5 +1,6 @@
 'use client';
 import { useSearch } from '@/hooks/queries/useSearch';
+import { useProfile } from '@/hooks/queries/userProfile';
 import { useDebounce } from '@/hooks/useDebounce';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -10,6 +11,7 @@ import { Input } from '../ui/input';
 export default function Search() {
   const [query, setQuery] = useState('');
   const searchEnabled = useDebounce(query, 300);
+  const { data: profile } = useProfile();
   const { data, isLoading, isFetching, isPending, error } = useSearch(
     query,
     searchEnabled
@@ -47,19 +49,23 @@ export default function Search() {
               {error.message}
             </p>
           )}
-          {searchResults.map((result) => (
-            <Link
-              onClick={() => {
-                setQuery('');
-              }}
-              href={`/messages/${result.id}`}
-              key={result.id}
-              className="flex items-center space-x-2 rounded-md p-2 text-sm font-medium hover:bg-neutral-100 dark:bg-neutral-700/20 dark:hover:bg-neutral-700/50"
-            >
-              <Avatar src={result.image} />
-              <span>{result.name}</span>
-            </Link>
-          ))}
+          {searchResults.map((result) => {
+            const chatId = [profile?.id, result.id].sort().join('');
+            const chatLink = `/chat/${chatId}`;
+            return (
+              <Link
+                onClick={() => {
+                  setQuery('');
+                }}
+                href={chatLink}
+                key={result.id}
+                className="flex items-center space-x-2 rounded-md p-2 text-sm font-medium hover:bg-neutral-100 dark:bg-neutral-700/20 dark:hover:bg-neutral-700/50"
+              >
+                <Avatar src={result.image} />
+                <span>{result.name}</span>
+              </Link>
+            );
+          })}
         </div>
       )}
     </section>
