@@ -7,19 +7,22 @@ export const useChats = () => {
   return useInfiniteQuery({
     queryKey: ['chats'],
     queryFn: ({ pageParam }) => fetchChats(pageParam),
-    initialPageParam: 1,
-    getNextPageParam(lastPage, allPages, lastPageParam) {
-      if (!lastPage || lastPage.length < 10) return undefined;
-      return lastPageParam + 1;
+    initialPageParam: new Date().toISOString(),
+    getNextPageParam(lastPage) {
+      const cursor = lastPage[lastPage.length - 1]?.updatedAt;
+      return cursor || undefined;
     }
   });
 };
 
-const fetchChats = async (page: number): Promise<Chat[]> => {
+const fetchChats = async (cursor: string): Promise<Chat[]> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/chats?page=${page}`, {
-      withCredentials: true
-    });
+    const { data } = await axios.get(
+      `${backend_url}/api/chats?cursor=${cursor}&limit=10`,
+      {
+        withCredentials: true
+      }
+    );
     return data.chats;
   } catch (error) {
     throw new Error(extractErrorMessage(error));

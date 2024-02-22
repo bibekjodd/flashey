@@ -1,24 +1,25 @@
 'use client';
-
 import { useChats } from '@/hooks/queries/useChats';
 import { useRealtimeChat } from '@/hooks/useRealtimeChat';
-import { useRealtimeMessages } from '@/hooks/useRealtimeMessages';
 import { useRealtimeUpdates } from '@/hooks/useRealtimeUpdates';
 import { pusher } from '@/lib/pusher';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 
 export default function RealtimeListener() {
   useRealtimeUpdates();
   const { data } = useChats();
-  const chats = data?.pages.flat(1) || [];
+  const chats = useMemo(() => data?.pages.flat(1) || [], [data?.pages]);
+  const [chatIds, setChatIds] = useState<string[]>([]);
 
-  const chatIds = chats.map((chat) => chat.id);
+  useEffect(() => {
+    const allChatIds = chats.map((chat) => chat.id).sort();
+    const isChanged = chatIds.join('') === allChatIds.join('');
+    if (isChanged) setChatIds(allChatIds);
+  }, [chats, chatIds]);
 
   useEffect(() => {
     return () => {
-      for (const id of chatIds) {
-        pusher.unsubscribe(id);
-      }
+      for (const id of chatIds) pusher.unsubscribe(id);
     };
   }, [chatIds]);
 
@@ -36,6 +37,5 @@ const Listener = memo(function Component({
 }) {
   const channel = pusher.subscribe(chatId);
   useRealtimeChat({ channel, chatId, isGroupChat });
-  useRealtimeMessages({ channel, chatId, isGroupChat });
   return null;
 });

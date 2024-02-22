@@ -1,5 +1,4 @@
 export const EVENTS = {
-  ADDED_TO_CHAT: 'added-to-chat',
   CHAT_UPDATED: 'chat-updated',
   CHAT_DELETED: 'chat-deleted',
 
@@ -12,16 +11,17 @@ export const EVENTS = {
   USER_ONLINE: 'user-online'
 };
 
-export type AddedToChatResponse = {
-  chatId: string;
-};
 export type ChatUpdatedResponse = {
+  chatId: string;
   name?: string;
   image?: string | null;
-  removedMembersId?: string[];
-  addedMembersId?: string[];
+  removedMembers?: string[];
+  addedMembers?: string[];
 };
 export type ChatDeletedResponse = unknown;
+export type MessageTypingResponse = {
+  user: string;
+};
 export type MessageSentResponse = Message;
 export type MessageSeenResponse = {
   messageId: string;
@@ -29,6 +29,8 @@ export type MessageSeenResponse = {
 };
 export type MessageDeletedResponse = {
   messageId: string;
+  sender: string;
+  senderId: string;
 };
 export type ReactionAddedResponse = {
   messageId: string;

@@ -1,10 +1,6 @@
 import { backend_url } from '@/lib/constants';
-import { extractErrorMessage } from '@/lib/utils';
-import {
-  InfiniteData,
-  useMutation,
-  useQueryClient
-} from '@tanstack/react-query';
+import { extractErrorMessage, updateChat } from '@/lib/utils';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const useCreateGroup = () => {
@@ -13,17 +9,7 @@ export const useCreateGroup = () => {
     mutationKey: ['create-group'],
     mutationFn: createGroup,
     onSuccess(chat) {
-      queryClient.setQueryData(
-        ['chats'],
-        (data: InfiniteData<Chat[]>): typeof data => {
-          if (!data) return data;
-          const [firstPage, ...restPages] = data.pages;
-          return {
-            ...data,
-            pages: [[chat, ...(firstPage || [])], ...restPages]
-          };
-        }
-      );
+      updateChat({ queryClient, chat });
     }
   });
 };

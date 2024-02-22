@@ -53,9 +53,7 @@ export default function ProfileModal({ children }: Props) {
             </Button>
           </UpdateProfileModal>
           <LogoutDialog>
-            <Button className="bg-rose-100 text-rose-700 hover:bg-rose-100">
-              Logout
-            </Button>
+            <Button>Logout</Button>
           </LogoutDialog>
           <DeleteAccountDialog>
             <Button variant="destructive">Delete Account</Button>

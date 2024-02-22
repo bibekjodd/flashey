@@ -83,7 +83,7 @@ const Chat = memo(function Component({ chatId }: ChatItemProps) {
           {getChatTitle(chat, profile?.id)}
         </span>
         {lastMessage && (
-          <span className="line-clamp-1 text-[13px] text-gray-600 group-hover:text-neutral-800 group-focus:text-neutral-800 dark:text-neutral-200/80 dark:group-hover:text-neutral-200/80 dark:group-focus:text-neutral-200/80">
+          <span className="line-clamp-1 text-[13px] text-gray-600 group-hover:text-neutral-800 group-focus:text-neutral-800 dark:text-neutral-200/80 dark:group-hover:text-neutral-200/80 dark:group-focus:text-neutral-100">
             {lastMessage}
           </span>
         )}

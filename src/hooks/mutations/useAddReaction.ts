@@ -1,5 +1,5 @@
 import { backend_url } from '@/lib/constants';
-import { extractErrorMessage } from '@/lib/utils';
+import { extractErrorMessage, updateMessage } from '@/lib/utils';
 import {
   InfiniteData,
   useMutation,
@@ -24,38 +24,34 @@ export const useAddReaction = ({
     onMutate(userReaction): InfiniteData<Message[]> {
       // optimistic update
       document.getElementById(`reaction-button-${messageId}`)?.click();
-      const oldMessagesData = queryClient.getQueryData([
-        'messages',
-        chatId
-      ]) as InfiniteData<Message[]>;
-      if (!oldMessagesData || !profile) return oldMessagesData;
+      const oldMessagesData = queryClient.getQueryData<
+        InfiniteData<Message[]> | undefined
+      >(['messages', chatId]) || { pages: [], pageParams: [] };
 
-      const updatedPages: Message[][] = { ...oldMessagesData }.pages.map(
-        (page) => {
-          return page.map((message) => {
-            if (messageId !== message.id) return message;
-            message.reactions = message.reactions.filter(
-              (reaction) => reaction?.userId !== profile.id
-            );
-            if (userReaction) {
-              message.reactions.push({
-                reaction: userReaction,
-                userId: profile.id
-              });
-            }
-            return message;
-          });
+      const message = oldMessagesData.pages
+        .flat(1)
+        .find((message) => message.id === messageId);
+      if (message) {
+        const reactions = message.reactions.filter(
+          (reaction) => reaction.userId !== profile?.id
+        );
+        if (userReaction) {
+          reactions.push({ userId: profile?.id!, reaction: userReaction });
         }
-      );
-
-      queryClient.setQueryData(['messages', chatId], {
-        ...oldMessagesData,
-        pages: updatedPages
-      });
+        const updatedMessage = { ...message, reactions };
+        updateMessage({
+          message: updatedMessage,
+          queryClient,
+          updateChat: !!userReaction
+        });
+      }
       return oldMessagesData;
     },
     onError(err, variables, oldMessagesData) {
-      queryClient.setQueryData(['messages', chatId], oldMessagesData);
+      queryClient.setQueryData<InfiniteData<Message[]>>(
+        ['messages', chatId],
+        oldMessagesData
+      );
     }
   });
 };

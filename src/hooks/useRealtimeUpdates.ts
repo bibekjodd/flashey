@@ -1,5 +1,6 @@
-import { AddedToChatResponse, EVENTS, MessageSentResponse } from '@/lib/events';
+import { ChatUpdatedResponse, EVENTS, MessageSentResponse } from '@/lib/events';
 import { pusher } from '@/lib/pusher';
+import { updateChat, updateMessage } from '@/lib/utils';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { Channel } from 'pusher-js';
 import { useEffect, useState } from 'react';
@@ -24,64 +25,84 @@ export const useRealtimeUpdates = () => {
 
   useEffect(() => {
     if (!channel) return;
-    channel.bind(EVENTS.ADDED_TO_CHAT, async (data: AddedToChatResponse) => {
-      const chat = await queryClient.fetchQuery({
-        queryKey: ['chat', data.chatId],
-        queryFn: () => fetchChat(data.chatId)
-      });
-      const oldChatsData = queryClient.getQueryData<
-        InfiniteData<Chat[]> | undefined
-      >(['chats']) || { pages: [], pageParams: [] };
-      const firstPage = (oldChatsData.pages[0] || []).filter(
-        ({ id }) => id !== chat.id
-      );
-      queryClient.setQueryData<InfiniteData<Chat[]>>(['chats'], {
-        ...oldChatsData,
-        pages: [[chat, ...(firstPage || [])], ...oldChatsData.pages.slice(1)]
-      });
-    });
+    channel.bind(
+      EVENTS.CHAT_UPDATED,
+      async ({ chatId, image, name, removedMembers }: ChatUpdatedResponse) => {
+        const oldChatsData = queryClient.getQueryData<
+          InfiniteData<Chat[]> | undefined
+        >(['chats']) || { pages: [], pageParams: [] };
+
+        // if user is removed from chat
+        if (removedMembers?.includes(profile?.id!)) {
+          queryClient.removeQueries({ queryKey: ['chat', chatId] });
+          const updatedChats = oldChatsData.pages.map((page) =>
+            page.filter((chat) => chat.id !== chatId)
+          );
+          queryClient.setQueryData<InfiniteData<Chat[]>>(['chats'], {
+            ...oldChatsData,
+            pages: updatedChats
+          });
+          return;
+        }
+
+        // check if chat is fetched or not
+        let chat = queryClient.getQueryData<Chat | undefined>(['chat', chatId]);
+        if (!chat) {
+          chat = await queryClient.fetchQuery({
+            queryKey: ['chat', chatId],
+            queryFn: () => fetchChat(chatId)
+          });
+          if (!chat) return;
+        }
+
+        // on name/image update
+        const updatedChat: Chat = {
+          ...chat,
+          name: name || chat.name,
+          image: image === null ? null : chat.image,
+          updatedAt: new Date().toISOString()
+        };
+        updateChat({ queryClient, chat: updatedChat });
+      }
+    );
 
     /* on send message */
     channel.bind(EVENTS.MESSAGE_SENT, async (message: MessageSentResponse) => {
-      const chat = queryClient.getQueryData<Chat | undefined>([
+      let chat = queryClient.getQueryData<Chat | undefined>([
         'chat',
         message.chatId
       ]);
       if (!chat) {
-        const chat = await queryClient.fetchQuery({
+        chat = await queryClient.fetchQuery({
           queryKey: ['chat', message.chatId],
           queryFn: () => fetchChat(message.chatId)
         });
-        const oldChatsData = queryClient.getQueryData<
-          InfiniteData<Chat[]> | undefined
-        >(['chats']) || { pages: [], pageParams: [] };
-        const [firstPage, ...restPages] = oldChatsData.pages;
-        queryClient.setQueryData<InfiniteData<Chat[]>>(['chats'], {
-          ...oldChatsData,
-          pages: [[chat, ...(firstPage || [])], ...restPages]
-        });
+        if (!chat) return;
       }
-
-      const oldMessagesData = queryClient.getQueryData<
-        InfiniteData<Message[]> | undefined
-      >(['messages', message.chatId]) || { pages: [], pageParams: [] };
-
-      const firstPage = (oldMessagesData.pages[0] || []).filter(
-        ({ id }) => id !== message.id
+      updateMessage({ message, queryClient });
+      const sender = chat.members.find(
+        (member) => member.id === message.senderId
       );
-      queryClient.setQueryData<InfiniteData<Message[]>>(
-        ['messages', message.chatId],
-        {
-          ...oldMessagesData,
-          pages: [
-            [message, ...(firstPage || [])],
-            ...oldMessagesData.pages.slice(1)
-          ]
-        }
-      );
+      if (sender) {
+        const lastMessage: Chat['lastMessage'] = {
+          message: message.text || 'sent an image',
+          sender: sender.name,
+          senderId: sender.id
+        };
+        const updatedChat: Chat = {
+          ...chat,
+          lastMessage,
+          updatedAt: new Date().toISOString()
+        };
+        updateChat({ queryClient, chat: updatedChat });
+      }
       //
     });
-  }, [channel, queryClient]);
+
+    return () => {
+      channel.unbind_all();
+    };
+  }, [channel, queryClient, profile?.id]);
 
   return null;
 };

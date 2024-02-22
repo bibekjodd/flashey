@@ -6,20 +6,23 @@ import axios from 'axios';
 export const useFriends = () => {
   return useInfiniteQuery({
     queryKey: ['friends'],
-    queryFn: fetchFriends,
+    queryFn: ({ pageParam }) => fetchFriends(pageParam),
     initialPageParam: 1,
     getNextPageParam(lastPage, allPages, lastPageParam) {
-      if (lastPage.length) return lastPageParam + 1;
+      if (lastPage.length > 10) return lastPageParam + 1;
       return undefined;
     }
   });
 };
 
-const fetchFriends = async (): Promise<User[]> => {
+const fetchFriends = async (page: number): Promise<User[]> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/friends`, {
-      withCredentials: true
-    });
+    const { data } = await axios.get(
+      `${backend_url}/api/friends?page=${page}&page_size=10`,
+      {
+        withCredentials: true
+      }
+    );
     return data.friends;
   } catch (error) {
     throw new Error(extractErrorMessage(error));

@@ -7,21 +7,24 @@ export const useMessages = (chatId: string) => {
   return useInfiniteQuery({
     queryKey: ['messages', chatId],
     queryFn: ({ pageParam }) => fetchMessages(chatId, pageParam),
-    initialPageParam: 1,
-    getNextPageParam(lastPage, allPages, lastPageParam) {
-      if (!lastPage || lastPage.length < 10) return undefined;
-      return lastPageParam + 1;
+    initialPageParam: new Date().toISOString(),
+    // refetchOnMount: true,
+
+    getNextPageParam(lastPage) {
+      if (!lastPage) return new Date().toISOString();
+      const cursor = lastPage.at(lastPage.length - 1)?.sentAt || undefined;
+      return cursor;
     }
   });
 };
 
 const fetchMessages = async (
   chatId: string,
-  page: number | string
+  cursor: string
 ): Promise<Message[]> => {
   try {
     const { data } = await axios.get(
-      `${backend_url}/api/messages/${chatId}?page=${page}`,
+      `${backend_url}/api/messages/${chatId}?cursor=${cursor}`,
       {
         withCredentials: true
       }

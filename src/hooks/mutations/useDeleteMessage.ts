@@ -1,5 +1,5 @@
 import { backend_url } from '@/lib/constants';
-import { extractErrorMessage } from '@/lib/utils';
+import { extractErrorMessage, updateChat } from '@/lib/utils';
 import {
   InfiniteData,
   useMutation,
@@ -21,29 +21,29 @@ export const useDeleteMessage = ({
     mutationFn: () => deleteMessage(messageId),
     onMutate(): InfiniteData<Message[]> {
       // optimistic update
-      const oldMessagesData = queryClient.getQueryData([
-        'messages',
-        chatId
-      ]) as InfiniteData<Message[]>;
-      if (!oldMessagesData) return oldMessagesData;
+      const oldMessagesData = queryClient.getQueryData<
+        InfiniteData<Message[]> | undefined
+      >(['messages', chatId]) || { pages: [], pageParams: [] };
 
       const updatedMessages: Message[][] = oldMessagesData.pages.map(
-        (messages) => {
-          return messages.filter((message) => message.id !== messageId);
-        }
+        (messages) => messages.filter((message) => message.id !== messageId)
       );
       queryClient.setQueryData(['messages', chatId], {
         ...oldMessagesData,
         pages: updatedMessages
       });
-
       return oldMessagesData;
     },
     onSuccess() {
-      queryClient.setQueryData(
-        ['chat', chatId],
-        (data: Chat): Chat => ({ ...data, lastMessage: null })
-      );
+      const chat = queryClient.getQueryData<Chat | undefined>(['chat', chatId]);
+      if (chat) {
+        const updatedChat: Chat = {
+          ...chat,
+          updatedAt: new Date().toISOString(),
+          lastMessage: null
+        };
+        updateChat({ queryClient, chat: updatedChat });
+      }
     },
     onError(err, variables, oldMessagesData) {
       queryClient.setQueryData(['messages', chatId], oldMessagesData);

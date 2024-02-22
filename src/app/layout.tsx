@@ -37,12 +37,12 @@ export default function RootLayout({
               richColors
               closeButton
             />
-            <RealtimeListener />
             <AuthProvider>
               <div className="flex h-full">
                 <Sidebar />
                 <div className="flex-grow">{children}</div>
               </div>
+              <RealtimeListener />
             </AuthProvider>
           </QueryProvider>
         </ThemeProvider>

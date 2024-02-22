@@ -3,10 +3,12 @@ import { useProfile } from '@/hooks/queries/userProfile';
 import { formatRelative } from 'date-fns';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import ScrollObserver from '../scroll-observer';
 import Avatar from '../ui/avatar';
 
 export default function FriendsList() {
-  const { data, isLoading } = useFriends();
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
+    useFriends();
   const friends = data?.pages.flat(1) || [];
 
   return (
@@ -28,6 +30,11 @@ export default function FriendsList() {
 
         {friends.length > 0 &&
           friends.map((user) => <Friend key={user.id} user={user} />)}
+        <ScrollObserver
+          fetchNextPage={fetchNextPage}
+          isFetching={isFetching}
+          hasNextPage={hasNextPage}
+        />
       </div>
     </section>
   );
@@ -39,6 +46,7 @@ function Friend({ user }: { user: User }) {
     const chatId = [user.id, profile?.id].sort().join('');
     const chatLink = `/chat/${chatId}`;
     const pathname = usePathname();
+
     return (
       <Link
         key={user.id}
@@ -47,12 +55,11 @@ function Friend({ user }: { user: User }) {
         ${pathname === chatLink ? 'bg-gray-200/40 dark:bg-neutral-700/50' : ''}
         `}
       >
-        <Avatar src={user.image} isOnline />
+        <Avatar src={user.image} />
         <div className="flex flex-col space-y-1">
           <span className="line-clamp-1 text-sm font-medium">{user.name}</span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            <span>last seen: </span>
-            {formatRelative(new Date(user.lastOnline), new Date())}
+          <span className="line-clamp-1 text-xs text-gray-500 dark:text-gray-400">
+            last seen: {formatRelative(new Date(user.lastOnline), new Date())}
           </span>
         </div>
       </Link>

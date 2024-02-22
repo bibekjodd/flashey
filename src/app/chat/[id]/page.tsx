@@ -54,7 +54,7 @@ function Main({ chat }: { chat: Chat }) {
   }, [queryClient, chat]);
 
   return (
-    <main className="flex h-full w-full flex-col dark:bg-neutral-900">
+    <main className="flex h-full w-full flex-col dark:bg-gray-950">
       <ChatHeader chat={chat} />
       <div className="flex-grow overflow-y-auto">
         <Messages chat={chat} />

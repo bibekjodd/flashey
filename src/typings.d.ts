@@ -22,6 +22,10 @@ type Chat = {
     message: string;
     senderId: string;
   } | null;
+  isTyping?: {
+    at: string;
+    user: string;
+  };
 };
 
 type Message = {
