@@ -98,10 +98,6 @@ export const useRealtimeUpdates = () => {
       }
       //
     });
-
-    return () => {
-      channel.unbind_all();
-    };
   }, [channel, queryClient, profile?.id]);
 
   return null;

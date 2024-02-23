@@ -160,9 +160,5 @@ export const useRealtimeChat = ({
         //
       }
     );
-
-    return () => {
-      channel.unbind_all();
-    };
   }, [channel, queryClient, chatId, isGroupChat, profile, router]);
 };

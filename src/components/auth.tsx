@@ -3,6 +3,7 @@ import {
   MutateUserOptions,
   useUserMutation
 } from '@/hooks/mutations/useUserMutation';
+import { backend_url } from '@/lib/constants';
 import {
   ChevronRightIcon,
   EnvelopeIcon,
@@ -188,6 +189,9 @@ export default function Auth() {
 
           <button
             type="button"
+            onClick={() =>
+              window.open(`${backend_url}/api/login/google`, '_blank')
+            }
             className="flex h-10 items-center justify-center space-x-2 rounded-md bg-neutral-200 font-semibold text-black hover:bg-neutral-100"
           >
             <span>Continue with Google</span>

@@ -3,9 +3,11 @@ import { useProfile } from '@/hooks/queries/userProfile';
 import { emojis } from '@/lib/constants';
 import { formatRelative } from 'date-fns';
 import { memo, useState } from 'react';
+import { IoCheckmarkDoneOutline } from 'react-icons/io5';
 import Avatar from '../ui/avatar';
 import AddReaction from './add-reaction';
 import DeleteMessage from './delete-message';
+// import MessageSeenObserver from './message-seen-observer';
 
 export const Message = memo(function Component({
   message
@@ -18,12 +20,17 @@ export const Message = memo(function Component({
   const [isHovering, setIsHovering] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
+  const isSeenByOthers =
+    message.senderId === profile?.id &&
+    message.viewers.find((viewer) => viewer !== profile?.id);
+
   return (
     <div
       onMouseOver={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       className={`group flex w-full py-2 ${isSent ? 'flex-row-reverse self-end' : 'flex-row self-start'}`}
     >
+      {/* <MessageSeenObserver message={message} /> */}
       <Avatar src={sender?.image} isOnline={sender?.id === profile?.id} />
       <div className="w-3" />
       <div
@@ -44,9 +51,21 @@ export const Message = memo(function Component({
           <div className="relative flex-grow">
             {message.text && (
               <p
-                className={`whitespace-pre-wrap rounded-full px-4 py-2 text-sm ${isSent ? ' rounded-tr-none bg-rose-500 text-white dark:bg-rose-600' : 'rounded-tl-none bg-gray-200/60 text-black dark:bg-gray-200'}`}
+                className={`relative whitespace-pre-wrap rounded-full px-4 py-2 text-sm 
+                ${
+                  isSent
+                    ? ' rounded-tr-none bg-rose-500 text-white dark:bg-rose-600'
+                    : 'rounded-tl-none bg-gray-200/60 text-black dark:bg-gray-200'
+                }
+                ${isSeenByOthers ? 'pr-8' : ''}
+                `}
               >
                 {message.text}
+                {isSeenByOthers && (
+                  <span className="absolute bottom-2 right-2 flex">
+                    <IoCheckmarkDoneOutline className="h-4 w-4 text-white" />
+                  </span>
+                )}
               </p>
             )}
             {message.image && <img src={message.image} alt="image" />}
