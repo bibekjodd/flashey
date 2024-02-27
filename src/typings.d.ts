@@ -43,6 +43,7 @@ type Message = {
     userId: string | null;
     reaction: Reaction;
   }[];
+  status?: 'failed' | 'sending';
 };
 
 type Reaction =

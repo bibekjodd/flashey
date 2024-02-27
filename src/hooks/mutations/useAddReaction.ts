@@ -1,12 +1,12 @@
 import { backend_url } from '@/lib/constants';
-import { extractErrorMessage, updateMessage } from '@/lib/utils';
+import { extractErrorMessage, onUpdateMessage } from '@/lib/utils';
 import {
   InfiniteData,
   useMutation,
   useQueryClient
 } from '@tanstack/react-query';
 import axios from 'axios';
-import { useProfile } from '../queries/userProfile';
+import { useProfile } from '../queries/useProfile';
 
 export const useAddReaction = ({
   messageId,
@@ -39,10 +39,10 @@ export const useAddReaction = ({
           reactions.push({ userId: profile?.id!, reaction: userReaction });
         }
         const updatedMessage = { ...message, reactions };
-        updateMessage({
+        onUpdateMessage({
           message: updatedMessage,
           queryClient,
-          updateChat: !!userReaction
+          onUpdateChat: !!userReaction
         });
       }
       return oldMessagesData;

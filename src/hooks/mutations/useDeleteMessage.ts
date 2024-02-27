@@ -1,5 +1,5 @@
 import { backend_url } from '@/lib/constants';
-import { extractErrorMessage, updateChat } from '@/lib/utils';
+import { extractErrorMessage, onUpdateChat } from '@/lib/utils';
 import {
   InfiniteData,
   useMutation,
@@ -42,7 +42,7 @@ export const useDeleteMessage = ({
           updatedAt: new Date().toISOString(),
           lastMessage: null
         };
-        updateChat({ queryClient, chat: updatedChat });
+        onUpdateChat({ queryClient, chat: updatedChat });
       }
     },
     onError(err, variables, oldMessagesData) {

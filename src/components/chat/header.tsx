@@ -1,4 +1,4 @@
-import { useProfile } from '@/hooks/queries/userProfile';
+import { useProfile } from '@/hooks/queries/useProfile';
 import { getChatImage, getChatTitle } from '@/lib/utils';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ type Props = { chat: Chat };
 export default function ChatHeader({ chat }: Props) {
   const { data: profile } = useProfile();
   return (
-    <header className="sticky left-0 top-0 z-10 flex h-16 w-full items-center bg-white/90 px-4 py-2 shadow-sm shadow-neutral-200/70 filter backdrop-blur-3xl dark:bg-neutral-900 dark:shadow-neutral-700/20 md:h-20">
+    <header className="sticky left-0 top-0 z-10 flex h-16 w-full items-center bg-white/90 px-4 py-2 shadow-sm shadow-neutral-200/70 filter backdrop-blur-3xl dark:bg-gray-900 dark:shadow-neutral-700/20 md:h-20">
       <Link href="/" className="pr-3 lg:hidden">
         <ArrowLeftIcon className="h-5 w-5 " />
       </Link>

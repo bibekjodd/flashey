@@ -1,16 +1,19 @@
 import { ChatUpdatedResponse, EVENTS, MessageSentResponse } from '@/lib/events';
 import { pusher } from '@/lib/pusher';
-import { updateChat, updateMessage } from '@/lib/utils';
+import { onUpdateChat, onUpdateMessage } from '@/lib/utils';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { Channel } from 'pusher-js';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { fetchChat } from './queries/useChat';
-import { useProfile } from './queries/userProfile';
+import { useProfile } from './queries/useProfile';
 
 export const useRealtimeUpdates = () => {
   const { data: profile } = useProfile();
   const [channel, setChannel] = useState<Channel | null>(null);
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   useEffect(() => {
     if (profile?.id) {
@@ -34,6 +37,11 @@ export const useRealtimeUpdates = () => {
 
         // if user is removed from chat
         if (removedMembers?.includes(profile?.id!)) {
+          if (location.pathname === `/chat/${chatId}`) {
+            router.replace('/');
+            toast.info('You have been removed from the chat!');
+          }
+
           queryClient.removeQueries({ queryKey: ['chat', chatId] });
           const updatedChats = oldChatsData.pages.map((page) =>
             page.filter((chat) => chat.id !== chatId)
@@ -62,7 +70,7 @@ export const useRealtimeUpdates = () => {
           image: image === null ? null : chat.image,
           updatedAt: new Date().toISOString()
         };
-        updateChat({ queryClient, chat: updatedChat });
+        onUpdateChat({ queryClient, chat: updatedChat });
       }
     );
 
@@ -79,7 +87,7 @@ export const useRealtimeUpdates = () => {
         });
         if (!chat) return;
       }
-      updateMessage({ message, queryClient });
+      onUpdateMessage({ message, queryClient });
       const sender = chat.members.find(
         (member) => member.id === message.senderId
       );
@@ -94,11 +102,11 @@ export const useRealtimeUpdates = () => {
           lastMessage,
           updatedAt: new Date().toISOString()
         };
-        updateChat({ queryClient, chat: updatedChat });
+        onUpdateChat({ queryClient, chat: updatedChat });
       }
       //
     });
-  }, [channel, queryClient, profile?.id]);
+  }, [channel, queryClient, profile?.id, router]);
 
   return null;
 };

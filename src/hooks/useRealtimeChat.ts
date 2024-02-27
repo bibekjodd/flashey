@@ -5,12 +5,12 @@ import {
   MessageSeenResponse,
   ReactionAddedResponse
 } from '@/lib/events';
-import { updateChat } from '@/lib/utils';
+import { onUpdateChat } from '@/lib/utils';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Channel } from 'pusher-js';
 import { useEffect } from 'react';
-import { useProfile } from './queries/userProfile';
+import { useProfile } from './queries/useProfile';
 
 export const useRealtimeChat = ({
   chatId,
@@ -103,7 +103,7 @@ export const useRealtimeChat = ({
           lastMessage: { message: 'deleted a message', sender, senderId },
           updatedAt: new Date().toISOString()
         };
-        updateChat({ queryClient, chat: updatedChat });
+        onUpdateChat({ queryClient, chat: updatedChat });
         //
       }
     );
@@ -156,7 +156,7 @@ export const useRealtimeChat = ({
           updatedAt: new Date().toISOString(),
           lastMessage
         };
-        updateChat({ queryClient, chat: updatedChat });
+        onUpdateChat({ queryClient, chat: updatedChat });
         //
       }
     );

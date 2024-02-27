@@ -1,5 +1,7 @@
-import { useProfile } from '@/hooks/queries/userProfile';
+import { useProfile } from '@/hooks/queries/useProfile';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import { DeleteChatDialog } from '../dialogs/delete-chat.dialog';
+import RemoveUserFromChatDialog from '../dialogs/remove-user-from-chat-dialog';
 import Avatar from '../ui/avatar';
 import { Button } from '../ui/button';
 import {
@@ -11,11 +13,12 @@ import {
   DialogTitle,
   DialogTrigger
 } from '../ui/dialog';
-import { DeleteChatDialog } from '../dialogs/delete-chat.dialog';
+import CreateOrUpdateChatModal from './create-update-chat';
 
 type Props = { chat: Chat };
 export default function ChatModal({ chat }: Props) {
   const { data: profile } = useProfile();
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -32,25 +35,45 @@ export default function ChatModal({ chat }: Props) {
         </DialogHeader>
 
         {/* members */}
-        <section className="h-fit max-h-[200px] space-y-3 overflow-y-auto scrollbar-thin">
+        <section className="h-fit max-h-[300px] space-y-5 overflow-y-auto scrollbar-thin">
           <p className="text-sm font-semibold">Members</p>
-          {chat.members.map((member) => (
-            <div key={member.id} className="flex items-center space-x-3">
-              <Avatar src={member.image} variant="sm" />
-              <span className="line-clamp-1 text-sm font-medium">
-                {member.name}{' '}
-                {member.id === chat.admin && (
-                  <span className="italic text-gray-700">(admin)</span>
+          {chat.members.map((member) => {
+            const canRemoveMember =
+              profile?.id === chat.admin &&
+              member.id !== profile.id &&
+              chat.members.length > 2;
+
+            return (
+              <div key={member.id} className="flex items-center pr-3">
+                <Avatar src={member.image} variant="sm" />
+                <span className="ml-3 line-clamp-1 text-sm font-medium">
+                  {member.name}{' '}
+                  {member.id === chat.admin && (
+                    <span className="text-xs italic text-gray-500">
+                      (admin)
+                    </span>
+                  )}
+                </span>
+                {canRemoveMember && (
+                  <RemoveUserFromChatDialog
+                    chatId={chat.id}
+                    userId={member.id}
+                  />
                 )}
-              </span>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </section>
 
-        <DialogFooter>
+        <DialogFooter className="gap-y-1">
           <DialogClose asChild>
             <Button variant="outline">Close</Button>
           </DialogClose>
+          {chat.isGroupChat && chat.admin === profile?.id && (
+            <CreateOrUpdateChatModal chat={chat}>
+              <Button variant="outline">Update</Button>
+            </CreateOrUpdateChatModal>
+          )}
           {(!chat.isGroupChat || profile?.id === chat.admin) && (
             <DeleteChatDialog chatId={chat.id} />
           )}

@@ -8,7 +8,6 @@ export const useMessages = (chatId: string) => {
     queryKey: ['messages', chatId],
     queryFn: ({ pageParam }) => fetchMessages(chatId, pageParam),
     initialPageParam: new Date().toISOString(),
-    // refetchOnMount: true,
 
     getNextPageParam(lastPage) {
       if (!lastPage) return new Date().toISOString();

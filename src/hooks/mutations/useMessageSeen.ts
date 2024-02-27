@@ -6,7 +6,7 @@ import {
   useQueryClient
 } from '@tanstack/react-query';
 import axios from 'axios';
-import { useProfile } from '../queries/userProfile';
+import { useProfile } from '../queries/useProfile';
 
 export const useMessageSeen = ({
   messageId,

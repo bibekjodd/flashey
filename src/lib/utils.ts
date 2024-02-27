@@ -17,6 +17,15 @@ export const extractErrorMessage = (err: unknown): string => {
   return 'Unknown error occurred!';
 };
 
+export const scrollToBottom = () => {
+  const messagesContainer = document.getElementById('messages-container');
+  if (messagesContainer) {
+    const { scrollTop } = messagesContainer;
+    if (scrollTop > -300)
+      messagesContainer.scroll({ behavior: 'smooth', top: 0 });
+  }
+};
+
 export const wait = (timeout?: number) => {
   return new Promise((res) => {
     setTimeout(() => {
@@ -43,7 +52,7 @@ export const getChatImage = (
   return otherUser?.image || dummyUserImage;
 };
 
-export const updateChat = ({
+export const onUpdateChat = ({
   queryClient,
   chat
 }: {
@@ -65,14 +74,14 @@ export const updateChat = ({
   });
 };
 
-export const updateMessage = ({
+export const onUpdateMessage = ({
   message,
   queryClient,
-  updateChat: shouldUpdateChat
+  onUpdateChat: shouldUpdateChat
 }: {
   message: Message;
   queryClient: QueryClient;
-  updateChat?: boolean;
+  onUpdateChat?: boolean;
 }) => {
   const oldMessagesData = queryClient.getQueryData<
     InfiniteData<Message[]> | undefined
@@ -112,6 +121,6 @@ export const updateMessage = ({
       ...chat,
       updatedAt: new Date().toISOString()
     };
-    updateChat({ queryClient, chat: updatedChat });
+    onUpdateChat({ queryClient, chat: updatedChat });
   }
 };

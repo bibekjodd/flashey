@@ -6,7 +6,9 @@ import axios from 'axios';
 export const useProfile = () => {
   return useQuery({
     queryKey: ['profile'],
-    queryFn: fetchProfile
+    queryFn: fetchProfile,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true
   });
 };
 

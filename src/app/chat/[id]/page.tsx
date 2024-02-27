@@ -54,11 +54,9 @@ function Main({ chat }: { chat: Chat }) {
   }, [queryClient, chat]);
 
   return (
-    <main className="flex h-full w-full flex-col dark:bg-gray-950">
+    <main className="sticky left-0 top-0 flex h-screen w-full flex-col overflow-y-hidden dark:bg-gray-950">
       <ChatHeader chat={chat} />
-      <div className="flex-grow overflow-y-auto">
-        <Messages chat={chat} />
-      </div>
+      <Messages chat={chat} />
       <SendMessage chatId={chat.id} />
     </main>
   );

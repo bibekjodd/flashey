@@ -1,5 +1,5 @@
 import { useMessages } from '@/hooks/queries/useMessages';
-import { useProfile } from '@/hooks/queries/userProfile';
+import { useProfile } from '@/hooks/queries/useProfile';
 import { AnimatePresence, motion } from 'framer-motion';
 import ScrollObserver from '../scroll-observer';
 import { Message } from './message';
@@ -11,9 +11,12 @@ export default function Messages({ chat }: Props) {
   const messages = data?.pages.flat(1) || [];
 
   return (
-    <ul className="flex h-full w-full flex-col-reverse overflow-x-hidden bg-neutral-50/30 p-4 dark:bg-neutral-800/30">
+    <ul
+      id="messages-container"
+      className="relative flex h-full w-full flex-col-reverse overflow-x-hidden bg-neutral-50/30 p-4 dark:bg-gray-800/50"
+    >
       <AnimatePresence initial={false} mode="popLayout">
-        {messages?.map((message) => (
+        {messages.map((message) => (
           <motion.li
             key={message.id}
             layout
@@ -29,7 +32,13 @@ export default function Messages({ chat }: Props) {
               opacity: { duration: 0.2 }
             }}
           >
-            <Message message={message} />
+            {message.status === 'failed' || message.status === 'sending' ? (
+              <PreventInteractivity>
+                <Message message={message} profile={profile} />
+              </PreventInteractivity>
+            ) : (
+              <Message message={message} profile={profile} />
+            )}
           </motion.li>
         ))}
       </AnimatePresence>
@@ -39,5 +48,19 @@ export default function Messages({ chat }: Props) {
         hasNextPage={hasNextPage}
       />
     </ul>
+  );
+}
+
+function PreventInteractivity({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      className="relative opacity-50"
+    >
+      {children}
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 import { useChat } from '@/hooks/queries/useChat';
 import { useChats } from '@/hooks/queries/useChats';
-import { useProfile } from '@/hooks/queries/userProfile';
+import { useProfile } from '@/hooks/queries/useProfile';
 import { poppins } from '@/lib/fonts';
 import { getChatImage, getChatTitle } from '@/lib/utils';
 import { formatRelative } from 'date-fns';
@@ -65,7 +65,7 @@ const Chat = memo(function Component({ chatId }: ChatItemProps) {
     if (chat.lastMessage.senderId === profile?.id) {
       lastMessage += 'You';
     } else {
-      lastMessage += (lastMessageSender?.name || '').split(' ')[0];
+      lastMessage += (lastMessageSender?.name || 'user').split(' ')[0];
     }
     lastMessage += ': ';
     lastMessage += chat.lastMessage.message;
@@ -74,8 +74,8 @@ const Chat = memo(function Component({ chatId }: ChatItemProps) {
   return (
     <Link
       href={chatLink}
-      className={`${poppins.className} group flex w-full items-center space-x-3 rounded-lg p-2 text-left transition hover:bg-gray-200/40 focus:bg-gray-200/40 focus:outline-none active:bg-gray-200/20 dark:hover:bg-neutral-700/50 dark:focus:bg-neutral-700/50 dark:active:bg-neutral-700/50
-       ${pathname === chatLink ? 'bg-gray-200/40 dark:bg-neutral-700/50' : ''}`}
+      className={`${poppins.className} group flex w-full items-center space-x-3 rounded-lg p-2 text-left transition hover:bg-gray-200/40 focus:bg-gray-200/40 focus:outline-none active:bg-gray-200/20 dark:hover:bg-gray-700/40 dark:focus:bg-gray-700/40 dark:active:bg-gray-700/40
+       ${pathname === chatLink ? 'bg-gray-200/40 dark:bg-gray-700/40' : ''}`}
     >
       <Avatar src={getChatImage(chat, profile?.id)} />
       <section className="relative flex flex-grow flex-col">

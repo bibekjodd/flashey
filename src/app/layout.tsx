@@ -23,11 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} h-screen min-h-screen overflow-y-auto text-black dark:bg-neutral-900 dark:text-white`}
+        className={`${inter.className} text-black dark:bg-gray-900 dark:text-white`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           disableTransitionOnChange
         >
           <QueryProvider>
@@ -38,7 +38,7 @@ export default function RootLayout({
               closeButton
             />
             <AuthProvider>
-              <div className="flex h-full">
+              <div className="flex">
                 <Sidebar />
                 <div className="flex-grow">{children}</div>
               </div>

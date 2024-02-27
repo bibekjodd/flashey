@@ -86,7 +86,7 @@ export default function Auth() {
 
   return (
     <main
-      className={`grid h-screen min-h-screen flex-1 place-items-center overflow-y-auto bg-neutral-900 text-neutral-200 sm:py-10`}
+      className={`grid h-screen min-h-screen flex-1 place-items-center overflow-y-auto bg-gray-900 text-neutral-200 sm:py-10`}
     >
       <section className="flex h-full w-full flex-col justify-center rounded-lg bg-neutral-800/50 px-4 pb-8 sm:h-fit sm:max-w-screen-xs sm:px-8">
         <div className="relative flex flex-col items-center space-y-1 py-10">
@@ -169,7 +169,7 @@ export default function Auth() {
 
           <button
             type="submit"
-            className="flex h-10 items-center justify-center space-x-1 rounded-md bg-neutral-700/40 font-medium text-neutral-200 ring-neutral-500/50 hover:bg-neutral-700/50 focus:ring-2"
+            className="flex h-10 items-center justify-center space-x-1 rounded-md bg-gray-700/40 font-medium text-neutral-200 ring-neutral-500/50 hover:bg-gray-700/40 focus:ring-2"
           >
             {!isPending ? (
               <>
@@ -182,16 +182,17 @@ export default function Auth() {
           </button>
 
           <div className="flex items-center space-x-3">
-            <span className="h-0.5 flex-1 rounded-full bg-neutral-700" />
+            <span className="h-0.5 flex-1 rounded-full bg-gray-700" />
             <span className="text-sm text-neutral-300">or</span>
-            <span className="h-0.5 flex-1 rounded-full bg-neutral-700" />
+            <span className="h-0.5 flex-1 rounded-full bg-gray-700" />
           </div>
 
           <button
             type="button"
-            onClick={() =>
-              window.open(`${backend_url}/api/login/google`, '_blank')
-            }
+            onClick={() => {
+              window.open(`${backend_url}/api/login/google`, '_blank');
+              window.close();
+            }}
             className="flex h-10 items-center justify-center space-x-2 rounded-md bg-neutral-200 font-semibold text-black hover:bg-neutral-100"
           >
             <span>Continue with Google</span>

@@ -1,7 +1,7 @@
 import { dummyUserImage } from '@/lib/constants';
 
 type Props = {
-  variant?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  variant?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   src: string | undefined | null;
   isOnline?: boolean;
 };
@@ -10,6 +10,7 @@ export default function Avatar({ src, variant, isOnline }: Props) {
     <div className="inline h-fit w-fit">
       <div
         className={`relative
+        ${variant === 'xs' ? 'h-6 w-6' : ''}
         ${variant === 'sm' ? 'h-8 w-8' : ''}
         ${variant === 'md' || !variant ? 'h-10 w-10' : ''}
         ${variant === 'lg' ? 'h-12 w-12' : ''}
@@ -20,6 +21,8 @@ export default function Avatar({ src, variant, isOnline }: Props) {
         <img
           src={src || dummyUserImage}
           alt="profile image"
+          loading="lazy"
+          decoding="async"
           className={`h-full w-full rounded-full object-cover`}
         />
         {isOnline && (

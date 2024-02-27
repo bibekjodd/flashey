@@ -11,11 +11,16 @@ export const useUserMutation = () => {
   return useMutation({
     mutationKey: ['mutate-user'],
     mutationFn: mutateUser,
-    onMutate() {
+    onMutate({ type }) {
       router.replace('/');
+      if (type === 'logout') {
+        queryClient.setQueryData(['profile'], null);
+      }
     },
-    onSuccess(user, { type, data }) {
+    async onSuccess(user, { type, data }) {
       queryClient.setQueryData(['profile'], user);
+      queryClient.removeQueries({ queryKey: ['chats'] });
+
       if (type === 'update-profile' && !user) {
         queryClient.setQueryData(
           ['profile'],

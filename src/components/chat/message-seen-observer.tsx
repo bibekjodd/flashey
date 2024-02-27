@@ -1,5 +1,5 @@
 import { useMessageSeen } from '@/hooks/mutations/useMessageSeen';
-import { useProfile } from '@/hooks/queries/userProfile';
+import { useProfile } from '@/hooks/queries/useProfile';
 import { useEffect, useRef } from 'react';
 
 type Props = {

@@ -1,4 +1,4 @@
-import { useProfile } from '@/hooks/queries/userProfile';
+import { useProfile } from '@/hooks/queries/useProfile';
 import React from 'react';
 import { DeleteAccountDialog } from '../dialogs/delete-account-dialog';
 import { LogoutDialog } from '../dialogs/logout-dialog';
@@ -41,19 +41,21 @@ export default function ProfileModal({ children }: Props) {
             <Avatar src={profile?.image} variant="2xl" />
             <div className="flex flex-col">
               <span className="text-lg font-semibold">{profile?.name}</span>
-              <span className="text-gray-500">{profile?.email}</span>
+              <span className="line-clamp-1 text-gray-500">
+                {profile?.email}
+              </span>
             </div>
           </div>
         </div>
 
-        <DialogFooter className="flex">
+        <DialogFooter className="gap-y-1">
           <UpdateProfileModal>
             <Button className="bg-green-100 text-green-700 hover:bg-green-100">
               Update Profile
             </Button>
           </UpdateProfileModal>
           <LogoutDialog>
-            <Button>Logout</Button>
+            <Button variant="outline">Logout</Button>
           </LogoutDialog>
           <DeleteAccountDialog>
             <Button variant="destructive">Delete Account</Button>

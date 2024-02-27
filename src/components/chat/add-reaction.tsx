@@ -1,5 +1,4 @@
 import { useAddReaction } from '@/hooks/mutations/useAddReaction';
-import { useProfile } from '@/hooks/queries/userProfile';
 import { emojis, reactions } from '@/lib/constants';
 import { FaceSmileIcon } from '@heroicons/react/24/outline';
 import { Dispatch, SetStateAction } from 'react';
@@ -9,13 +8,14 @@ type Props = {
   message: Message;
   isHovering: boolean;
   setIsPopoverOpen: Dispatch<SetStateAction<boolean>>;
+  profile: User | null | undefined;
 };
 export default function AddReaction({
   message,
   isHovering,
-  setIsPopoverOpen
+  setIsPopoverOpen,
+  profile
 }: Props) {
-  const { data: profile } = useProfile();
   const { mutate } = useAddReaction({
     chatId: message.chatId,
     messageId: message.id

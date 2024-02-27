@@ -1,5 +1,5 @@
 import { useFriends } from '@/hooks/queries/useFriends';
-import { useProfile } from '@/hooks/queries/userProfile';
+import { useProfile } from '@/hooks/queries/useProfile';
 import { formatRelative } from 'date-fns';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -51,8 +51,8 @@ function Friend({ user }: { user: User }) {
       <Link
         key={user.id}
         href={chatLink}
-        className={`flex items-center space-x-3 rounded-md p-2 transition hover:bg-gray-200/40 focus:bg-gray-200/40 active:scale-95 dark:hover:bg-neutral-700/50 dark:focus:bg-neutral-700/50
-        ${pathname === chatLink ? 'bg-gray-200/40 dark:bg-neutral-700/50' : ''}
+        className={`flex items-center space-x-3 rounded-md p-2 transition hover:bg-gray-200/40 focus:bg-gray-200/40 active:scale-95 dark:hover:bg-gray-700/40 dark:focus:bg-gray-700/40
+        ${pathname === chatLink ? 'bg-gray-200/40 dark:bg-gray-700/40' : ''}
         `}
       >
         <Avatar src={user.image} />

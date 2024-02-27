@@ -1,15 +1,15 @@
 import { backend_url } from '@/lib/constants';
-import { extractErrorMessage, updateChat } from '@/lib/utils';
+import { extractErrorMessage, onUpdateChat } from '@/lib/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-export const useCreateGroup = () => {
+export const useCreateChat = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['create-group'],
-    mutationFn: createGroup,
+    mutationFn: createChat,
     onSuccess(chat) {
-      updateChat({ queryClient, chat });
+      onUpdateChat({ queryClient, chat });
     }
   });
 };
@@ -18,9 +18,9 @@ type Options = {
   name: string;
   members: string[];
 };
-const createGroup = async (options: Options): Promise<Chat> => {
+const createChat = async (options: Options): Promise<Chat> => {
   try {
-    const { data } = await axios.post(`${backend_url}/api/group`, options, {
+    const { data } = await axios.post(`${backend_url}/api/chat`, options, {
       withCredentials: true
     });
     return data.chat;
