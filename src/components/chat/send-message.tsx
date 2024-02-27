@@ -3,6 +3,7 @@ import { imageToDataUri } from '@/lib/image-service';
 import { scrollToBottom } from '@/lib/utils';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { PaperAirplaneIcon, PhotoIcon } from '@heroicons/react/24/solid';
+import { Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -11,7 +12,7 @@ export default function SendMessage({ chatId }: Props) {
   const [text, setText] = useState('');
   const [imageDataUri, setImageDataUri] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const { mutate } = useSendMessage(chatId);
+  const { mutate, isPending } = useSendMessage(chatId);
 
   const onImagePicked = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const imageFile = e.target.files && e.target.files[0];
@@ -32,6 +33,10 @@ export default function SendMessage({ chatId }: Props) {
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isPending) {
+      toast.loading('Waiting for previous message to be sent');
+      return;
+    }
     if (!text && !imageFile) {
       return;
     }
@@ -54,6 +59,14 @@ export default function SendMessage({ chatId }: Props) {
         onError(err) {
           toast.dismiss();
           toast.error(`Could not send message! ${err.message}`);
+          setText(textToSend);
+          setImageFile(imageToSend);
+          if (imageToSend) {
+            imageToDataUri(imageToSend).then((res) => setImageDataUri(res));
+          }
+        },
+        onSuccess() {
+          toast.dismiss();
         }
       }
     );
@@ -99,11 +112,15 @@ export default function SendMessage({ chatId }: Props) {
           className="h-10 w-full rounded-full bg-neutral-100 px-5 disabled:opacity-50 dark:bg-gray-700/30"
         />
         <button
-          disabled={!text && !imageDataUri}
+          disabled={(!text && !imageDataUri) || isPending}
           type="submit"
-          className="space-x-2 rounded-full bg-rose-500 p-2  text-white disabled:opacity-50"
+          className="relative space-x-2 rounded-full bg-rose-500  p-2 text-white disabled:opacity-50"
         >
-          <PaperAirplaneIcon className="h-5 w-5 text-white" />
+          {!isPending ? (
+            <PaperAirplaneIcon className={`h-5 w-5 text-white`} />
+          ) : (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          )}
         </button>
       </form>
     </section>
