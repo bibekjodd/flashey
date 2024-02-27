@@ -1,5 +1,6 @@
 'use client';
 import Auth from '@/components/auth';
+import InitialScreenLoader from '@/components/initial-screen-loader';
 import { useProfile } from '@/hooks/queries/useProfile';
 import { usePrevious } from '@/hooks/usePrevious';
 import { useQueryClient } from '@tanstack/react-query';
@@ -26,7 +27,7 @@ export default function AuthProvider({ children }: Props) {
     };
   }, [previousId, profile?.id, queryClient]);
 
-  if (isLoading) return null;
+  if (isLoading) return <InitialScreenLoader />;
   if (!profile || error) return <Auth />;
   return <>{children}</>;
 }

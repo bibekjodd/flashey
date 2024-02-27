@@ -12,8 +12,14 @@ import ScrollObserver from '../scroll-observer';
 import Avatar from '../ui/avatar';
 
 export default function ChatsList() {
-  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
-    useChats();
+  const {
+    data,
+    isLoading,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage
+  } = useChats();
   const chats = data?.pages.flat(1) || [];
 
   return (
@@ -22,7 +28,11 @@ export default function ChatsList() {
         Chats
       </h3>
       <div className="flex flex-col space-y-2 py-2">
-        {isLoading &&
+        {chats.map((chat) => (
+          <Chat key={chat.id} chatId={chat.id} />
+        ))}
+
+        {(isLoading || isFetchingNextPage) &&
           new Array(4).fill('nothing').map((_, i) => (
             <div key={i} className="flex items-center space-x-3 p-2">
               <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200/50" />
@@ -33,9 +43,6 @@ export default function ChatsList() {
             </div>
           ))}
 
-        {chats.map((chat) => (
-          <Chat key={chat.id} chatId={chat.id} />
-        ))}
         <ScrollObserver
           fetchNextPage={fetchNextPage}
           isFetching={isFetching}
