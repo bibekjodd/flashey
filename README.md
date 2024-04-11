@@ -37,6 +37,6 @@
 
 ### Screenshots
 
-![ss](https://i.postimg.cc/C5FkKyCb/Screenshot-2024-04-11-213628.png)
+![ss](https://i.postimg.cc/kXtS3VYP/Screenshot-2024-04-11-214718.png)
 ![ss](https://i.postimg.cc/QMXNBX94/Screenshot-2024-04-11-213233.png)
 ![ss](https://i.postimg.cc/J0tvvFy5/Screenshot-2024-04-11-213457.png)
