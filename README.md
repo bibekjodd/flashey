@@ -10,15 +10,23 @@
 
 #### Server code repository [https://github.com/bibekjodd/realtime-chat-api](https://github.com/bibekjodd/realtime-chat-api)
 
-## Tech Stack
+### Tech Stack
 
-- #### NextJS
-- #### Typescript
-- #### Nodejs
-- #### Pusher
-- #### Postgresql
+#### Frontend
 
-## Features
+- #### [NextJS](https://nextjs.org/)
+- #### [Tanstack Query](https://tanstack.com/query/latest)
+
+#### Backend
+
+- #### [Express](http://expressjs.com/)
+- #### [PostgreSQL](https://www.postgresql.org/)
+- #### [Passport Google Auth](https://www.passportjs.org/)
+- #### [Pusher](https://pusher.com/) <em>(realtime provider)</em>
+- #### [Typescript](https://www.typescriptlang.org/)
+- #### [Drizzle ORM](https://orm.drizzle.team/) <em>(sql query builder)</em>
+
+### Features
 
 - #### Realtime messages with minimal latency
 - #### Credentials and Google OAuth
