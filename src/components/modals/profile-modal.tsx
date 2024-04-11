@@ -50,9 +50,7 @@ export default function ProfileModal({ children }: Props) {
 
         <DialogFooter className="gap-y-1">
           <UpdateProfileModal>
-            <Button className="bg-green-100 text-green-700 hover:bg-green-100">
-              Update Profile
-            </Button>
+            <Button>Update Profile</Button>
           </UpdateProfileModal>
           <LogoutDialog>
             <Button variant="outline">Logout</Button>
